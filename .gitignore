@@ -3,3 +3,4 @@
 .Rproj.user*
 apiCredentials.R
 .Rproj.user
+R/.DS_Store
