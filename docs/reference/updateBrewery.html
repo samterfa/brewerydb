@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • brewerydb</title>
+<title>Update a new brewery — updateBrewery • brewerydb</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,10 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Update a new brewery — updateBrewery" />
+
+<meta property="og:description" content="Update a brewery.  Brewery will be added with status of update_pending." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -47,7 +50,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -94,99 +97,69 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Update a new brewery</h1>
+    <small class="dont-index">Source: <a href='https://github.com/samterfa/brewerydb/blob/master/R/Brewery.R'><code>R/Brewery.R</code></a></small>
+    <div class="hidden name"><code>updateBrewery.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>Update a brewery.  Brewery will be added with status of update_pending.</p>
+    
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
-
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-beer" class="hasAnchor"><a href="#section-beer" class="anchor"></a>Beer</h2>
-          <p class="section-desc"><p>Functions involving Beer.</p></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="createBeer.html">createBeer()</a></code> </p>
-        </td>
-        <td><p>Add a new beer</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="deleteBeer.html">deleteBeer()</a></code> </p>
-        </td>
-        <td><p>Delete a beer</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getBeer.html">getBeer()</a></code> </p>
-        </td>
-        <td><p>Get a single beer</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="updateBeer.html">updateBeer()</a></code> </p>
-        </td>
-        <td><p>Update a beer</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-brewery" class="hasAnchor"><a href="#section-brewery" class="anchor"></a>Brewery</h2>
-          <p class="section-desc"><p>Functions involving Brewery.</p></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="createBrewery.html">createBrewery()</a></code> </p>
-        </td>
-        <td><p>Add a new brewery</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="deleteBrewery.html">deleteBrewery()</a></code> </p>
-        </td>
-        <td><p>Delete a new brewery</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getBrewery.html">getBrewery()</a></code> </p>
-        </td>
-        <td><p>Get a single brewery</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getEveryBrewery.html">getEveryBrewery()</a></code> </p>
-        </td>
-        <td><p>Get All Breweries</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="updateBrewery.html">updateBrewery()</a></code> </p>
-        </td>
-        <td><p>Update a new brewery</p></td>
-      </tr>
-    </tbody>
+    <pre class="usage"><span class='fu'>updateBrewery</span>(<span class='no'>name</span>, <span class='no'>description</span>, <span class='no'>website</span>, <span class='no'>established</span>, <span class='no'>mailingListUrl</span>,
+  <span class='no'>isOrganic</span>, <span class='no'>image</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>name</th>
+      <td><p>Name of the brewery</p></td>
+    </tr>
+    <tr>
+      <th>description</th>
+      <td><p>A little bit about the brewery</p></td>
+    </tr>
+    <tr>
+      <th>website</th>
+      <td><p>Url of the breweries website</p></td>
+    </tr>
+    <tr>
+      <th>established</th>
+      <td><p>Year brewery was established. Format YYYY</p></td>
+    </tr>
+    <tr>
+      <th>mailingListUrl</th>
+      <td><p>Url of the breweries mailing list</p></td>
+    </tr>
+    <tr>
+      <th>isOrganic</th>
+      <td><p>Y N Default</p></td>
+    </tr>
+    <tr>
+      <th>image</th>
+      <td><p>Base64 encoded image</p></td>
+    </tr>
     </table>
-  </div>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>none</p>
+    
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-beer">Beer</a></li>
-      <li><a href="#section-brewery">Brewery</a></li>
-    </ul>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
+
   </div>
 </div>
 

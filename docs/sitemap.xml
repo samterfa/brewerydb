@@ -7,15 +7,30 @@
     <loc>https://samterfa.github.io/brewerydb//reference/createBeer.html</loc>
   </url>
   <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/createBrewery.html</loc>
+  </url>
+  <url>
     <loc>https://samterfa.github.io/brewerydb//reference/deleteBeer.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/deleteBrewery.html</loc>
   </url>
   <url>
     <loc>https://samterfa.github.io/brewerydb//reference/getBeer.html</loc>
   </url>
   <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getBrewery.html</loc>
+  </url>
+  <url>
     <loc>https://samterfa.github.io/brewerydb//reference/getEveryBeer.html</loc>
   </url>
   <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryBrewery.html</loc>
+  </url>
+  <url>
     <loc>https://samterfa.github.io/brewerydb//reference/updateBeer.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/updateBrewery.html</loc>
   </url>
 </urlset>

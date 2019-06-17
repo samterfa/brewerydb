@@ -179,7 +179,7 @@ makeRequest <- function(endpoint, verb, params = NULL){
   }
 }
 
-generatePkgdownYmlFile <- function(objects = c('Beer')){
+generatePkgdownYmlFile <- function(objects = c('Beer', 'Brewery')){
   
   # Update _pkgdown.yml to aid in reference navigation.
   ymlText <- paste0('url: https://samterfa.github.io/brewerydb/
