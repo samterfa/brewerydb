@@ -37,7 +37,7 @@ flattenJsonList = function(jsonList){
   return(df)
 }
 
-scrapeFunctions <- function(page = 'beer-index', testing = T){
+generateFunctions <- function(page = 'beer-index', testing = T){
   
   require(rvest)
   require(magrittr)
