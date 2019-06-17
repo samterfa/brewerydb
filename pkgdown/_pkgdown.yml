@@ -1,0 +1,9 @@
+url: https://samterfa.github.io/brewerydb/
+                    
+author: Sam Terfa
+                    
+reference:
+ - title: Beer
+   desc:  Functions involving Beer.
+   contents:
+   - has_concept("Beer")

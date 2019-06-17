@@ -1,6 +1,6 @@
 
 functionsUrl <- 'https://www.brewerydb.com/developers/docs/endpoint/'
-baseUrl <- 'https://sandbox-api.brewerydb.com/v2/'
+baseUrl <- 'https://sandbox-api.brewerydb.com/v2'
 
 checkAuthentication <- function(){
   
@@ -18,6 +18,25 @@ checkAuthentication <- function(){
   }
 }
 
+# This function consistently flattens a json list into a dataframe.
+flattenJsonList = function(jsonList){
+  
+  require(dplyr)
+  require(jsonlite)
+  
+  for(item in jsonList){
+    
+    item = data.frame(item, stringsAsFactors = F)
+    
+    if(!exists('df', inherits = FALSE)){
+      df <- flatten(item)
+    }else{
+      df <- bind_rows(df, flatten(item))
+    }
+  }
+  return(df)
+}
+
 scrapeFunctions <- function(page = 'beer-index', testing = T){
   
   require(rvest)
@@ -32,70 +51,109 @@ scrapeFunctions <- function(page = 'beer-index', testing = T){
   html <- read_html(paste0(functionsUrl, page))
   
   # Each method becomes a function.
-  methods <- html %>% html_nodes('h3 span') %>% rvest::html_text()
-  descriptions <- html %>% html_nodes('p') %>% rvest::html_text()
+  apiMethods <- html %>% html_nodes('h3 span') %>% rvest::html_text()
   
-  # Every other paragraph is the description we want.
-  descriptions %<>%  magrittr::extract(2*(1:(length(methods)-1)))
+  # Every other paragraph element is a function description.
+  functionDescriptions <- html %>% html_nodes('p') %>% rvest::html_text()
   
-  #### Generate .R file containing page functions.
-  filepath <- paste0('R/', page, ".R")
-  
+  #### Generate .R file containing page functions but only if not testing.
   if(!testing){
     
     if(!dir.exists('R')) dir.create('R')
     
+      filepath <- paste0('R/', object, ".R")
       sink(file = filepath)
       cat('\n')
-    
   }
+ 
+  ### Generate Roxygen Documentation and functions.
+  for(i in 1:length(apiMethods)){
   
-  for(i in 1:length(methods)){
+    apiMethodText <- apiMethods[[i]]
+    shortFunctionDescription <- functionDescriptions[[2*i]]
+    longFunctionDescription <- functionDescriptions[[2*i - 1]]
     
-    #### Scrape API information
-    
-    method <- methods[[i]]
-    
-    description <- descriptions[[i]]
-    
+    # Grab function paramaters.
     toParse <- paste0("html %>% rvest::html_nodes(xpath = '//*[(@id = ", '"params_', i-1, '"', ")]') %>% html_children() %>% extract2(2)")
     params <- eval(parse(text = toParse))
-    if(params %>% html_name() == 'table') params <- params %>% html_table()
+    ifelse(params %>% html_name() == 'table', params %<>% html_table(), params <- NA)
     
+    # Grab function return values.
     toParse <- paste0("html %>% rvest::html_nodes(xpath = '//*[(@id = ", '"return_', i-1, '"', ")]') %>% html_children() %>% extract2(2)")
     returnValues <- eval(parse(text = toParse))
-    ifelse(returnValues %>% html_name() == 'table', returnValues <- returnValues %>% html_table(), returnValues <- NA)
+    ifelse(returnValues %>% html_name() == 'table', returnValues %<>% html_table(), returnValues <- NA)
    
-    toParse <- paste0("html %>% rvest::html_nodes(xpath = '//*[(@id = ", '"example_', i-1, '"', ")]') %>% html_children() %>% extract2(2)")
-    example <- eval(parse(text = toParse))
-    if(example %>% html_name() == 'table') example <- example %>% html_table()
+    # Grab api method (GET, POST, PUT, DELETE)
+    apiMethod <- str_sub(apiMethodText, 1, apiMethodText %>% str_locate(':') %>% extract2(1) - 1)
     
-    verb <- method %>% str_sub(1, method %>% str_locate(':') %>% extract2(1) - 1)
+    # Grab endpoint for request.
+    endpoint <- apiMethodText %>% str_sub(apiMethodText %>% str_locate(':') %>% extract2(1) + 2, nchar(apiMethodText))
     
-    endpoint <- method %>% str_sub(method %>% str_locate(':') %>% extract2(1) + 2, nchar(method))
+    # Replace api methods with human-readable functions. getEvery(object), get(object), create(object), update(object), delete(object).
+    functionName <- c('get', 'create', 'update', 'delete')[which(c('GET', 'POST', 'PUT', 'DELETE') == apiMethod)]
+    if(endpoint %>% str_sub(-2, -1) != 'Id' & apiMethod != 'POST') functionName %<>% paste0('Every')
+    functionName %<>% paste0(object)
     
-    #### Generate human-readable functions
+##### DOCUMENTATION
+    documentationText <- paste0("#' ", shortFunctionDescription, "\n#'\n")
+    documentationText %<>% paste0("#' ", longFunctionDescription, "\n#'\n")
+    documentationText %<>% paste0("#' @concept ", object, "\n#'\n")
     
-    functionName <- c('get', 'create', 'update', 'delete')[which(c('GET', 'POST', 'PUT', 'DELETE') == verb)]
-
-    if(endpoint %>% str_sub(-2, -1) != 'Id' & verb != 'POST') functionName %<>% str_glue('Every')
-   
-    functionName %<>% str_glue(object)
-    
-    documentationText <- paste0("#'", descriptions[[i]], "\n#'\n")
-    functionText <- paste0('\n\n\t', functionName, ' <- function(')
-    
-    for(i in 1:nrow(params)){
-    
-      param <- params$Parameter[[i]]
-      description <- params$Description[[i]]
-      `Access Restriction` <- params$`Access Restriction`[[i]]
-      
-      return(description)
+    # Add params to documentation.
+    if(!is.na(params)){
+      for(i in 1:nrow(params)){
+        
+        param <- params$Parameter[[i]] %>% str_squish()
+        description <- params$Description[[i]] %>% str_squish()
+        
+        documentationText %<>% paste0("#' @param ", param, ' ', description, "\n")
+      }
+    }else{
+      documentationText %<>% paste0("#' @param none \n")
     }
     
-    cat(documentationText)
-    cat(functionText)
+    # Add return values to documentation.
+    if(!is.na(returnValues)){
+      for(i in 1:nrow(returnValues)){
+        
+        returnValue <- returnValues$Name[[i]] %>% str_squish()
+        description <- returnValues$Description[[i]] %>% str_squish()
+        
+        documentationText %<>% paste0("#' @return ", returnValue, ' ', description, "\n")
+      }
+    }else{
+      documentationText %<>% paste0("#' @return none \n")
+    }
+    
+    documentationText %<>% paste0("#' @export\n")
+   
+##### FUNCTIONS
+    functionText <- paste0(functionName, ' <- function(')
+    
+    # Add params to functions.
+    if(!is.na(params)){
+      for(i in 1:nrow(params)){
+     
+        param <- params$Parameter[[i]] %>% str_squish() %>% str_replace('Required', '')
+        
+        functionText %<>% paste0(ifelse(i == 1, param, paste0(', ', param)))
+   
+      }
+    }     
+       
+    functionText %<>% paste0('){\n\n')
+    
+    functionText %<>% paste0('\tparams <- as.list(environment())\n\tparams <- params[params != ""]\n\n')
+    
+    # Create the API call.
+    functionText %<>% paste0('\treturnData <- makeRequest("', endpoint, '", "', apiMethod, '", params)\n\n')
+
+    functionText %<>% paste0('\tflattenJsonList(returnData$data)\n\n}\n\n')
+    
+    if(!testing){
+      cat(documentationText)
+      cat(functionText)
+    }
   }
 }
 
@@ -104,9 +162,14 @@ makeRequest <- function(endpoint, verb, params = NULL){
   
   require(httr)
   require(tidyverse)
+  require(magrittr)
   
-  request <- paste0(verb, '("', baseUrl, endpoint, '/?key=', key, '", accept_json())')
-  
+  endpoint %<>% paste0('/?key=', key)
+
+  if(length(params) > 0) endpoint %<>% paste0('&', paste(paste(names(params), as.character(params), sep = '='), collapse = '&'))
+
+  request <- paste0(verb, '("', baseUrl, endpoint, '", accept_json())')
+
   eval(parse(text = paste0('response <- ', request)))
   
   if(response$status_code < 300){
@@ -116,3 +179,24 @@ makeRequest <- function(endpoint, verb, params = NULL){
   }
 }
 
+generatePkgdownYmlFile <- function(objects = c('Beer')){
+  
+  # Update _pkgdown.yml to aid in reference navigation.
+  ymlText <- paste0('url: https://samterfa.github.io/brewerydb/
+                    
+author: Sam Terfa
+                    
+reference:')
+  
+  for(object in objects){
+    
+    ymlText <- paste0(ymlText,'
+ - title: ', stringr::str_to_title(object) ,'
+   desc:  Functions involving ', object, '.
+   contents:
+   - has_concept("', object, '")')
+  }
+  
+  if(!dir.exists('pkgdown')) dir.create('pkgdown')
+  writeLines(ymlText, 'pkgdown/_pkgdown.yml')
+  }

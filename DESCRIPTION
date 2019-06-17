@@ -1,0 +1,16 @@
+Package: brewerydb
+Type: Package
+Title: R Package for BreweryDB
+Version: 0.1.0
+Author: Sam Terfa
+Maintainer: Sam Terfa <samterfa@gmail.com>
+Description: This package creates R Functions for using BreweryDB API
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+URL: http://github.com/samterfa/brewerydb
+BugReports: http://github.com/samterfa/brewerydb/issues
+Imports:
+  tidyverse,jsonlite,httr,magrittr
+Remotes: 
+RoxygenNote: 6.1.1
