@@ -40,6 +40,23 @@ flattenJsonList <- function(jsonList){
   return(df)
 }
 
+# This function returns all api endpoint pages.
+getAllAPIpages <- function(){
+  
+  require(rvest)
+  require(magrittr)
+  require(tidyverse)
+  
+  html <- read_html(paste0(functionsUrl))
+  
+  pages <- html %>% html_nodes('li a') %>% html_attr('href')
+  
+  pages <- pages[pages %>% str_which('/developers/docs/endpoint/')] %>% str_replace_all('/developers/docs/endpoint/', '')
+  
+  return(pages)
+}
+
+# This function generates R files with functions accessing brewerydb endpoints.
 generateFunctions <- function(pages = c('beer-index', 'brewery-index'), testing = T){
   
   require(rvest)
@@ -47,7 +64,7 @@ generateFunctions <- function(pages = c('beer-index', 'brewery-index'), testing 
   require(tidyverse)
   
   # Make sure if there's an error in your code you don't get stuck with output going to a generated file instead of the console.
-  on.exit({sink(); sink(); sink(); sink()})
+  on.exit({sink(); sink(); sink(); sink(); sink(); sink(); sink(); sink()})
   
   for(page in pages){
   
@@ -58,8 +75,24 @@ generateFunctions <- function(pages = c('beer-index', 'brewery-index'), testing 
     # Each method becomes a function.
     apiMethods <- html %>% html_nodes('h3 span') %>% rvest::html_text()
     
-    # Every other paragraph element is a function description.
+    # Every other paragraph element is a function description unless there are no examples.
     functionDescriptions <- html %>% html_nodes('p') %>% rvest::html_text()
+    
+    # Check for no examples.
+    noExamples <- html %>% html_nodes('h5') %>% rvest::html_text() %>% str_detect('No Examples') %>% any()
+   
+    # Check for warnings.
+    warnings <- html %>% html_nodes('strong') %>% rvest::html_text() %>% str_detect('deprecated') %>% any()
+    if(warnings){
+        
+      if(testing) print(paste('Skipping', page, ': Deprecated'))
+      
+      next()
+      
+    }else{
+        
+      if(testing) print(paste('Scraping', page))
+    }
     
     #### Generate .R file containing page functions but only if not testing.
     if(!testing){
@@ -70,13 +103,20 @@ generateFunctions <- function(pages = c('beer-index', 'brewery-index'), testing 
         sink(file = filepath)
         cat('\n')
     }
-   
+  
     ### Generate Roxygen Documentation and functions.
     for(i in 1:length(apiMethods)){
     
       apiMethodText <- apiMethods[[i]]
-      shortFunctionDescription <- functionDescriptions[[2*i]]
-      longFunctionDescription <- functionDescriptions[[2*i - 1]]
+      
+      # If no examples are provided functionDescriptions is half as long as normal and there are no longFunctionDescriptions given.
+      if(!noExamples){
+        shortFunctionDescription <- functionDescriptions[[2*i]]
+        longFunctionDescription <- functionDescriptions[[2*i - 1]]
+      }else{
+        shortFunctionDescription <- functionDescriptions[[i]]
+        longFunctionDescription <- ''
+      }
       
       # Grab function paramaters.
       toParse <- paste0("html %>% rvest::html_nodes(xpath = '//*[(@id = ", '"params_', i-1, '"', ")]') %>% html_children() %>% extract2(2)")
@@ -116,7 +156,7 @@ generateFunctions <- function(pages = c('beer-index', 'brewery-index'), testing 
       
   ##### DOCUMENTATION
       documentationText <- paste0("#' ", shortFunctionDescription, "\n#'\n")
-      documentationText %<>% paste0("#' ", longFunctionDescription, "\n#'\n")
+      if(longFunctionDescription != '') documentationText %<>% paste0("#' ", longFunctionDescription, "\n#'\n")
       documentationText %<>% paste0("#' @concept ", object, "\n#'\n")
       
       # Add params to documentation.
@@ -188,7 +228,8 @@ generateFunctions <- function(pages = c('beer-index', 'brewery-index'), testing 
         cat(functionText)
       }
     }
-}
+    if(!testing) sink()
+  }
 }
 
 makeRequest <- function(endpoint, verb, params = NULL){

@@ -4,33 +4,285 @@
     <loc>https://samterfa.github.io/brewerydb//index.html</loc>
   </url>
   <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/EveryHeartbeat.html</loc>
+  </url>
+  <url>
     <loc>https://samterfa.github.io/brewerydb//reference/createBeer.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/createBeerAdjunct.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/createBeerBrewery.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/createBeerFermentable.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/createBeerHop.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/createBeerSocialaccount.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/createBeerUpc.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/createBeerYeast.html</loc>
   </url>
   <url>
     <loc>https://samterfa.github.io/brewerydb//reference/createBrewery.html</loc>
   </url>
   <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/createBreweryAlternatename.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/createBreweryGuild.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/createBreweryLocation.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/createBrewerySocialaccount.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/createConvertid.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/createGuild.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/createGuildSocialaccount.html</loc>
+  </url>
+  <url>
     <loc>https://samterfa.github.io/brewerydb//reference/deleteBeer.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/deleteBeerAdjunct.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/deleteBeerBrewery.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/deleteBeerFermentable.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/deleteBeerHop.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/deleteBeerSocialaccount.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/deleteBeerYeast.html</loc>
   </url>
   <url>
     <loc>https://samterfa.github.io/brewerydb//reference/deleteBrewery.html</loc>
   </url>
   <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/deleteBreweryAlternatename.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/deleteBreweryGuild.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/deleteBrewerySocialaccount.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/deleteGuild.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/deleteGuildSocialaccount.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/deleteLocation.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getAdjunct.html</loc>
+  </url>
+  <url>
     <loc>https://samterfa.github.io/brewerydb//reference/getBeer.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getBeerSocialaccount.html</loc>
   </url>
   <url>
     <loc>https://samterfa.github.io/brewerydb//reference/getBrewery.html</loc>
   </url>
   <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getBrewerySocialaccount.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getCategory.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryAdjunct.html</loc>
+  </url>
+  <url>
     <loc>https://samterfa.github.io/brewerydb//reference/getEveryBeer.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryBeerAdjunct.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryBeerBrewery.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryBeerEvent.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryBeerFermentable.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryBeerHop.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryBeerIngredient.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryBeerRandom.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryBeerSocialaccount.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryBeerVariation.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryBeerYeast.html</loc>
   </url>
   <url>
     <loc>https://samterfa.github.io/brewerydb//reference/getEveryBrewery.html</loc>
   </url>
   <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryBreweryAlternatename.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryBreweryBeer.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryBreweryEvent.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryBreweryGuild.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryBreweryLocation.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryBreweryRandom.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryBrewerySocialaccount.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryCategory.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryChange.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryFermentable.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryFluidsize.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryGlass.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryGuild.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryGuildBrewery.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryGuildSocialaccount.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryHop.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryIngredient.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryLocation.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryMenu.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEverySearch.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEverySearchGeopoint.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEverySearchStyle.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEverySearchUpc.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEverySocialsite.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryStyle.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getEveryYeast.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getFermentable.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getFluidsize.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getGlass.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getGuild.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getGuildSocialaccount.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getHop.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getIngredient.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getLocation.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getSocialsite.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getStyle.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/getYeast.html</loc>
+  </url>
+  <url>
     <loc>https://samterfa.github.io/brewerydb//reference/updateBeer.html</loc>
   </url>
   <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/updateBeerSocialaccount.html</loc>
+  </url>
+  <url>
     <loc>https://samterfa.github.io/brewerydb//reference/updateBrewery.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/updateBrewerySocialaccount.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/updateGuild.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/updateGuildSocialaccount.html</loc>
+  </url>
+  <url>
+    <loc>https://samterfa.github.io/brewerydb//reference/updateLocation.html</loc>
   </url>
 </urlset>
