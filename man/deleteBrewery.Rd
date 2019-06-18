@@ -4,10 +4,10 @@
 \alias{deleteBrewery}
 \title{Delete a new brewery}
 \usage{
-deleteBrewery()
+deleteBrewery(breweryId)
 }
 \arguments{
-\item{none}{}
+\item{breweryId}{The breweryId}
 }
 \value{
 none

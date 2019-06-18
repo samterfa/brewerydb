@@ -4,10 +4,12 @@
 \alias{getBrewery}
 \title{Get a single brewery}
 \usage{
-getBrewery(withSocialAccounts, withGuilds, withLocations,
+getBrewery(breweryId, withSocialAccounts, withGuilds, withLocations,
   withAlternateNames)
 }
 \arguments{
+\item{breweryId}{The breweryId}
+
 \item{withSocialAccounts}{Get brewery results with social account information included. Y N Default}
 
 \item{withGuilds}{Get brewery results with guild information included. Y N Default}

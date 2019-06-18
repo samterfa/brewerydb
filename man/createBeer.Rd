@@ -4,7 +4,11 @@
 \alias{createBeer}
 \title{Add a new beer}
 \usage{
-createBeer()
+createBeer(name, styleId, description, abv, ibu, glasswareId, srmId,
+  availableId, isRetired, isOrganic, beerVariationId, year, foodPairings,
+  servingTemperature, originalGravity, brewery, label,
+  nutritionServingSize, calories, fat, saturatedFat, transFat, cholesterol,
+  sodium, carbohydrates, dietaryFiber, sugars, protein)
 }
 \arguments{
 \item{name}{Required Name of the beer}

@@ -4,9 +4,15 @@
 \alias{updateBeer}
 \title{Update a beer}
 \usage{
-updateBeer()
+updateBeer(beerId, name, styleId, description, abv, ibu, glasswareId,
+  srmId, availableId, isOrganic, isRetired, beerVariationId, year,
+  foodPairings, servingTemperature, originalGravity, label,
+  nutritionServingSize, calories, fat, saturatedFat, transFat, cholesterol,
+  sodium, carbohydrates, dietaryFiber, sugars, protein)
 }
 \arguments{
+\item{beerId}{The beerId}
+
 \item{name}{Required Name of the beer}
 
 \item{styleId}{Required ID corresponding to the appropriate style}

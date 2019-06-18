@@ -67,7 +67,9 @@ getEveryBeer <- function(p, ids, name, abv, ibu, glasswareId, srmId, availableId
 	params <- as.list(environment())
 	params <- params[params != ""]
 
-	returnData <- makeRequest("/beers", "GET", params)
+	endpoint <- "/beers"
+
+	returnData <- makeRequest(endpoint, "GET", params)
 
 	flattenJsonList(returnData$data)
 
@@ -79,17 +81,30 @@ getEveryBeer <- function(p, ids, name, abv, ibu, glasswareId, srmId, availableId
 #'
 #' @concept Beer
 #'
+#' @param beerId The beerId
 #' @param withBreweries Get beer results with brewery information included. Y N Default
 #' @param withSocialAccounts Get beer results with social account information included. Y N Default
 #' @param withIngredients Get beer results with ingredients information included. Y N Default
 #' @return none 
 #' @export
-getBeer <- function(withBreweries, withSocialAccounts, withIngredients){
+getBeer <- function(beerId, withBreweries, withSocialAccounts, withIngredients){
 
 	params <- as.list(environment())
 	params <- params[params != ""]
 
-	returnData <- makeRequest("/beer/:beerId", "GET", params)
+	endpoint <- "/beer/:beerId"
+
+	additionalParams <- params[1:1]
+
+	for(j in 1:length(additionalParams)){
+
+		endpoint <- sub(paste0(":", names(additionalParams)[[j]]), additionalParams[[j]], endpoint)
+
+	}
+
+	params <- params[-(1:length(additionalParams))]
+
+	returnData <- makeRequest(endpoint, "GET", params)
 
 	flattenJsonList(returnData$data)
 
@@ -131,12 +146,14 @@ getBeer <- function(withBreweries, withSocialAccounts, withIngredients){
 #' @param protein Total Protein in beer based on serving size. Serving size is Required if this is set.
 #' @return none 
 #' @export
-createBeer <- function(name , styleId , description, abv, ibu, glasswareId, srmId, availableId, isRetired, isOrganic, beerVariationId, year, foodPairings, servingTemperature, originalGravity, brewery, label, nutritionServingSize, calories, fat, saturatedFat, transFat, cholesterol, sodium, carbohydrates, dietaryFiber, sugars, protein){
+createBeer <- function(name, styleId, description, abv, ibu, glasswareId, srmId, availableId, isRetired, isOrganic, beerVariationId, year, foodPairings, servingTemperature, originalGravity, brewery, label, nutritionServingSize, calories, fat, saturatedFat, transFat, cholesterol, sodium, carbohydrates, dietaryFiber, sugars, protein){
 
 	params <- as.list(environment())
 	params <- params[params != ""]
 
-	returnData <- makeRequest("/beers", "POST", params)
+	endpoint <- "/beers"
+
+	returnData <- makeRequest(endpoint, "POST", params)
 
 	flattenJsonList(returnData$data)
 
@@ -148,6 +165,7 @@ createBeer <- function(name , styleId , description, abv, ibu, glasswareId, srmI
 #'
 #' @concept Beer
 #'
+#' @param beerId The beerId
 #' @param name Required Name of the beer
 #' @param styleId Required ID corresponding to the appropriate style
 #' @param description A little bit about the beer
@@ -177,12 +195,24 @@ createBeer <- function(name , styleId , description, abv, ibu, glasswareId, srmI
 #' @param protein Total Protein in beer based on serving size. Serving size is Required if this is set.
 #' @return none 
 #' @export
-updateBeer <- function(name , styleId , description, abv, ibu, glasswareId, srmId, availableId, isOrganic, isRetired, beerVariationId, year, foodPairings, servingTemperature, originalGravity, label, nutritionServingSize, calories, fat, saturatedFat, transFat, cholesterol, sodium, carbohydrates, dietaryFiber, sugars, protein){
+updateBeer <- function(beerId, name, styleId, description, abv, ibu, glasswareId, srmId, availableId, isOrganic, isRetired, beerVariationId, year, foodPairings, servingTemperature, originalGravity, label, nutritionServingSize, calories, fat, saturatedFat, transFat, cholesterol, sodium, carbohydrates, dietaryFiber, sugars, protein){
 
 	params <- as.list(environment())
 	params <- params[params != ""]
 
-	returnData <- makeRequest("/beer/:beerId", "PUT", params)
+	endpoint <- "/beer/:beerId"
+
+	additionalParams <- params[1:1]
+
+	for(j in 1:length(additionalParams)){
+
+		endpoint <- sub(paste0(":", names(additionalParams)[[j]]), additionalParams[[j]], endpoint)
+
+	}
+
+	params <- params[-(1:length(additionalParams))]
+
+	returnData <- makeRequest(endpoint, "PUT", params)
 
 	flattenJsonList(returnData$data)
 
@@ -194,15 +224,27 @@ updateBeer <- function(name , styleId , description, abv, ibu, glasswareId, srmI
 #'
 #' @concept Beer
 #'
-#' @param none 
+#' @param beerId The beerId
 #' @return none 
 #' @export
-deleteBeer <- function(){
+deleteBeer <- function(beerId){
 
 	params <- as.list(environment())
 	params <- params[params != ""]
 
-	returnData <- makeRequest("/beer/:beerId", "DELETE", params)
+	endpoint <- "/beer/:beerId"
+
+	additionalParams <- params[1:1]
+
+	for(j in 1:length(additionalParams)){
+
+		endpoint <- sub(paste0(":", names(additionalParams)[[j]]), additionalParams[[j]], endpoint)
+
+	}
+
+	params <- params[-(1:length(additionalParams))]
+
+	returnData <- makeRequest(endpoint, "DELETE", params)
 
 	flattenJsonList(returnData$data)
 

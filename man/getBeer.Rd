@@ -4,9 +4,11 @@
 \alias{getBeer}
 \title{Get a single beer}
 \usage{
-getBeer()
+getBeer(beerId, withBreweries, withSocialAccounts, withIngredients)
 }
 \arguments{
+\item{beerId}{The beerId}
+
 \item{withBreweries}{Get beer results with brewery information included. Y N Default}
 
 \item{withSocialAccounts}{Get beer results with social account information included. Y N Default}

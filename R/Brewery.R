@@ -36,7 +36,9 @@ getEveryBrewery <- function(p, name, ids, established, isOrganic, hasImages, sin
 	params <- as.list(environment())
 	params <- params[params != ""]
 
-	returnData <- makeRequest("/breweries", "GET", params)
+	endpoint <- "/breweries"
+
+	returnData <- makeRequest(endpoint, "GET", params)
 
 	flattenJsonList(returnData$data)
 
@@ -48,18 +50,31 @@ getEveryBrewery <- function(p, name, ids, established, isOrganic, hasImages, sin
 #'
 #' @concept Brewery
 #'
+#' @param breweryId The breweryId
 #' @param withSocialAccounts Get brewery results with social account information included. Y N Default
 #' @param withGuilds Get brewery results with guild information included. Y N Default
 #' @param withLocations Get brewery results with location information included. Y N Default
 #' @param withAlternateNames Get brewery results with alternate name information included. Y N Default
 #' @return none 
 #' @export
-getBrewery <- function(withSocialAccounts, withGuilds, withLocations, withAlternateNames){
+getBrewery <- function(breweryId, withSocialAccounts, withGuilds, withLocations, withAlternateNames){
 
 	params <- as.list(environment())
 	params <- params[params != ""]
 
-	returnData <- makeRequest("/brewery/:breweryId", "GET", params)
+	endpoint <- "/brewery/:breweryId"
+
+	additionalParams <- params[1:1]
+
+	for(j in 1:length(additionalParams)){
+
+		endpoint <- sub(paste0(":", names(additionalParams)[[j]]), additionalParams[[j]], endpoint)
+
+	}
+
+	params <- params[-(1:length(additionalParams))]
+
+	returnData <- makeRequest(endpoint, "GET", params)
 
 	flattenJsonList(returnData$data)
 
@@ -80,12 +95,14 @@ getBrewery <- function(withSocialAccounts, withGuilds, withLocations, withAltern
 #' @param image Base64 encoded image
 #' @return none 
 #' @export
-createBrewery <- function(name , description, website, established, mailingListUrl, isOrganic, image){
+createBrewery <- function(name, description, website, established, mailingListUrl, isOrganic, image){
 
 	params <- as.list(environment())
 	params <- params[params != ""]
 
-	returnData <- makeRequest("/breweries", "POST", params)
+	endpoint <- "/breweries"
+
+	returnData <- makeRequest(endpoint, "POST", params)
 
 	flattenJsonList(returnData$data)
 
@@ -97,6 +114,7 @@ createBrewery <- function(name , description, website, established, mailingListU
 #'
 #' @concept Brewery
 #'
+#' @param breweryId The breweryId
 #' @param name Name of the brewery
 #' @param description A little bit about the brewery
 #' @param website Url of the breweries website
@@ -106,12 +124,24 @@ createBrewery <- function(name , description, website, established, mailingListU
 #' @param image Base64 encoded image
 #' @return none 
 #' @export
-updateBrewery <- function(name, description, website, established, mailingListUrl, isOrganic, image){
+updateBrewery <- function(breweryId, name, description, website, established, mailingListUrl, isOrganic, image){
 
 	params <- as.list(environment())
 	params <- params[params != ""]
 
-	returnData <- makeRequest("/brewery/:breweryId", "PUT", params)
+	endpoint <- "/brewery/:breweryId"
+
+	additionalParams <- params[1:1]
+
+	for(j in 1:length(additionalParams)){
+
+		endpoint <- sub(paste0(":", names(additionalParams)[[j]]), additionalParams[[j]], endpoint)
+
+	}
+
+	params <- params[-(1:length(additionalParams))]
+
+	returnData <- makeRequest(endpoint, "PUT", params)
 
 	flattenJsonList(returnData$data)
 
@@ -123,15 +153,27 @@ updateBrewery <- function(name, description, website, established, mailingListUr
 #'
 #' @concept Brewery
 #'
-#' @param none 
+#' @param breweryId The breweryId
 #' @return none 
 #' @export
-deleteBrewery <- function(){
+deleteBrewery <- function(breweryId){
 
 	params <- as.list(environment())
 	params <- params[params != ""]
 
-	returnData <- makeRequest("/brewery/:breweryId", "DELETE", params)
+	endpoint <- "/brewery/:breweryId"
+
+	additionalParams <- params[1:1]
+
+	for(j in 1:length(additionalParams)){
+
+		endpoint <- sub(paste0(":", names(additionalParams)[[j]]), additionalParams[[j]], endpoint)
+
+	}
+
+	params <- params[-(1:length(additionalParams))]
+
+	returnData <- makeRequest(endpoint, "DELETE", params)
 
 	flattenJsonList(returnData$data)
 

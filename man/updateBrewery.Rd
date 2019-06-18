@@ -4,10 +4,12 @@
 \alias{updateBrewery}
 \title{Update a new brewery}
 \usage{
-updateBrewery(name, description, website, established, mailingListUrl,
-  isOrganic, image)
+updateBrewery(breweryId, name, description, website, established,
+  mailingListUrl, isOrganic, image)
 }
 \arguments{
+\item{breweryId}{The breweryId}
+
 \item{name}{Name of the brewery}
 
 \item{description}{A little bit about the brewery}

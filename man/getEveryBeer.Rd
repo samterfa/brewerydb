@@ -4,7 +4,9 @@
 \alias{getEveryBeer}
 \title{Get All Beers}
 \usage{
-getEveryBeer()
+getEveryBeer(p, ids, name, abv, ibu, glasswareId, srmId, availableId,
+  styleId, isOrganic, hasLabels, year, since, status, order, sort,
+  randomCount, withBreweries, withSocialAccounts, withIngredients)
 }
 \arguments{
 \item{p}{Page Number}
