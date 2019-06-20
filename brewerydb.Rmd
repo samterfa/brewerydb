@@ -1,0 +1,58 @@
+---
+title: "Generating BreweryDB API Functions"
+output: html_notebook
+---
+
+### Introduction
+
+<br>
+
+An API or Application Program Interface is a standard tool for creating software applications. There are many well-known APIs such as the Google APIs backing Docs, Drive, Calendar, Assistant and [lots more](https://developers.google.com/apis-explorer/). This notebook is dedicated to automatically generating a package containing human-readable functions which utilize the [BreweryDB API](https://www.brewerydb.com/developers). This will allow us to search BreweryDB database and find all sorts of data on beer and breweries!
+
+<br>
+
+Generally API documentation is generated in HTML. We will in a way reverse engineer this, scraping HTML documentation and pulling out the API methods and objects. A method is an action while an object is the thing that a method acts on. 
+
+<br>
+
+![<br><i>Example of HTML Documentation for an API</i>](markdown/exampleAPIdoc.png)
+
+<br>
+
+### API Documentation -> R Functions
+
+<br>
+
+For the example above, the documenation is all about Beer which I'll call our object. The page lists API methods (GET, POST, PUT and DELETE) for interacting with Beer objects. These five main sections spell out a logical method for generating function names.
+
+<br>
+
+| Documentation        | Method| Endpoint URL  | R Function        | What it does                    |
+| :------------------: |:-----:| :------------:|:-----------------:|:-------------------------------:|
+| GET: /beers          | GET   | /beers        | getEveryBeer(...) | Lists every beer                |
+| GET: /beer/:beerId   | GET   | /beer/:beerId | getBeer(...)      | Gets details on a specific beer |
+| POST: /beers         | POST  | /beers        | createBeer(...)   | Creates a new beer              |
+| PUT: /beer/:beerId   | PUT   | /beer/:beerId | modifyBeer(...)   | Modifies a specific beer        |
+| DELETE: /beer/:beerId| DELETE| /beer/:beerId | deleteBeer(...)   | Deletes a specific beer         |
+
+<br>
+
+So how do we go about generating functions? [The Rvest Package](https://github.com/tidyverse/rvest/blob/master/README.md)!
+
+<br>
+
+### Scraping HTML API Documentation
+
+<br>
+
+![<br><i>Selector Gadget in the Chrome Web Store</i>](markdown/exampleAPIdoc.png)
+
+
+
+```{r}
+
+
+
+```
+
+
