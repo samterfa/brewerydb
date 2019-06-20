@@ -105,26 +105,31 @@ As you can see, the return type is JSON formatted. We can use the [jsonlite pack
 ```{r}
 
   # This function consistently flattens a json list into a dataframe.
-  flattenJsonList <- function(jsonList){
+flattenJsonList <- function(jsonList){
+  
+  require(dplyr)
+  require(jsonlite)
+  
+  # If jsonList is not a named list, make it one.
+  if(length(names(jsonList[[1]])) == 0){ 
     
-    suppressPackageStartupMessages(require(dplyr))
-    suppressPackageStartupMessages(require(jsonlite))
+    jsonList <- list(jsonList)
     
-    # If jsonList is not a named list, make it one.
-    if(length(names(jsonList[[1]])) == 0) jsonList <- list(jsonList)
-    
-    for(item in jsonList){
-      
-      item = data.frame(item, stringsAsFactors = F)
-      
-      if(!exists('df', inherits = FALSE)){
-        df <- flatten(item)
-      }else{
-        df <- bind_rows(df, flatten(item))
-      }
-    }
-    return(df)
   }
+  
+  for(item in jsonList){
+    
+    item <- data.frame(item, stringsAsFactors = F)
+   
+    if(!exists('df', inherits = FALSE)){
+      df <- flatten(item) %>% as.data.frame()
+    }else{
+      df <- bind_rows(df, flatten(item) %>% as.data.frame())
+    }
+  }
+  
+  return(df)
+}
 
   print(flattenJsonList(sampleRequest$data) %>% as.data.frame())
 
@@ -250,7 +255,6 @@ Just for funzies, let's run it on some more pages to make sure the documentation
     
     print(page)
     print(methodsAndEndpoints)
-    cat('\n\n')
   }
 ```
 
@@ -307,7 +311,7 @@ Let's see an example.
 
 <br>
 
-So how do we generate getEveryBeer(...)? The general structure is easy but the API method has many parameters we need to make it fully functional. We can scrape those using Rvest too. It turns out using Selector Gadget that each table of parameters has an element id of "param_0", "param_1", one for each API method or function we will generate. We have to get a little fancy to identify each table element in a loop using eval(parse(text = '...')).
+So how do we generate getEveryBeer(...)? The general structure is easy but the API method has many parameters we need to make it fully functional. We can scrape those using Rvest too. It turns out using Selector Gadget that each table of parameters has an element id of "param_0", "param_1", one for each API method or function we will generate.
 
 <br>
 
@@ -319,14 +323,94 @@ So how do we generate getEveryBeer(...)? The general structure is easy but the A
   apiMethods <- html %>% html_nodes('h3 span') %>% rvest::html_text()
 
   for(i in 1:length(apiMethods)){
-    # Grab function parameters.
-        toParse <- paste0("html %>% rvest::html_nodes(xpath = '//*[(@id = ", '"params_', i-1, '"', ")]') %>% html_children() %>% extract2(2)")
-        params <- eval(parse(text = toParse))
+    # Grab function parameters. //*[(@id = "params_0")]
+        params <- html %>% rvest::html_nodes(xpath = paste0('////*[(@id = "params_', i-1, '")]')) %>% html_children() %>% extract2(2)
+        
         ifelse(params %>% html_name() == 'table', params %<>% html_table() %>% mutate_all(str_squish), params <- NA)
         
         ifelse(!is.na(params), print(params %>% mutate_all(function(x) str_sub(x, start = 1, end = 30)) %>% head()), print(params))
-        cat('\n\n')
   }
 ```
 
+<br>
 
+And now we're ready to make our function. We make a variable called functionText to contain the string of our function which we will then use write_lines on to create the text in our .R file. Let's start putting it together.
+
+<br>
+
+```{r message=FALSE, warning=FALSE}
+
+  functionsUrl <- 'https://www.brewerydb.com/developers/docs/endpoint/'
+
+  # Eventually we'd like to scrape the whole site so lets prepare.
+  pages <- c('beer-index')
+
+  for(page in pages){ 
+    
+     object <- page %>% str_replace('-', ' ') %>% str_to_title() %>% str_replace(' ', '') %>% str_replace('Index', '')
+ 
+    # Name the file "Beer.R"
+    filepath <- paste0(object, ".R")
+      
+    # Instantiate the .R file.
+    write_lines('', filepath)
+       
+    html <- read_html(paste0(functionsUrl, page))
+  
+    # Each method becomes a function.
+    apiMethods <- html %>% html_nodes('h3 span') %>% rvest::html_text()
+  
+    for(i in 1:length(apiMethods)){
+      
+      apiMethodText <- apiMethods[[i]]
+      
+      # Grab API method (GET, POST, PUT, DELETE)
+      apiMethod <- str_sub(apiMethodText, 1, apiMethodText %>% str_locate(':') %>% extract2(1) - 1)
+      
+      # Grab endpoint for request.
+      endpoint <- apiMethodText %>% str_sub(apiMethodText %>% str_locate(':') %>% extract2(1) + 2, nchar(apiMethodText))
+      
+      # Grab function parameters. //*[(@id = "params_0")], etc.
+          params <- html %>% rvest::html_nodes(xpath = paste0('////*[(@id = "params_', i-1, '")]')) %>% html_children() %>% extract2(2)
+          
+          ifelse(params %>% html_name() == 'table', params %<>% html_table() %>% mutate_all(str_squish), params <- NA)
+          
+  # Replace API methods with human-readable functions. getEvery(object), get(object), create(object), update(object), delete(object).
+        functionName <- c('get', 'create', 'update', 'delete')[which(c('GET', 'POST', 'PUT', 'DELETE') == apiMethod)]
+        if(endpoint %>% str_sub(-2, -1) != 'Id' & apiMethod != 'POST') functionName %<>% paste0('Every')
+        functionName %<>% paste0(object)
+  
+      # Start the function text that will contain the string of our functions to be written to our .R file.
+      functionText <- paste0(functionName, ' <- function(')
+      
+      # Add params to functions.
+      if(!is.na(params)){
+        for(i in 1:nrow(params)){
+       
+          param <- params$Parameter[[i]] %>% str_replace(' Required', '')
+       
+          functionText %<>% paste0(ifelse(i == 1, param, paste0(', ', param)))
+        }
+      }     
+         
+      functionText %<>% paste0('){\n\n')
+      
+      functionText %<>% paste0('\tparams <- as.list(environment())\n\tparams <- params[params != ""]\n\n')
+      
+      functionText %<>% paste0('\tendpoint <- "', endpoint, '"\n\n')
+      
+      
+      # Create the API call.
+      functionText %<>% paste0('\treturnData <- makeRequest(endpoint, "', apiMethod, '", params)\n\n')
+  
+      functionText %<>% paste0('\tflattenJsonList(returnData$data)\n\n}\n\n')
+      
+      write_lines(functionText, filepath, append = T)
+    }
+   
+    source(filepath)
+      
+    print(getEveryBeer(name = "Dragon's Milk"))
+    file.remove(filepath)
+  }
+```

@@ -25,18 +25,23 @@ flattenJsonList <- function(jsonList){
   require(jsonlite)
   
   # If jsonList is not a named list, make it one.
-  if(length(names(jsonList[[1]])) == 0) jsonList <- list(jsonList)
+  if(length(names(jsonList[[1]])) == 0){ 
+    
+    jsonList <- list(jsonList)
+    
+  }
   
   for(item in jsonList){
     
-    item = data.frame(item, stringsAsFactors = F)
-    
+    item <- data.frame(item, stringsAsFactors = F)
+   
     if(!exists('df', inherits = FALSE)){
-      df <- flatten(item)
+      df <- flatten(item) %>% as.data.frame()
     }else{
-      df <- bind_rows(df, flatten(item))
+      df <- bind_rows(df, flatten(item) %>% as.data.frame())
     }
   }
+  
   return(df)
 }
 
