@@ -15,7 +15,7 @@ Generally API documentation is generated in HTML. We will in a way reverse engin
 
 <br>
 
-![<br><i>Example of HTML Documentation for an API</i>](markdown/exampleAPIdoc.png)
+![<br><i>Example of HTML Documentation for an API</i>](images/exampleAPIdoc.png)
 
 <br>
 
@@ -45,7 +45,7 @@ So how do we go about generating functions? [The Rvest Package](https://github.c
 
 <br>
 
-![<br><i>Selector Gadget in the Chrome Web Store</i>](markdown/selectorGadget.png)
+![<br><i>Selector Gadget in the Chrome Web Store</i>](images/selectorGadget.png)
 
 
 
