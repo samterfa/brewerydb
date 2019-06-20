@@ -19,11 +19,139 @@ Generally API documentation is generated in HTML. We will in a way reverse engin
 
 <br>
 
+### API Calls
+
+<br>
+
+To make an API call, we use the [httr package](https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html) to perform the request. We will need to specify the API method (GET, POST, PUT and DELETE) and the endpoint URL where we will send our request. Additionally, each API has special ways of giving permission for you to access their API. To make API calls to the BreweryDB API, we need to obtain a "key" and attach it as a query parameter to our call. To obtain your own, follow the [developer instructions](https://www.brewerydb.com/developers).
+
+<br>
+
+Here's code I use to check my authentication when working with APIs. 
+
+```{r}
+
+  checkAuthentication <- function(){
+  
+    require(httr)
+    require(jsonlite)
+    require(tidyverse)
+    
+    ops <- Sys.getenv()
+    requiredOptions <- c("brewerydbKey")
+    
+    for(option in requiredOptions){
+      if(Sys.getenv(option) == ''){
+        stop(paste0('Required option ', option, ' has not been set! Set its value using Sys.setenv(', option, ' = "{', option, 'Value}").'))
+      }
+    }
+  }
+
+  print(checkAuthentication())
+
+```
+
+<br>
+
+I have a file which is placed in my .gitignore which sets my API credentials for a session but isn't inadvertently posted to GitHub!
+
+```{r}
+
+  source('../../apiCredentials.R')
+
+```
+
+<br>
+
+And here's code to make an API call using BrewerDB's syntax. I've added some features we'll need later.
+
+```{r}
+
+  # This function makes a BreweryDB API request.
+  makeRequest <- function(endpoint, verb, params = NULL){
+  
+    require(httr)
+    require(tidyverse)
+    require(magrittr)
+    
+    checkAuthentication()
+    
+    endpoint %<>% paste0('/?key=', Sys.getenv('brewerydbKey'))
+  
+    if(length(params) > 0) endpoint %<>% paste0('&', paste(paste(names(params), as.character(params), sep = '='), collapse = '&'))
+  
+    request <- paste0(verb, '("', baseUrl, endpoint, '", accept_json())')
+  
+    eval(parse(text = paste0('response <- ', request)))
+    
+    if(response$status_code < 300){
+      return(content(response))
+    }else{
+      stop(content(response))
+    }
+  }
+
+  # Testing it out.
+  sampleRequest <- makeRequest('/beers', 'GET', params = list(year = '2012'))
+  print(sampleRequest)
+```
+
+<br>
+
+As you can see, the return type is JSON formatted. We can use the jsonlite package to convert this into something more manageable.
+
+```{r}
+
+  # This function consistently flattens a json list into a dataframe.
+  flattenJsonList <- function(jsonList){
+    
+    require(dplyr)
+    require(jsonlite)
+    
+    # If jsonList is not a named list, make it one.
+    if(length(names(jsonList[[1]])) == 0) jsonList <- list(jsonList)
+    
+    for(item in jsonList){
+      
+      item = data.frame(item, stringsAsFactors = F)
+      
+      if(!exists('df', inherits = FALSE)){
+        df <- flatten(item)
+      }else{
+        df <- bind_rows(df, flatten(item))
+      }
+    }
+    return(df)
+  }
+
+  print(flattenJsonList(sampleRequest$data))
+
+```
+
 ### API Documentation -> R Functions
 
 <br>
 
-For the example above, the documenation is all about Beer which I'll call our object. The page lists API methods (GET, POST, PUT and DELETE) for interacting with Beer objects. These five main sections spell out a logical method for generating function names.
+For the example above, the documenation is all about Beer which I'll call our object. Clicking around on the endpoint pages, we see that documentation pages can be used as object names. The current page is "beer-index"", and is followed below by "beer-adjunct" and "beer-brewery". Other examples include "brewery-index" and "brewery-beer", so it makes sense to scrape a page to correspond to our object name.
+
+```{r}
+
+  suppressPackageStartupMessages(require(tidyverse))
+
+  # Eventually we'd like to scrape the whole site so lets prepare.
+  pages = c('beer-index', 'beer-adjunct', 'beer-brewery')
+
+  for(page in pages){ 
+    
+     object <- page %>% str_replace('-', ' ') %>% str_to_title() %>% str_replace(' ', '') %>% str_replace('Index', '')
+    
+     print(object)
+  }
+```
+
+<br>
+
+The beer-index page lists API methods for interacting with Beer objects. These five main sections spell out a logical method for generating function names.
 
 <br>
 
@@ -45,14 +173,110 @@ So how do we go about generating functions? [The Rvest Package](https://github.c
 
 <br>
 
+Once we have identified where on the screen are the API methods and endpoints, we need to pull that information into R. Rvest allows us to search a static web page for html nodes and attributes. I find it easiest to use a tool like [Google Chrome's Selector Gadget](https://chrome.google.com/webstore/search/selector%20gadget) to identify the specific HTML elements to scrape.
+
 ![<br><i>Selector Gadget in the Chrome Web Store</i>](images/selectorGadget.png)
 
+<br>
 
+Let's get scraping! It turns out that our method/endpoint texts correspond to "h3 span" elements. They will need to be split on the colon right after the api method text. Eg. "GET:" /beers" becomes apiMethod "GET" and endpoint "/beers".
 
 ```{r}
 
+  suppressPackageStartupMessages(require(rvest))
+  suppressPackageStartupMessages(require(magrittr))
 
-
+  # Eventually we'll expand this to all pages.
+  for(page in 'beer-index'){ 
+    
+    html <- read_html(paste0(functionsUrl, page))
+  
+    # Each method becomes a function.
+    apiMethods <- html %>% html_nodes('h3 span') %>% rvest::html_text()
+    
+    methodsAndEndpoints <- NULL
+    for(i in 1:length(apiMethods)){
+      
+      apiMethodText <- apiMethods[[i]]
+      
+      # Grab api method (GET, POST, PUT, DELETE)
+      apiMethod <- str_sub(apiMethodText, 1, apiMethodText %>% str_locate(':') %>% extract2(1) - 1)
+      
+      # Grab endpoint for request.
+      endpoint <- apiMethodText %>% str_sub(apiMethodText %>% str_locate(':') %>% extract2(1) + 2, nchar(apiMethodText))
+      
+      methodsAndEndpoints <- bind_rows(methodsAndEndpoints, tibble(Method = apiMethod, Endpoint = endpoint))
+    }
+    
+    print(methodsAndEndpoints)
+  }
 ```
+
+<br>
+
+Just for funzies, let's run it on some more pages to make sure the documentation is consistent.
+
+<br>
+
+```{r}
+
+  pages <- c('beer-index', 'beer-adjunct', 'beer-brewery')
+
+  # Eventually we'll expand this to all pages.
+  for(page in pages){ 
+    
+    html <- read_html(paste0(functionsUrl, page))
+  
+    # Each method becomes a function.
+    apiMethods <- html %>% html_nodes('h3 span') %>% rvest::html_text()
+    
+    methodsAndEndpoints <- NULL
+    for(i in 1:length(apiMethods)){
+      
+      apiMethodText <- apiMethods[[i]]
+      
+      # Grab api method (GET, POST, PUT, DELETE)
+      apiMethod <- str_sub(apiMethodText, 1, apiMethodText %>% str_locate(':') %>% extract2(1) - 1)
+      
+      # Grab endpoint for request.
+      endpoint <- apiMethodText %>% str_sub(apiMethodText %>% str_locate(':') %>% extract2(1) + 2, nchar(apiMethodText))
+      
+      methodsAndEndpoints <- bind_rows(methodsAndEndpoints, tibble(Method = apiMethod, Endpoint = endpoint))
+    }
+    
+    print(page)
+    print(methodsAndEndpoints)
+  }
+```
+
+<br>
+
+Now we're cooking. While we're at it, could we scrape the page name of each documentation page we will want functions for? It turns out that each of those page labels are "li a"" elements on the documentation page. Finding those elements and grabbing their 'href' attribute will give us each page URL we'll need.
+
+```{r}
+
+  # This function returns all api endpoint pages.
+  getAllAPIpages <- function(){
+    
+    functionsUrl <- 'https://www.brewerydb.com/developers/docs/endpoint/'
+    
+    html <- read_html(paste0(functionsUrl))
+    
+    pages <- html %>% html_nodes('li a') %>% html_attr('href')
+    
+    pages <- pages[pages %>% str_which('/developers/docs/endpoint/')] %>% str_replace_all('/developers/docs/endpoint/', '')
+    
+    return(pages)
+  }
+
+  getAllAPIpages()
+```
+
+<br>
+
+So how do we translate the api method and endpoint into a function? Let's start by generating the easiest function: getEveryBeer(...). 
+
+
+
 
 
