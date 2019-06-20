@@ -124,6 +124,8 @@
   }
 
   <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/try">try</a></span>({<span class="kw">checkAuthentication</span>()})</code></pre></div>
+<pre><code>## Error in checkAuthentication() : 
+##   Required option brewerydbKey has not been set! Set its value using Sys.setenv(brewerydbKey = "{brewerydbKeyValue}").</code></pre>
 <p><br></p>
 <p>I have a file which is placed in my .gitignore which sets my API credentials for a session but isn’t inadvertently posted to GitHub!</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/source">source</a></span>(<span class="st">'../../apiCredentials.R'</span>)</code></pre></div>
@@ -342,26 +344,31 @@
 <p><br></p>
 <p>As you can see, the return type is JSON formatted. We can use the <a href="https://cran.r-project.org/web/packages/jsonlite/vignettes/json-aaquickstart.html">jsonlite package</a> to convert this into something more manageable.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="co"># This function consistently flattens a json list into a dataframe.</span>
-  flattenJsonList &lt;-<span class="st"> </span><span class="cf">function</span>(jsonList){
+flattenJsonList &lt;-<span class="st"> </span><span class="cf">function</span>(jsonList){
+  
+  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(dplyr)
+  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(jsonlite)
+  
+  <span class="co"># If jsonList is not a named list, make it one.</span>
+  <span class="cf">if</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(jsonList[[<span class="dv">1</span>]])) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>){ 
     
-    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(dplyr))
-    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(jsonlite))
+    jsonList &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(jsonList)
     
-    <span class="co"># If jsonList is not a named list, make it one.</span>
-    <span class="cf">if</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(jsonList[[<span class="dv">1</span>]])) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) jsonList &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(jsonList)
-    
-    <span class="cf">for</span>(item <span class="cf">in</span> jsonList){
-      
-      item =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(item, <span class="dt">stringsAsFactors =</span> F)
-      
-      <span class="cf">if</span>(<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/exists">exists</a></span>(<span class="st">'df'</span>, <span class="dt">inherits =</span> <span class="ot">FALSE</span>)){
-        df &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/jsonlite/topics/flatten">flatten</a></span>(item)
-      }<span class="cf">else</span>{
-        df &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span>(df, <span class="kw"><a href="https://www.rdocumentation.org/packages/jsonlite/topics/flatten">flatten</a></span>(item))
-      }
-    }
-    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(df)
   }
+  
+  <span class="cf">for</span>(item <span class="cf">in</span> jsonList){
+    
+    item &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(item, <span class="dt">stringsAsFactors =</span> F)
+   
+    <span class="cf">if</span>(<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/exists">exists</a></span>(<span class="st">'df'</span>, <span class="dt">inherits =</span> <span class="ot">FALSE</span>)){
+      df &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/jsonlite/topics/flatten">flatten</a></span>(item) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.data.frame">as.data.frame</a></span>()
+    }<span class="cf">else</span>{
+      df &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span>(df, <span class="kw"><a href="https://www.rdocumentation.org/packages/jsonlite/topics/flatten">flatten</a></span>(item) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.data.frame">as.data.frame</a></span>())
+    }
+  }
+  
+  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(df)
+}
 
   <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw">flattenJsonList</span>(sampleRequest<span class="op">$</span>data) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.data.frame">as.data.frame</a></span>())</code></pre></div>
 <pre><code>##       id          name   nameDisplay
@@ -562,7 +569,6 @@
     
     <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(page)
     <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(methodsAndEndpoints)
-    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">'</span><span class="ch">\n\n</span><span class="st">'</span>)
   }</code></pre></div>
 <pre><code>## [1] "beer-index"
 ## # A tibble: 5 x 2
@@ -573,8 +579,6 @@
 ## 3 POST   /beers       
 ## 4 PUT    /beer/:beerId
 ## 5 DELETE /beer/:beerId
-## 
-## 
 ## [1] "beer-adjunct"
 ## # A tibble: 3 x 2
 ##   Method Endpoint                        
@@ -582,8 +586,6 @@
 ## 1 GET    /beer/:beerId/adjuncts          
 ## 2 POST   /beer/:beerId/adjuncts          
 ## 3 DELETE /beer/:beerId/adjunct/:adjunctId
-## 
-## 
 ## [1] "beer-brewery"
 ## # A tibble: 3 x 2
 ##   Method Endpoint                        
@@ -659,20 +661,20 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/files">file.remove</a></span>(<span class="st">'helloWorld.R'</span>)</code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p><br></p>
-<p>So how do we generate getEveryBeer(…)? The general structure is easy but the API method has many parameters we need to make it fully functional. We can scrape those using Rvest too. It turns out using Selector Gadget that each table of parameters has an element id of “param_0”, “param_1”, one for each API method or function we will generate. We have to get a little fancy to identify each table element in a loop using eval(parse(text = ‘…’)).</p>
+<p>So how do we generate getEveryBeer(…)? The general structure is easy but the API method has many parameters we need to make it fully functional. We can scrape those using Rvest too. It turns out using Selector Gadget that each table of parameters has an element id of “param_0”, “param_1”, one for each API method or function we will generate.</p>
+<p><br></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  html &lt;-<span class="st"> </span><span class="kw">read_html</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(functionsUrl, <span class="st">'beer-index'</span>))
 
   <span class="co"># Each method becomes a function.</span>
   apiMethods &lt;-<span class="st"> </span>html <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_nodes">html_nodes</a></span>(<span class="st">'h3 span'</span>) <span class="op">%&gt;%</span><span class="st"> </span>rvest<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_text">html_text</a></span>()
 
   <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(apiMethods)){
-    <span class="co"># Grab function parameters.</span>
-        toParse &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"html %&gt;% rvest::html_nodes(xpath = '//*[(@id = "</span>, <span class="st">'"params_'</span>, i<span class="op">-</span><span class="dv">1</span>, <span class="st">'"'</span>, <span class="st">")]') %&gt;% html_children() %&gt;% extract2(2)"</span>)
-        params &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/eval">eval</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/parse">parse</a></span>(<span class="dt">text =</span> toParse))
+    <span class="co"># Grab function parameters. //*[(@id = "params_0")]</span>
+        params &lt;-<span class="st"> </span>html <span class="op">%&gt;%</span><span class="st"> </span>rvest<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_nodes">html_nodes</a></span>(<span class="dt">xpath =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">'////*[(@id = "params_'</span>, i<span class="op">-</span><span class="dv">1</span>, <span class="st">'")]'</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_text">html_children</a></span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/magrittr/topics/aliases">extract2</a></span>(<span class="dv">2</span>)
+        
         <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(params <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_text">html_name</a></span>() <span class="op">==</span><span class="st"> 'table'</span>, params <span class="op">%&lt;&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_table">html_table</a></span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_all</a></span>(str_squish), params &lt;-<span class="st"> </span><span class="ot">NA</span>)
         
         <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(params), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(params <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_all</a></span>(<span class="cf">function</span>(x) <span class="kw">str_sub</span>(x, <span class="dt">start =</span> <span class="dv">1</span>, <span class="dt">end =</span> <span class="dv">30</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>()), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(params))
-        <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">'</span><span class="ch">\n\n</span><span class="st">'</span>)
   }</code></pre></div>
 <pre><code>##     Parameter                    Description Access Restriction
 ## 1           p                    Page Number               None
@@ -681,14 +683,10 @@
 ## 4         abv ABV for a beer. Premium users                None
 ## 5         ibu IBUs for a beer. Premium users               None
 ## 6 glasswareId               ID for glassware               None
-## 
-## 
 ##            Parameter                    Description Access Restriction
 ## 1      withBreweries Get beer results with brewery                None
 ## 2 withSocialAccounts Get beer results with social a               None
 ## 3    withIngredients Get beer results with ingredie               None
-## 
-## 
 ##          Parameter                    Description Access Restriction
 ## 1    name Required               Name of the beer               None
 ## 2 styleId Required ID corresponding to the approp               None
@@ -696,8 +694,6 @@
 ## 4              abv     ABV percentage of the beer               None
 ## 5              ibu      Measured IBUs of the beer               None
 ## 6      glasswareId ID corresponding to the approp               None
-## 
-## 
 ##          Parameter                    Description Access Restriction
 ## 1    name Required               Name of the beer               None
 ## 2 styleId Required ID corresponding to the approp               None
@@ -705,9 +701,125 @@
 ## 4              abv     ABV percentage of the beer               None
 ## 5              ibu      Measured IBUs of the beer               None
 ## 6      glasswareId ID corresponding to the approp               None
-## 
-## 
 ## [1] NA</code></pre>
+<p><br></p>
+<p>And now we’re ready to make our function. We make a variable called functionText to contain the string of our function which we will then use write_lines on to create the text in our .R file. Let’s start putting it together.</p>
+<p><br></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  functionsUrl &lt;-<span class="st"> 'https://www.brewerydb.com/developers/docs/endpoint/'</span>
+
+  <span class="co"># Eventually we'd like to scrape the whole site so lets prepare.</span>
+  pages &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'beer-index'</span>)
+
+  <span class="cf">for</span>(page <span class="cf">in</span> pages){ 
+    
+     object &lt;-<span class="st"> </span>page <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_replace</span>(<span class="st">'-'</span>, <span class="st">' '</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_to_title</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_replace</span>(<span class="st">' '</span>, <span class="st">''</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_replace</span>(<span class="st">'Index'</span>, <span class="st">''</span>)
+ 
+    <span class="co"># Name the file "Beer.R"</span>
+    filepath &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(object, <span class="st">".R"</span>)
+      
+    <span class="co"># Instantiate the .R file.</span>
+    <span class="kw">write_lines</span>(<span class="st">''</span>, filepath)
+       
+    html &lt;-<span class="st"> </span><span class="kw">read_html</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(functionsUrl, page))
+  
+    <span class="co"># Each method becomes a function.</span>
+    apiMethods &lt;-<span class="st"> </span>html <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_nodes">html_nodes</a></span>(<span class="st">'h3 span'</span>) <span class="op">%&gt;%</span><span class="st"> </span>rvest<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_text">html_text</a></span>()
+  
+    <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(apiMethods)){
+      
+      apiMethodText &lt;-<span class="st"> </span>apiMethods[[i]]
+      
+      <span class="co"># Grab API method (GET, POST, PUT, DELETE)</span>
+      apiMethod &lt;-<span class="st"> </span><span class="kw">str_sub</span>(apiMethodText, <span class="dv">1</span>, apiMethodText <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_locate</span>(<span class="st">':'</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/magrittr/topics/aliases">extract2</a></span>(<span class="dv">1</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)
+      
+      <span class="co"># Grab endpoint for request.</span>
+      endpoint &lt;-<span class="st"> </span>apiMethodText <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_sub</span>(apiMethodText <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_locate</span>(<span class="st">':'</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/magrittr/topics/aliases">extract2</a></span>(<span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="dv">2</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nchar">nchar</a></span>(apiMethodText))
+      
+      <span class="co"># Grab function parameters. //*[(@id = "params_0")], etc.</span>
+          params &lt;-<span class="st"> </span>html <span class="op">%&gt;%</span><span class="st"> </span>rvest<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_nodes">html_nodes</a></span>(<span class="dt">xpath =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">'////*[(@id = "params_'</span>, i<span class="op">-</span><span class="dv">1</span>, <span class="st">'")]'</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_text">html_children</a></span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/magrittr/topics/aliases">extract2</a></span>(<span class="dv">2</span>)
+          
+          <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(params <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_text">html_name</a></span>() <span class="op">==</span><span class="st"> 'table'</span>, params <span class="op">%&lt;&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_table">html_table</a></span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_all</a></span>(str_squish), params &lt;-<span class="st"> </span><span class="ot">NA</span>)
+          
+  <span class="co"># Replace API methods with human-readable functions. getEvery(object), get(object), create(object), update(object), delete(object).</span>
+        functionName &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'get'</span>, <span class="st">'create'</span>, <span class="st">'update'</span>, <span class="st">'delete'</span>)[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which">which</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'GET'</span>, <span class="st">'POST'</span>, <span class="st">'PUT'</span>, <span class="st">'DELETE'</span>) <span class="op">==</span><span class="st"> </span>apiMethod)]
+        <span class="cf">if</span>(endpoint <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_sub</span>(<span class="op">-</span><span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>) <span class="op">!=</span><span class="st"> 'Id'</span> <span class="op">&amp;</span><span class="st"> </span>apiMethod <span class="op">!=</span><span class="st"> 'POST'</span>) functionName <span class="op">%&lt;&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">'Every'</span>)
+        functionName <span class="op">%&lt;&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(object)
+  
+      <span class="co"># Start the function text that will contain the string of our functions to be written to our .R file.</span>
+      functionText &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(functionName, <span class="st">' &lt;- function('</span>)
+      
+      <span class="co"># Add params to functions.</span>
+      <span class="cf">if</span>(<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(params)){
+        <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(params)){
+       
+          param &lt;-<span class="st"> </span>params<span class="op">$</span>Parameter[[i]] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_replace</span>(<span class="st">' Required'</span>, <span class="st">''</span>)
+       
+          functionText <span class="op">%&lt;&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(i <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, param, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">', '</span>, param)))
+        }
+      }     
+         
+      functionText <span class="op">%&lt;&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">'){</span><span class="ch">\n\n</span><span class="st">'</span>)
+      
+      functionText <span class="op">%&lt;&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">'</span><span class="ch">\t</span><span class="st">params &lt;- as.list(environment())</span><span class="ch">\n\t</span><span class="st">params &lt;- params[params != ""]</span><span class="ch">\n\n</span><span class="st">'</span>)
+      
+      functionText <span class="op">%&lt;&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">'</span><span class="ch">\t</span><span class="st">endpoint &lt;- "'</span>, endpoint, <span class="st">'"</span><span class="ch">\n\n</span><span class="st">'</span>)
+      
+      
+      <span class="co"># Create the API call.</span>
+      functionText <span class="op">%&lt;&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">'</span><span class="ch">\t</span><span class="st">returnData &lt;- makeRequest(endpoint, "'</span>, apiMethod, <span class="st">'", params)</span><span class="ch">\n\n</span><span class="st">'</span>)
+  
+      functionText <span class="op">%&lt;&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">'</span><span class="ch">\t</span><span class="st">flattenJsonList(returnData$data)</span><span class="ch">\n\n</span><span class="st">}</span><span class="ch">\n\n</span><span class="st">'</span>)
+      
+      <span class="kw">write_lines</span>(functionText, filepath, <span class="dt">append =</span> T)
+    }
+   
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/source">source</a></span>(filepath)
+      
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="../../reference/getEveryBeer.html">getEveryBeer</a></span>(<span class="dt">name =</span> <span class="st">"Dragon's Milk"</span>))
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/files">file.remove</a></span>(filepath)
+  }</code></pre></div>
+<pre><code>##       id          name   nameDisplay
+## 1 WHQisc Dragon's Milk Dragon's Milk
+##                                                                                                                                                                                                                                                                                      description
+## 1 A barrel-aged, strong-ale with a soft and rich caramel-malt character intermingled with deep vanilla tones dancing in an oak bath. Unmistakably distinctive and hauntingly remarkable, Dragon's Milk's warming complexity pairs well with smoked meats and cheeses, red meat, or a nice cigar.
+##   abv ibu glasswareId srmId availableId styleId isOrganic isRetired
+## 1  11  31           8    41           1      43         N         N
+##                                                                    labels.icon
+## 1 https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-icon.png
+##                                                                    labels.medium
+## 1 https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-medium.png
+##                                                                    labels.large
+## 1 https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-large.png
+##                                                                    labels.contentAwareIcon
+## 1 https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-contentAwareIcon.png
+##                                                                    labels.contentAwareMedium
+## 1 https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-contentAwareMedium.png
+##                                                                    labels.contentAwareLarge
+## 1 https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-contentAwareLarge.png
+##     status statusDisplay
+## 1 verified      Verified
+##                                                      foodPairings
+## 1 Red meat, smoked foods, balsamic, rich cheese &amp; dark chocolate.
+##   servingTemperature servingTemperatureDisplay originalGravity
+## 1               cool     Cool - (8-12C/45-54F)           1.096
+##            createDate          updateDate glass.id glass.name
+## 1 2012-01-03 02:43:06 2018-11-02 02:15:14        8      Tulip
+##      glass.createDate srm.id srm.name srm.hex available.id available.name
+## 1 2012-01-03 02:41:33     41  Over 40  000000            1     Year Round
+##                    available.description style.id style.categoryId
+## 1 Available year round as a staple beer.       43                3
+##   style.category.id        style.category.name style.category.createDate
+## 1                 3 North American Origin Ales       2012-03-21 20:06:45
+##                      style.name         style.shortName
+## 1 American-Style Imperial Stout American Imperial Stout
+##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          style.description
+## 1 Black in color, American-style imperial stouts typically have a high alcohol content. Generally characterized as very robust. The extremely rich malty flavor and aroma are balanced with assertive hopping and fruity-ester characteristics. Bitterness should be moderately high to very high and balanced with full sweet malt character. Roasted malt astringency and bitterness can be moderately perceived but should not overwhelm the overall character. Hop aroma is usually moderately-high to overwhelmingly hop-floral, -citrus or -herbal. Diacetyl (butterscotch) levels should be absent.
+##   style.ibuMin style.ibuMax style.abvMin style.abvMax style.srmMin
+## 1           50           80            7           12           40
+##   style.srmMax style.ogMin style.fgMin style.fgMax    style.createDate
+## 1           40        1.08        1.02        1.03 2012-03-21 20:06:46
+##      style.updateDate
+## 1 2015-04-07 15:28:49</code></pre>
 </div>
   </div>
 
