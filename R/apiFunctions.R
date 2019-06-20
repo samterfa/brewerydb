@@ -242,7 +242,7 @@ makeRequest <- function(endpoint, verb, params = NULL){
   
   endpoint %<>% paste0('/?key=', Sys.getenv('brewerydbKey'))
 
-  if(length(params) > 0) endpoint %<>% paste0('&', paste(paste(names(params), as.character(params), sep = '='), collapse = '&'))
+  if(length(params) > 0) endpoint %<>% paste0('&', URLencode(paste(paste(names(params), as.character(params), sep = '='), collapse = '&')))
 
   request <- paste0(verb, '("', baseUrl, endpoint, '", accept_json())')
 

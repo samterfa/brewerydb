@@ -100,11 +100,593 @@
 </div>
 <p><br></p>
 </div>
+<div id="api-calls" class="section level3">
+<h3 class="hasAnchor">
+<a href="#api-calls" class="anchor"></a>API Calls</h3>
+<p><br></p>
+<p>To make an API call, we use the <a href="https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html">httr package</a> to perform the request. We will need to specify the API method (GET, POST, PUT and DELETE) and the endpoint URL where we will send our request. Additionally, each API has special ways of giving permission for you to access their API. To make API calls to the BreweryDB API, we need to obtain a “key” and attach it as a query parameter to our call. To obtain your own, follow the <a href="https://www.brewerydb.com/developers">developer instructions</a>.</p>
+<p><br></p>
+<p>Here’s code I use to check my authentication when working with APIs.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  checkAuthentication &lt;-<span class="st"> </span><span class="cf">function</span>(){
+  
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(httr)
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(jsonlite)
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(tidyverse)
+    
+    ops &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.getenv">Sys.getenv</a></span>()
+    requiredOptions &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"brewerydbKey"</span>)
+    
+    <span class="cf">for</span>(option <span class="cf">in</span> requiredOptions){
+      <span class="cf">if</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.getenv">Sys.getenv</a></span>(option) <span class="op">==</span><span class="st"> ''</span>){
+        <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/stop">stop</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">'Required option '</span>, option, <span class="st">' has not been set! Set its value using Sys.setenv('</span>, option, <span class="st">' = "{'</span>, option, <span class="st">'Value}").'</span>))
+      }
+    }
+  }
+
+  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw">checkAuthentication</span>())</code></pre></div>
+<pre><code>## Loading required package: httr</code></pre>
+<pre><code>## Loading required package: jsonlite</code></pre>
+<pre><code>## Loading required package: tidyverse</code></pre>
+<pre><code>## ── Attaching packages ────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.1.0       ✔ purrr   0.3.2  
+## ✔ tibble  2.1.1       ✔ dplyr   0.8.0.1
+## ✔ tidyr   0.8.3       ✔ stringr 1.4.0  
+## ✔ readr   1.3.1       ✔ forcats 0.4.0</code></pre>
+<pre><code>## Warning: package 'tibble' was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package 'tidyr' was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package 'purrr' was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package 'dplyr' was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package 'stringr' was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package 'forcats' was built under R version 3.5.2</code></pre>
+<pre><code>## ── Conflicts ───────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter()  masks stats::filter()
+## ✖ purrr::flatten() masks jsonlite::flatten()
+## ✖ dplyr::lag()     masks stats::lag()</code></pre>
+<pre><code>## NULL</code></pre>
+<p><br></p>
+<p>I have a file which is placed in my .gitignore which sets my API credentials for a session but isn’t inadvertently posted to GitHub!</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/source">source</a></span>(<span class="st">'../../apiCredentials.R'</span>)</code></pre></div>
+<p><br></p>
+<p>And here’s code to make an API call using BrewerDB’s syntax. I’ve added some features we’ll need later.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="co"># This function makes a BreweryDB API request.</span>
+  makeRequest &lt;-<span class="st"> </span><span class="cf">function</span>(endpoint, verb, <span class="dt">params =</span> <span class="ot">NULL</span>){
+  
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(httr)
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(tidyverse)
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(magrittr)
+    
+    <span class="kw">checkAuthentication</span>()
+    
+    baseUrl &lt;-<span class="st"> 'https://sandbox-api.brewerydb.com/v2'</span>
+    
+    endpoint <span class="op">%&lt;&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">'/?key='</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.getenv">Sys.getenv</a></span>(<span class="st">'brewerydbKey'</span>))
+  
+    <span class="cf">if</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(params) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) endpoint <span class="op">%&lt;&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">'&amp;'</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(params), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/character">as.character</a></span>(params), <span class="dt">sep =</span> <span class="st">'='</span>), <span class="dt">collapse =</span> <span class="st">'&amp;'</span>))
+  
+    request &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(verb, <span class="st">'("'</span>, baseUrl, endpoint, <span class="st">'", accept_json())'</span>)
+  
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/eval">eval</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/parse">parse</a></span>(<span class="dt">text =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">'response &lt;- '</span>, request)))
+    
+    <span class="cf">if</span>(response<span class="op">$</span>status_code <span class="op">&lt;</span><span class="st"> </span><span class="dv">300</span>){
+      <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/httr/topics/content">content</a></span>(response))
+    }<span class="cf">else</span>{
+      <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/stop">stop</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/httr/topics/content">content</a></span>(response))
+    }
+  }
+
+  <span class="co"># Testing it out.</span>
+  sampleRequest &lt;-<span class="st"> </span><span class="kw">makeRequest</span>(<span class="st">'/beers'</span>, <span class="st">'GET'</span>, <span class="dt">params =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">year =</span> <span class="st">'2012'</span>))</code></pre></div>
+<pre><code>## Loading required package: magrittr</code></pre>
+<pre><code>## 
+## Attaching package: 'magrittr'</code></pre>
+<pre><code>## The following object is masked from 'package:purrr':
+## 
+##     set_names</code></pre>
+<pre><code>## The following object is masked from 'package:tidyr':
+## 
+##     extract</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(sampleRequest)</code></pre></div>
+<pre><code>## $currentPage
+## [1] 1
+## 
+## $numberOfPages
+## [1] 1
+## 
+## $totalResults
+## [1] 3
+## 
+## $data
+## $data[[1]]
+## $data[[1]]$id
+## [1] "Du7C2e"
+## 
+## $data[[1]]$name
+## [1] "Black Tulip"
+## 
+## $data[[1]]$nameDisplay
+## [1] "Black Tulip (2012)"
+## 
+## $data[[1]]$description
+## [1] "Mysterious, alluring and seductive, while tantalizingly elusive.  Ester-laden character reveals and enigmatic dance between Belgian ale yeast and Michigan beet sugar, conjuring hints of bananas before a dry finish."
+## 
+## $data[[1]]$abv
+## [1] "8.8"
+## 
+## $data[[1]]$ibu
+## [1] "21"
+## 
+## $data[[1]]$styleId
+## [1] 59
+## 
+## $data[[1]]$isOrganic
+## [1] "N"
+## 
+## $data[[1]]$isRetired
+## [1] "N"
+## 
+## $data[[1]]$year
+## [1] 2012
+## 
+## $data[[1]]$labels
+## $data[[1]]$labels$icon
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-icon.png"
+## 
+## $data[[1]]$labels$medium
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-medium.png"
+## 
+## $data[[1]]$labels$large
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-large.png"
+## 
+## $data[[1]]$labels$contentAwareIcon
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-contentAwareIcon.png"
+## 
+## $data[[1]]$labels$contentAwareMedium
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-contentAwareMedium.png"
+## 
+## $data[[1]]$labels$contentAwareLarge
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-contentAwareLarge.png"
+## 
+## 
+## $data[[1]]$status
+## [1] "verified"
+## 
+## $data[[1]]$statusDisplay
+## [1] "Verified"
+## 
+## $data[[1]]$foodPairings
+## [1] "Melon, Semi-hard cheese, berries &amp; ginger"
+## 
+## $data[[1]]$createDate
+## [1] "2012-01-03 02:42:51"
+## 
+## $data[[1]]$updateDate
+## [1] "2018-11-02 02:15:14"
+## 
+## $data[[1]]$style
+## $data[[1]]$style$id
+## [1] 59
+## 
+## $data[[1]]$style$categoryId
+## [1] 5
+## 
+## $data[[1]]$style$category
+## $data[[1]]$style$category$id
+## [1] 5
+## 
+## $data[[1]]$style$category$name
+## [1] "Belgian And French Origin Ales"
+## 
+## $data[[1]]$style$category$createDate
+## [1] "2012-03-21 20:06:46"
+## 
+## 
+## $data[[1]]$style$name
+## [1] "Belgian-Style Tripel"
+## 
+## $data[[1]]$style$shortName
+## [1] "Belgian Tripel"
+## 
+## $data[[1]]$style$description
+## [1] "Tripels are often characterized by a complex, sometimes mild spicy character. Clove-like phenolic flavor and aroma may be evident at extremely low levels. Yeast-generated  fruity esters, including banana, are also common, but not necessary. These pale/light-colored ales may finish sweet, though any sweet finish should be light. The beer is characteristically medium and clean in body with an equalizing hop/malt balance and a perception of medium to medium high hop bitterness. Traditional Belgian Tripels are often well attenuated. Brewing sugar may be used to lighten the perception of body. Its sweetness will come from very pale malts. There should not be character from any roasted or dark malts. Low hop flavor is acceptable. Alcohol strength and flavor should be perceived as evident. Head retention is dense and mousse-like. Chill haze is acceptable at low serving temperatures. Traditional Tripels are bottle conditioned, may exhibit slight yeast haze but the yeast should not be intentionally roused. Oxidative character if evident in aged Tripels should be mild and pleasant."
+## 
+## $data[[1]]$style$ibuMin
+## [1] "20"
+## 
+## $data[[1]]$style$ibuMax
+## [1] "45"
+## 
+## $data[[1]]$style$abvMin
+## [1] "7"
+## 
+## $data[[1]]$style$abvMax
+## [1] "10"
+## 
+## $data[[1]]$style$srmMin
+## [1] "4"
+## 
+## $data[[1]]$style$srmMax
+## [1] "9"
+## 
+## $data[[1]]$style$ogMin
+## [1] "1.07"
+## 
+## $data[[1]]$style$fgMin
+## [1] "1.01"
+## 
+## $data[[1]]$style$fgMax
+## [1] "1.018"
+## 
+## $data[[1]]$style$createDate
+## [1] "2012-03-21 20:06:46"
+## 
+## $data[[1]]$style$updateDate
+## [1] "2015-04-07 15:31:50"
+## 
+## 
+## 
+## $data[[2]]
+## $data[[2]]$id
+## [1] "ct0Hxz"
+## 
+## $data[[2]]$name
+## [1] "Charkoota Rye"
+## 
+## $data[[2]]$nameDisplay
+## [1] "Charkoota Rye (2012)"
+## 
+## $data[[2]]$abv
+## [1] "9.35"
+## 
+## $data[[2]]$availableId
+## [1] 2
+## 
+## $data[[2]]$styleId
+## [1] 90
+## 
+## $data[[2]]$isOrganic
+## [1] "N"
+## 
+## $data[[2]]$isRetired
+## [1] "N"
+## 
+## $data[[2]]$year
+## [1] 2012
+## 
+## $data[[2]]$labels
+## $data[[2]]$labels$icon
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-icon.png"
+## 
+## $data[[2]]$labels$medium
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-medium.png"
+## 
+## $data[[2]]$labels$large
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-large.png"
+## 
+## $data[[2]]$labels$contentAwareIcon
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-contentAwareIcon.png"
+## 
+## $data[[2]]$labels$contentAwareMedium
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-contentAwareMedium.png"
+## 
+## $data[[2]]$labels$contentAwareLarge
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-contentAwareLarge.png"
+## 
+## 
+## $data[[2]]$status
+## [1] "verified"
+## 
+## $data[[2]]$statusDisplay
+## [1] "Verified"
+## 
+## $data[[2]]$originalGravity
+## [1] "1.101"
+## 
+## $data[[2]]$createDate
+## [1] "2012-08-25 19:41:56"
+## 
+## $data[[2]]$updateDate
+## [1] "2018-11-02 02:15:14"
+## 
+## $data[[2]]$available
+## $data[[2]]$available$id
+## [1] 2
+## 
+## $data[[2]]$available$name
+## [1] "Limited"
+## 
+## $data[[2]]$available$description
+## [1] "Limited availability."
+## 
+## 
+## $data[[2]]$style
+## $data[[2]]$style$id
+## [1] 90
+## 
+## $data[[2]]$style$categoryId
+## [1] 7
+## 
+## $data[[2]]$style$category
+## $data[[2]]$style$category$id
+## [1] 7
+## 
+## $data[[2]]$style$category$name
+## [1] "European-germanic Lager"
+## 
+## $data[[2]]$style$category$createDate
+## [1] "2012-03-21 20:06:46"
+## 
+## 
+## $data[[2]]$style$name
+## [1] "German-Style Doppelbock"
+## 
+## $data[[2]]$style$shortName
+## [1] "Doppelbock"
+## 
+## $data[[2]]$style$description
+## [1] "Malty sweetness is dominant but should not be cloying. Malt character is more reminiscent of fresh and lightly toasted Munich- style malt, more so than caramel or toffee malt character. Some elements of caramel and toffee can be evident and contribute to complexity, but the predominant malt character is an expression of toasted barley malt. Doppelbocks are full bodied and deep amber to dark brown in color. Astringency from roast malts is absent. Alcoholic strength is high, and hop rates increase with gravity. Hop bitterness and flavor should be low and hop aroma absent. Fruity esters are commonly perceived but at low to moderate levels. Diacetyl should be absent"
+## 
+## $data[[2]]$style$ibuMin
+## [1] "17"
+## 
+## $data[[2]]$style$ibuMax
+## [1] "27"
+## 
+## $data[[2]]$style$abvMin
+## [1] "6.5"
+## 
+## $data[[2]]$style$abvMax
+## [1] "8"
+## 
+## $data[[2]]$style$srmMin
+## [1] "12"
+## 
+## $data[[2]]$style$srmMax
+## [1] "30"
+## 
+## $data[[2]]$style$ogMin
+## [1] "1.074"
+## 
+## $data[[2]]$style$fgMin
+## [1] "1.014"
+## 
+## $data[[2]]$style$fgMax
+## [1] "1.02"
+## 
+## $data[[2]]$style$createDate
+## [1] "2012-03-21 20:06:46"
+## 
+## $data[[2]]$style$updateDate
+## [1] "2015-04-07 15:39:08"
+## 
+## 
+## 
+## $data[[3]]
+## $data[[3]]$id
+## [1] "OFYff7"
+## 
+## $data[[3]]$name
+## [1] "Envious"
+## 
+## $data[[3]]$nameDisplay
+## [1] "Envious (2012)"
+## 
+## $data[[3]]$description
+## [1] "Michigan pears fuel a second fermentation, providing subtle nuance between grain &amp; fruit. A slumber on oak and local raspberries adds depth and tartness."
+## 
+## $data[[3]]$abv
+## [1] "7.5"
+## 
+## $data[[3]]$glasswareId
+## [1] 8
+## 
+## $data[[3]]$availableId
+## [1] 2
+## 
+## $data[[3]]$styleId
+## [1] 119
+## 
+## $data[[3]]$isOrganic
+## [1] "N"
+## 
+## $data[[3]]$isRetired
+## [1] "N"
+## 
+## $data[[3]]$year
+## [1] 2012
+## 
+## $data[[3]]$labels
+## $data[[3]]$labels$icon
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-icon.png"
+## 
+## $data[[3]]$labels$medium
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-medium.png"
+## 
+## $data[[3]]$labels$large
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-large.png"
+## 
+## $data[[3]]$labels$contentAwareIcon
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-contentAwareIcon.png"
+## 
+## $data[[3]]$labels$contentAwareMedium
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-contentAwareMedium.png"
+## 
+## $data[[3]]$labels$contentAwareLarge
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-contentAwareLarge.png"
+## 
+## 
+## $data[[3]]$status
+## [1] "verified"
+## 
+## $data[[3]]$statusDisplay
+## [1] "Verified"
+## 
+## $data[[3]]$foodPairings
+## [1] "charcuterie, roasted poultry, grilled stone fruits."
+## 
+## $data[[3]]$originalGravity
+## [1] "1.0703"
+## 
+## $data[[3]]$createDate
+## [1] "2012-08-25 17:46:47"
+## 
+## $data[[3]]$updateDate
+## [1] "2018-11-02 02:15:14"
+## 
+## $data[[3]]$glass
+## $data[[3]]$glass$id
+## [1] 8
+## 
+## $data[[3]]$glass$name
+## [1] "Tulip"
+## 
+## $data[[3]]$glass$createDate
+## [1] "2012-01-03 02:41:33"
+## 
+## 
+## $data[[3]]$available
+## $data[[3]]$available$id
+## [1] 2
+## 
+## $data[[3]]$available$name
+## [1] "Limited"
+## 
+## $data[[3]]$available$description
+## [1] "Limited availability."
+## 
+## 
+## $data[[3]]$style
+## $data[[3]]$style$id
+## [1] 119
+## 
+## $data[[3]]$style$categoryId
+## [1] 11
+## 
+## $data[[3]]$style$category
+## $data[[3]]$style$category$id
+## [1] 11
+## 
+## $data[[3]]$style$category$name
+## [1] "Hybrid/mixed Beer"
+## 
+## $data[[3]]$style$category$createDate
+## [1] "2012-03-21 20:06:46"
+## 
+## 
+## $data[[3]]$style$name
+## [1] "Fruit Beer"
+## 
+## $data[[3]]$style$shortName
+## [1] "Fruit Beer"
+## 
+## $data[[3]]$style$description
+## [1] "Fruit beers are any beers using fruit or fruit extracts as an adjunct in either, the mash, kettle, primary or secondary fermentation providing obvious (ranging from subtle to intense), yet harmonious, fruit qualities. Fruit qualities should not be overpowered by hop character. If a fruit (such as juniper berry) has an herbal or spice quality, it is more appropriate to consider it in the herb and spice beers category. Acidic bacterial (not wild yeast) fermentation characters may be evident (but not necessary) they would contribute to acidity and enhance fruity balance. Clear or hazy beer is acceptable in appearance. A statement by the brewer explaining what fruits are used is essential in order for fair assessment in competitions. If this beer is a classic style with fruit, the brewer should also specify the classic style."
+## 
+## $data[[3]]$style$ibuMin
+## [1] "5"
+## 
+## $data[[3]]$style$ibuMax
+## [1] "70"
+## 
+## $data[[3]]$style$abvMin
+## [1] "2.5"
+## 
+## $data[[3]]$style$abvMax
+## [1] "12"
+## 
+## $data[[3]]$style$srmMin
+## [1] "5"
+## 
+## $data[[3]]$style$srmMax
+## [1] "50"
+## 
+## $data[[3]]$style$ogMin
+## [1] "1.03"
+## 
+## $data[[3]]$style$fgMin
+## [1] "1.006"
+## 
+## $data[[3]]$style$fgMax
+## [1] "1.03"
+## 
+## $data[[3]]$style$createDate
+## [1] "2012-03-21 20:06:46"
+## 
+## $data[[3]]$style$updateDate
+## [1] "2015-04-07 15:44:21"
+## 
+## 
+## 
+## 
+## $status
+## [1] "success"</code></pre>
+<p><br></p>
+<p>As you can see, the return type is JSON formatted. We can use the jsonlite package to convert this into something more manageable.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="co"># This function consistently flattens a json list into a dataframe.</span>
+  flattenJsonList &lt;-<span class="st"> </span><span class="cf">function</span>(jsonList){
+    
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(dplyr)
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(jsonlite)
+    
+    <span class="co"># If jsonList is not a named list, make it one.</span>
+    <span class="cf">if</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(jsonList[[<span class="dv">1</span>]])) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) jsonList &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(jsonList)
+    
+    <span class="cf">for</span>(item <span class="cf">in</span> jsonList){
+      
+      item =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(item, <span class="dt">stringsAsFactors =</span> F)
+      
+      <span class="cf">if</span>(<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/exists">exists</a></span>(<span class="st">'df'</span>, <span class="dt">inherits =</span> <span class="ot">FALSE</span>)){
+        df &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/jsonlite/topics/flatten">flatten</a></span>(item)
+      }<span class="cf">else</span>{
+        df &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span>(df, <span class="kw"><a href="https://www.rdocumentation.org/packages/jsonlite/topics/flatten">flatten</a></span>(item))
+      }
+    }
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(df)
+  }
+
+  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw">flattenJsonList</span>(sampleRequest<span class="op">$</span>data))</code></pre></div>
+<pre><code>## # A tibble: 3 x 49
+##   id    name  nameDisplay description abv   ibu   styleId isOrganic
+##   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;    
+## 1 Du7C… Blac… Black Tuli… Mysterious… 8.8   21         59 N        
+## 2 ct0H… Char… Charkoota … &lt;NA&gt;        9.35  &lt;NA&gt;       90 N        
+## 3 OFYf… Envi… Envious (2… Michigan p… 7.5   &lt;NA&gt;      119 N        
+## # … with 41 more variables: isRetired &lt;chr&gt;, year &lt;int&gt;,
+## #   labels.icon &lt;chr&gt;, labels.medium &lt;chr&gt;, labels.large &lt;chr&gt;,
+## #   labels.contentAwareIcon &lt;chr&gt;, labels.contentAwareMedium &lt;chr&gt;,
+## #   labels.contentAwareLarge &lt;chr&gt;, status &lt;chr&gt;, statusDisplay &lt;chr&gt;,
+## #   foodPairings &lt;chr&gt;, createDate &lt;chr&gt;, updateDate &lt;chr&gt;,
+## #   style.id &lt;int&gt;, style.categoryId &lt;int&gt;, style.category.id &lt;int&gt;,
+## #   style.category.name &lt;chr&gt;, style.category.createDate &lt;chr&gt;,
+## #   style.name &lt;chr&gt;, style.shortName &lt;chr&gt;, style.description &lt;chr&gt;,
+## #   style.ibuMin &lt;chr&gt;, style.ibuMax &lt;chr&gt;, style.abvMin &lt;chr&gt;,
+## #   style.abvMax &lt;chr&gt;, style.srmMin &lt;chr&gt;, style.srmMax &lt;chr&gt;,
+## #   style.ogMin &lt;chr&gt;, style.fgMin &lt;chr&gt;, style.fgMax &lt;chr&gt;,
+## #   style.createDate &lt;chr&gt;, style.updateDate &lt;chr&gt;, availableId &lt;int&gt;,
+## #   originalGravity &lt;chr&gt;, available.id &lt;int&gt;, available.name &lt;chr&gt;,
+## #   available.description &lt;chr&gt;, glasswareId &lt;int&gt;, glass.id &lt;int&gt;,
+## #   glass.name &lt;chr&gt;, glass.createDate &lt;chr&gt;</code></pre>
+</div>
 <div id="api-documentation---r-functions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#api-documentation---r-functions" class="anchor"></a>API Documentation -&gt; R Functions</h3>
 <p><br></p>
-<p>For the example above, the documenation is all about Beer which I’ll call our object. The page lists API methods (GET, POST, PUT and DELETE) for interacting with Beer objects. These five main sections spell out a logical method for generating function names.</p>
+<p>For the example above, the documenation is all about Beer which I’ll call our object. Clicking around on the endpoint pages, we see that documentation pages can be used as object names. The current page is “beer-index”“, and is followed below by”beer-adjunct" and “beer-brewery”. Other examples include “brewery-index” and “brewery-beer”, so it makes sense to scrape a page to correspond to our object name.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(tidyverse))
+
+  <span class="co"># Eventually we'd like to scrape the whole site so lets prepare.</span>
+  pages =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'beer-index'</span>, <span class="st">'beer-adjunct'</span>, <span class="st">'beer-brewery'</span>)
+
+  <span class="cf">for</span>(page <span class="cf">in</span> pages){ 
+    
+     object &lt;-<span class="st"> </span>page <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_replace</span>(<span class="st">'-'</span>, <span class="st">' '</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_to_title</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_replace</span>(<span class="st">' '</span>, <span class="st">''</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_replace</span>(<span class="st">'Index'</span>, <span class="st">''</span>)
+    
+     <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(object)
+  }</code></pre></div>
+<pre><code>## [1] "Beer"
+## [1] "BeerAdjunct"
+## [1] "BeerBrewery"</code></pre>
+<p><br></p>
+<p>The beer-index page lists API methods for interacting with Beer objects. These five main sections spell out a logical method for generating function names.</p>
 <p><br></p>
 <table class="table">
 <colgroup>
@@ -167,9 +749,144 @@
 <h3 class="hasAnchor">
 <a href="#scraping-html-api-documentation" class="anchor"></a>Scraping HTML API Documentation</h3>
 <p><br></p>
+<p>Once we have identified where on the screen are the API methods and endpoints, we need to pull that information into R. Rvest allows us to search a static web page for html nodes and attributes. I find it easiest to use a tool like <a href="https://chrome.google.com/webstore/search/selector%20gadget">Google Chrome’s Selector Gadget</a> to identify the specific HTML elements to scrape.</p>
 <div class="figure">
 <img src="images/selectorGadget.png" alt=" Selector Gadget in the Chrome Web Store"><p class="caption"><br><i>Selector Gadget in the Chrome Web Store</i></p>
 </div>
+<p><br></p>
+<p>Let’s get scraping! It turns out that our method/endpoint texts correspond to “h3 span” elements. They will need to be split on the colon right after the api method text. Eg. “GET:” /beers" becomes apiMethod “GET” and endpoint “/beers”.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(rvest))
+  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(magrittr))
+
+  functionsUrl &lt;-<span class="st"> 'https://www.brewerydb.com/developers/docs/endpoint/'</span>
+  
+  <span class="co"># Eventually we'll expand this to all pages.</span>
+  <span class="cf">for</span>(page <span class="cf">in</span> <span class="st">'beer-index'</span>){ 
+    
+    html &lt;-<span class="st"> </span><span class="kw">read_html</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(functionsUrl, page))
+  
+    <span class="co"># Each method becomes a function.</span>
+    apiMethods &lt;-<span class="st"> </span>html <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_nodes">html_nodes</a></span>(<span class="st">'h3 span'</span>) <span class="op">%&gt;%</span><span class="st"> </span>rvest<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_text">html_text</a></span>()
+    
+    methodsAndEndpoints &lt;-<span class="st"> </span><span class="ot">NULL</span>
+    <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(apiMethods)){
+      
+      apiMethodText &lt;-<span class="st"> </span>apiMethods[[i]]
+      
+      <span class="co"># Grab api method (GET, POST, PUT, DELETE)</span>
+      apiMethod &lt;-<span class="st"> </span><span class="kw">str_sub</span>(apiMethodText, <span class="dv">1</span>, apiMethodText <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_locate</span>(<span class="st">':'</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/magrittr/topics/aliases">extract2</a></span>(<span class="dv">1</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)
+      
+      <span class="co"># Grab endpoint for request.</span>
+      endpoint &lt;-<span class="st"> </span>apiMethodText <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_sub</span>(apiMethodText <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_locate</span>(<span class="st">':'</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/magrittr/topics/aliases">extract2</a></span>(<span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="dv">2</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nchar">nchar</a></span>(apiMethodText))
+      
+      methodsAndEndpoints &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span>(methodsAndEndpoints, <span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">tibble</a></span>(<span class="dt">Method =</span> apiMethod, <span class="dt">Endpoint =</span> endpoint))
+    }
+    
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(methodsAndEndpoints)
+  }</code></pre></div>
+<pre><code>## # A tibble: 5 x 2
+##   Method Endpoint     
+##   &lt;chr&gt;  &lt;chr&gt;        
+## 1 GET    /beers       
+## 2 GET    /beer/:beerId
+## 3 POST   /beers       
+## 4 PUT    /beer/:beerId
+## 5 DELETE /beer/:beerId</code></pre>
+<p><br></p>
+<p>Just for funzies, let’s run it on some more pages to make sure the documentation is consistent.</p>
+<p><br></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  pages &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'beer-index'</span>, <span class="st">'beer-adjunct'</span>, <span class="st">'beer-brewery'</span>)
+
+  <span class="co"># Eventually we'll expand this to all pages.</span>
+  <span class="cf">for</span>(page <span class="cf">in</span> pages){ 
+    
+    html &lt;-<span class="st"> </span><span class="kw">read_html</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(functionsUrl, page))
+  
+    <span class="co"># Each method becomes a function.</span>
+    apiMethods &lt;-<span class="st"> </span>html <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_nodes">html_nodes</a></span>(<span class="st">'h3 span'</span>) <span class="op">%&gt;%</span><span class="st"> </span>rvest<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_text">html_text</a></span>()
+    
+    methodsAndEndpoints &lt;-<span class="st"> </span><span class="ot">NULL</span>
+    <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(apiMethods)){
+      
+      apiMethodText &lt;-<span class="st"> </span>apiMethods[[i]]
+      
+      <span class="co"># Grab api method (GET, POST, PUT, DELETE)</span>
+      apiMethod &lt;-<span class="st"> </span><span class="kw">str_sub</span>(apiMethodText, <span class="dv">1</span>, apiMethodText <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_locate</span>(<span class="st">':'</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/magrittr/topics/aliases">extract2</a></span>(<span class="dv">1</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)
+      
+      <span class="co"># Grab endpoint for request.</span>
+      endpoint &lt;-<span class="st"> </span>apiMethodText <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_sub</span>(apiMethodText <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_locate</span>(<span class="st">':'</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/magrittr/topics/aliases">extract2</a></span>(<span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="dv">2</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nchar">nchar</a></span>(apiMethodText))
+      
+      methodsAndEndpoints &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span>(methodsAndEndpoints, <span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">tibble</a></span>(<span class="dt">Method =</span> apiMethod, <span class="dt">Endpoint =</span> endpoint))
+    }
+    
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(page)
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(methodsAndEndpoints)
+  }</code></pre></div>
+<pre><code>## [1] "beer-index"
+## # A tibble: 5 x 2
+##   Method Endpoint     
+##   &lt;chr&gt;  &lt;chr&gt;        
+## 1 GET    /beers       
+## 2 GET    /beer/:beerId
+## 3 POST   /beers       
+## 4 PUT    /beer/:beerId
+## 5 DELETE /beer/:beerId
+## [1] "beer-adjunct"
+## # A tibble: 3 x 2
+##   Method Endpoint                        
+##   &lt;chr&gt;  &lt;chr&gt;                           
+## 1 GET    /beer/:beerId/adjuncts          
+## 2 POST   /beer/:beerId/adjuncts          
+## 3 DELETE /beer/:beerId/adjunct/:adjunctId
+## [1] "beer-brewery"
+## # A tibble: 3 x 2
+##   Method Endpoint                        
+##   &lt;chr&gt;  &lt;chr&gt;                           
+## 1 GET    /beer/:beerId/breweries         
+## 2 POST   /beer/:beerId/breweries         
+## 3 DELETE /beer/:beerId/brewery/:breweryId</code></pre>
+<p><br></p>
+<p>Now we’re cooking. While we’re at it, could we scrape the page name of each documentation page we will want functions for? It turns out that each of those page labels are “li a”" elements on the documentation page. Finding those elements and grabbing their ‘href’ attribute will give us each page URL we’ll need.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="co"># This function returns all api endpoint pages.</span>
+  getAllAPIpages &lt;-<span class="st"> </span><span class="cf">function</span>(){
+    
+    html &lt;-<span class="st"> </span><span class="kw">read_html</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(functionsUrl))
+    
+    pages &lt;-<span class="st"> </span>html <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_nodes">html_nodes</a></span>(<span class="st">'li a'</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_text">html_attr</a></span>(<span class="st">'href'</span>)
+    
+    pages &lt;-<span class="st"> </span>pages[pages <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_which</span>(<span class="st">'/developers/docs/endpoint/'</span>)] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_replace_all</span>(<span class="st">'/developers/docs/endpoint/'</span>, <span class="st">''</span>)
+    
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(pages)
+  }
+
+  <span class="kw">getAllAPIpages</span>()</code></pre></div>
+<pre><code>##  [1] "adjunct-index"         "beer-index"           
+##  [3] "beer-adjunct"          "beer-brewery"         
+##  [5] "beer-event"            "beer-fermentable"     
+##  [7] "beer-hop"              "beer-ingredient"      
+##  [9] "beer-random"           "beer-socialaccount"   
+## [11] "beer-upc"              "beer-variation"       
+## [13] "beer-yeast"            "brewery-index"        
+## [15] "brewery-alternatename" "brewery-beer"         
+## [17] "brewery-event"         "brewery-guild"        
+## [19] "brewery-location"      "brewery-random"       
+## [21] "brewery-socialaccount" "category-index"       
+## [23] "change-index"          "convertid-index"      
+## [25] "event-index"           "event-awardcategory"  
+## [27] "event-awardplace"      "event-beer"           
+## [29] "event-brewery"         "event-socialaccount"  
+## [31] "feature-index"         "fermentable-index"    
+## [33] "fluidsize-index"       "glass-index"          
+## [35] "guild-index"           "guild-brewery"        
+## [37] "guild-socialaccount"   "heartbeat-index"      
+## [39] "hop-index"             "ingredient-index"     
+## [41] "location-index"        "menu-index"           
+## [43] "search-index"          "search-geopoint"      
+## [45] "search-style"          "search-upc"           
+## [47] "socialsite-index"      "style-index"          
+## [49] "yeast-index"</code></pre>
+<p><br></p>
+<p>So how do we translate the api method and endpoint into a function? Let’s start by generating the easiest function: getEveryBeer(…).</p>
 </div>
   </div>
 

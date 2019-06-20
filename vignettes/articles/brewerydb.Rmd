@@ -76,6 +76,8 @@ And here's code to make an API call using BrewerDB's syntax. I've added some fea
     
     checkAuthentication()
     
+    baseUrl <- 'https://sandbox-api.brewerydb.com/v2'
+    
     endpoint %<>% paste0('/?key=', Sys.getenv('brewerydbKey'))
   
     if(length(params) > 0) endpoint %<>% paste0('&', paste(paste(names(params), as.character(params), sep = '='), collapse = '&'))
@@ -124,7 +126,7 @@ As you can see, the return type is JSON formatted. We can use the jsonlite packa
     return(df)
   }
 
-  print(flattenJsonList(sampleRequest$data))
+  print(flattenJsonList(sampleRequest$data) %>% as.data.frame())
 
 ```
 
@@ -186,6 +188,8 @@ Let's get scraping! It turns out that our method/endpoint texts correspond to "h
   suppressPackageStartupMessages(require(rvest))
   suppressPackageStartupMessages(require(magrittr))
 
+  functionsUrl <- 'https://www.brewerydb.com/developers/docs/endpoint/'
+  
   # Eventually we'll expand this to all pages.
   for(page in 'beer-index'){ 
     
@@ -257,8 +261,6 @@ Now we're cooking. While we're at it, could we scrape the page name of each docu
 
   # This function returns all api endpoint pages.
   getAllAPIpages <- function(){
-    
-    functionsUrl <- 'https://www.brewerydb.com/developers/docs/endpoint/'
     
     html <- read_html(paste0(functionsUrl))
     
