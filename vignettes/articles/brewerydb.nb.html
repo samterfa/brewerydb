@@ -265,12 +265,12 @@ $(document).ready(function () {
 <p>Here’s code I use to check my authentication when working with APIs.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBjaGVja0F1dGhlbnRpY2F0aW9uIDwtIGZ1bmN0aW9uKCl7XG4gIFxuICAgIHJlcXVpcmUoaHR0cilcbiAgICByZXF1aXJlKGpzb25saXRlKVxuICAgIHJlcXVpcmUodGlkeXZlcnNlKVxuICAgIFxuICAgIG9wcyA8LSBTeXMuZ2V0ZW52KClcbiAgICByZXF1aXJlZE9wdGlvbnMgPC0gYyhcImJyZXdlcnlkYktleVwiKVxuICAgIFxuICAgIGZvcihvcHRpb24gaW4gcmVxdWlyZWRPcHRpb25zKXtcbiAgICAgIGlmKFN5cy5nZXRlbnYob3B0aW9uKSA9PSAnJyl7XG4gICAgICAgIHN0b3AocGFzdGUwKCdSZXF1aXJlZCBvcHRpb24gJywgb3B0aW9uLCAnIGhhcyBub3QgYmVlbiBzZXQhIFNldCBpdHMgdmFsdWUgdXNpbmcgU3lzLnNldGVudignLCBvcHRpb24sICcgPSBcInsnLCBvcHRpb24sICdWYWx1ZX1cIikuJykpXG4gICAgICB9XG4gICAgfVxuICB9XG4gIHByaW50KGNoZWNrQXV0aGVudGljYXRpb24oKSlcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBjaGVja0F1dGhlbnRpY2F0aW9uIDwtIGZ1bmN0aW9uKCl7XG4gIFxuICAgIHN1cHByZXNzUGFja2FnZVN0YXJ0dXBNZXNzYWdlcyhyZXF1aXJlKGh0dHIpKVxuICAgIHN1cHByZXNzUGFja2FnZVN0YXJ0dXBNZXNzYWdlcyhyZXF1aXJlKGpzb25saXRlKSlcbiAgICBzdXBwcmVzc1BhY2thZ2VTdGFydHVwTWVzc2FnZXMocmVxdWlyZSh0aWR5dmVyc2UpKVxuICAgIFxuICAgIG9wcyA8LSBTeXMuZ2V0ZW52KClcbiAgICByZXF1aXJlZE9wdGlvbnMgPC0gYyhcImJyZXdlcnlkYktleVwiKVxuICAgIFxuICAgIGZvcihvcHRpb24gaW4gcmVxdWlyZWRPcHRpb25zKXtcbiAgICAgIGlmKFN5cy5nZXRlbnYob3B0aW9uKSA9PSAnJyl7XG4gICAgICAgIHN0b3AocGFzdGUwKCdSZXF1aXJlZCBvcHRpb24gJywgb3B0aW9uLCAnIGhhcyBub3QgYmVlbiBzZXQhIFNldCBpdHMgdmFsdWUgdXNpbmcgU3lzLnNldGVudignLCBvcHRpb24sICcgPSBcInsnLCBvcHRpb24sICdWYWx1ZX1cIikuJykpXG4gICAgICB9XG4gICAgfVxuICB9XG4gIHRyeSh7Y2hlY2tBdXRoZW50aWNhdGlvbigpfSlcbmBgYCJ9 -->
 <pre class="r"><code>  checkAuthentication &lt;- function(){
   
-    require(httr)
-    require(jsonlite)
-    require(tidyverse)
+    suppressPackageStartupMessages(require(httr))
+    suppressPackageStartupMessages(require(jsonlite))
+    suppressPackageStartupMessages(require(tidyverse))
     
     ops &lt;- Sys.getenv()
     requiredOptions &lt;- c(&quot;brewerydbKey&quot;)
@@ -281,7 +281,7 @@ $(document).ready(function () {
       }
     }
   }
-  print(checkAuthentication())</code></pre>
+  try({checkAuthentication()})</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gY2hlY2tBdXRoZW50aWNhdGlvbigpIDogXG4gIFJlcXVpcmVkIG9wdGlvbiBicmV3ZXJ5ZGJLZXkgaGFzIG5vdCBiZWVuIHNldCEgU2V0IGl0cyB2YWx1ZSB1c2luZyBTeXMuc2V0ZW52KGJyZXdlcnlkYktleSA9IFwie2JyZXdlcnlkYktleVZhbHVlfVwiKS5cbiJ9 -->
 <pre><code>Error in checkAuthentication() : 
@@ -302,7 +302,7 @@ $(document).ready(function () {
 <p>And here’s code to make an API call using BrewerDB’s syntax. I’ve added some features we’ll need later.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICAjIFRoaXMgZnVuY3Rpb24gbWFrZXMgYSBCcmV3ZXJ5REIgQVBJIHJlcXVlc3QuXG4gIG1ha2VSZXF1ZXN0IDwtIGZ1bmN0aW9uKGVuZHBvaW50LCB2ZXJiLCBwYXJhbXMgPSBOVUxMKXtcbiAgXG4gICAgcmVxdWlyZShodHRyKVxuICAgIHJlcXVpcmUodGlkeXZlcnNlKVxuICAgIHJlcXVpcmUobWFncml0dHIpXG4gICAgXG4gICAgY2hlY2tBdXRoZW50aWNhdGlvbigpXG4gICAgXG4gICAgZW5kcG9pbnQgJTw+JSBwYXN0ZTAoJy8/a2V5PScsIFN5cy5nZXRlbnYoJ2JyZXdlcnlkYktleScpKVxuICBcbiAgICBpZihsZW5ndGgocGFyYW1zKSA+IDApIGVuZHBvaW50ICU8PiUgcGFzdGUwKCcmJywgcGFzdGUocGFzdGUobmFtZXMocGFyYW1zKSwgYXMuY2hhcmFjdGVyKHBhcmFtcyksIHNlcCA9ICc9JyksIGNvbGxhcHNlID0gJyYnKSlcbiAgXG4gICAgcmVxdWVzdCA8LSBwYXN0ZTAodmVyYiwgJyhcIicsIGJhc2VVcmwsIGVuZHBvaW50LCAnXCIsIGFjY2VwdF9qc29uKCkpJylcbiAgXG4gICAgZXZhbChwYXJzZSh0ZXh0ID0gcGFzdGUwKCdyZXNwb25zZSA8LSAnLCByZXF1ZXN0KSkpXG4gICAgXG4gICAgaWYocmVzcG9uc2Ukc3RhdHVzX2NvZGUgPCAzMDApe1xuICAgICAgcmV0dXJuKGNvbnRlbnQocmVzcG9uc2UpKVxuICAgIH1lbHNle1xuICAgICAgc3RvcChjb250ZW50KHJlc3BvbnNlKSlcbiAgICB9XG4gIH1cbiAgIyBUZXN0aW5nIGl0IG91dC5cbiAgc2FtcGxlUmVxdWVzdCA8LSBtYWtlUmVxdWVzdCgnL2JlZXJzJywgJ0dFVCcsIHBhcmFtcyA9IGxpc3QoeWVhciA9ICcyMDEyJykpXG4gIHByaW50KHNhbXBsZVJlcXVlc3QpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICAjIFRoaXMgZnVuY3Rpb24gbWFrZXMgYSBCcmV3ZXJ5REIgQVBJIHJlcXVlc3QuXG4gIG1ha2VSZXF1ZXN0IDwtIGZ1bmN0aW9uKGVuZHBvaW50LCB2ZXJiLCBwYXJhbXMgPSBOVUxMKXtcbiAgXG4gICAgcmVxdWlyZShodHRyKVxuICAgIHJlcXVpcmUodGlkeXZlcnNlKVxuICAgIHJlcXVpcmUobWFncml0dHIpXG4gICAgXG4gICAgY2hlY2tBdXRoZW50aWNhdGlvbigpXG4gICAgXG4gICAgYmFzZVVybCA8LSAnaHR0cHM6Ly9zYW5kYm94LWFwaS5icmV3ZXJ5ZGIuY29tL3YyJ1xuICAgIFxuICAgIGVuZHBvaW50ICU8PiUgcGFzdGUwKCcvP2tleT0nLCBTeXMuZ2V0ZW52KCdicmV3ZXJ5ZGJLZXknKSlcbiAgXG4gICAgaWYobGVuZ3RoKHBhcmFtcykgPiAwKSBlbmRwb2ludCAlPD4lIHBhc3RlMCgnJicsIFVSTGVuY29kZShwYXN0ZShwYXN0ZShuYW1lcyhwYXJhbXMpLCBhcy5jaGFyYWN0ZXIocGFyYW1zKSwgc2VwID0gJz0nKSwgY29sbGFwc2UgPSAnJicpKSlcbiAgXG4gICAgcmVxdWVzdCA8LSBwYXN0ZTAodmVyYiwgJyhcIicsIGJhc2VVcmwsIGVuZHBvaW50LCAnXCIsIGFjY2VwdF9qc29uKCkpJylcbiAgXG4gICAgZXZhbChwYXJzZSh0ZXh0ID0gcGFzdGUwKCdyZXNwb25zZSA8LSAnLCByZXF1ZXN0KSkpXG4gICAgXG4gICAgaWYocmVzcG9uc2Ukc3RhdHVzX2NvZGUgPCAzMDApe1xuICAgICAgcmV0dXJuKGNvbnRlbnQocmVzcG9uc2UpKVxuICAgIH1lbHNle1xuICAgICAgc3RvcChjb250ZW50KHJlc3BvbnNlKSlcbiAgICB9XG4gIH1cbiAgIyBUZXN0aW5nIGl0IG91dC5cbiAgc2FtcGxlUmVxdWVzdCA8LSBtYWtlUmVxdWVzdCgnL2JlZXIvV0hRaXNjJywgJ0dFVCcpXG4gIHByaW50KHNhbXBsZVJlcXVlc3QpXG5gYGAifQ== -->
 <pre class="r"><code>  # This function makes a BreweryDB API request.
   makeRequest &lt;- function(endpoint, verb, params = NULL){
   
@@ -312,9 +312,11 @@ $(document).ready(function () {
     
     checkAuthentication()
     
+    baseUrl &lt;- 'https://sandbox-api.brewerydb.com/v2'
+    
     endpoint %&lt;&gt;% paste0('/?key=', Sys.getenv('brewerydbKey'))
   
-    if(length(params) &gt; 0) endpoint %&lt;&gt;% paste0('&amp;', paste(paste(names(params), as.character(params), sep = '='), collapse = '&amp;'))
+    if(length(params) &gt; 0) endpoint %&lt;&gt;% paste0('&amp;', URLencode(paste(paste(names(params), as.character(params), sep = '='), collapse = '&amp;')))
   
     request &lt;- paste0(verb, '(&quot;', baseUrl, endpoint, '&quot;, accept_json())')
   
@@ -327,438 +329,186 @@ $(document).ready(function () {
     }
   }
   # Testing it out.
-  sampleRequest &lt;- makeRequest('/beers', 'GET', params = list(year = '2012'))
+  sampleRequest &lt;- makeRequest('/beer/WHQisc', 'GET')
   print(sampleRequest)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiJGN1cnJlbnRQYWdlXG5bMV0gMVxuXG4kbnVtYmVyT2ZQYWdlc1xuWzFdIDFcblxuJHRvdGFsUmVzdWx0c1xuWzFdIDNcblxuJGRhdGFcbiRkYXRhW1sxXV1cbiRkYXRhW1sxXV0kaWRcblsxXSBcIkR1N0MyZVwiXG5cbiRkYXRhW1sxXV0kbmFtZVxuWzFdIFwiQmxhY2sgVHVsaXBcIlxuXG4kZGF0YVtbMV1dJG5hbWVEaXNwbGF5XG5bMV0gXCJCbGFjayBUdWxpcCAoMjAxMilcIlxuXG4kZGF0YVtbMV1dJGRlc2NyaXB0aW9uXG5bMV0gXCJNeXN0ZXJpb3VzLCBhbGx1cmluZyBhbmQgc2VkdWN0aXZlLCB3aGlsZSB0YW50YWxpemluZ2x5IGVsdXNpdmUuICBFc3Rlci1sYWRlbiBjaGFyYWN0ZXIgcmV2ZWFscyBhbmQgZW5pZ21hdGljIGRhbmNlIGJldHdlZW4gQmVsZ2lhbiBhbGUgeWVhc3QgYW5kIE1pY2hpZ2FuIGJlZXQgc3VnYXIsIGNvbmp1cmluZyBoaW50cyBvZiBiYW5hbmFzIGJlZm9yZSBhIGRyeSBmaW5pc2guXCJcblxuJGRhdGFbWzFdXSRhYnZcblsxXSBcIjguOFwiXG5cbiRkYXRhW1sxXV0kaWJ1XG5bMV0gXCIyMVwiXG5cbiRkYXRhW1sxXV0kc3R5bGVJZFxuWzFdIDU5XG5cbiRkYXRhW1sxXV0kaXNPcmdhbmljXG5bMV0gXCJOXCJcblxuJGRhdGFbWzFdXSRpc1JldGlyZWRcblsxXSBcIk5cIlxuXG4kZGF0YVtbMV1dJHllYXJcblsxXSAyMDEyXG5cbiRkYXRhW1sxXV0kbGFiZWxzXG4kZGF0YVtbMV1dJGxhYmVscyRpY29uXG5bMV0gXCJodHRwczovL2JyZXdlcnlkYi1pbWFnZXMuczMuYW1hem9uYXdzLmNvbS9iZWVyL0R1N0MyZS91cGxvYWRfZW84dVhFLWljb24ucG5nXCJcblxuJGRhdGFbWzFdXSRsYWJlbHMkbWVkaXVtXG5bMV0gXCJodHRwczovL2JyZXdlcnlkYi1pbWFnZXMuczMuYW1hem9uYXdzLmNvbS9iZWVyL0R1N0MyZS91cGxvYWRfZW84dVhFLW1lZGl1bS5wbmdcIlxuXG4kZGF0YVtbMV1dJGxhYmVscyRsYXJnZVxuWzFdIFwiaHR0cHM6Ly9icmV3ZXJ5ZGItaW1hZ2VzLnMzLmFtYXpvbmF3cy5jb20vYmVlci9EdTdDMmUvdXBsb2FkX2VvOHVYRS1sYXJnZS5wbmdcIlxuXG4kZGF0YVtbMV1dJGxhYmVscyRjb250ZW50QXdhcmVJY29uXG5bMV0gXCJodHRwczovL2JyZXdlcnlkYi1pbWFnZXMuczMuYW1hem9uYXdzLmNvbS9iZWVyL0R1N0MyZS91cGxvYWRfZW84dVhFLWNvbnRlbnRBd2FyZUljb24ucG5nXCJcblxuJGRhdGFbWzFdXSRsYWJlbHMkY29udGVudEF3YXJlTWVkaXVtXG5bMV0gXCJodHRwczovL2JyZXdlcnlkYi1pbWFnZXMuczMuYW1hem9uYXdzLmNvbS9iZWVyL0R1N0MyZS91cGxvYWRfZW84dVhFLWNvbnRlbnRBd2FyZU1lZGl1bS5wbmdcIlxuXG4kZGF0YVtbMV1dJGxhYmVscyRjb250ZW50QXdhcmVMYXJnZVxuWzFdIFwiaHR0cHM6Ly9icmV3ZXJ5ZGItaW1hZ2VzLnMzLmFtYXpvbmF3cy5jb20vYmVlci9EdTdDMmUvdXBsb2FkX2VvOHVYRS1jb250ZW50QXdhcmVMYXJnZS5wbmdcIlxuXG5cbiRkYXRhW1sxXV0kc3RhdHVzXG5bMV0gXCJ2ZXJpZmllZFwiXG5cbiRkYXRhW1sxXV0kc3RhdHVzRGlzcGxheVxuWzFdIFwiVmVyaWZpZWRcIlxuXG4kZGF0YVtbMV1dJGZvb2RQYWlyaW5nc1xuWzFdIFwiTWVsb24sIFNlbWktaGFyZCBjaGVlc2UsIGJlcnJpZXMgJiBnaW5nZXJcIlxuXG4kZGF0YVtbMV1dJGNyZWF0ZURhdGVcblsxXSBcIjIwMTItMDEtMDMgMDI6NDI6NTFcIlxuXG4kZGF0YVtbMV1dJHVwZGF0ZURhdGVcblsxXSBcIjIwMTgtMTEtMDIgMDI6MTU6MTRcIlxuXG4kZGF0YVtbMV1dJHN0eWxlXG4kZGF0YVtbMV1dJHN0eWxlJGlkXG5bMV0gNTlcblxuJGRhdGFbWzFdXSRzdHlsZSRjYXRlZ29yeUlkXG5bMV0gNVxuXG4kZGF0YVtbMV1dJHN0eWxlJGNhdGVnb3J5XG4kZGF0YVtbMV1dJHN0eWxlJGNhdGVnb3J5JGlkXG5bMV0gNVxuXG4kZGF0YVtbMV1dJHN0eWxlJGNhdGVnb3J5JG5hbWVcblsxXSBcIkJlbGdpYW4gQW5kIEZyZW5jaCBPcmlnaW4gQWxlc1wiXG5cbiRkYXRhW1sxXV0kc3R5bGUkY2F0ZWdvcnkkY3JlYXRlRGF0ZVxuWzFdIFwiMjAxMi0wMy0yMSAyMDowNjo0NlwiXG5cblxuJGRhdGFbWzFdXSRzdHlsZSRuYW1lXG5bMV0gXCJCZWxnaWFuLVN0eWxlIFRyaXBlbFwiXG5cbiRkYXRhW1sxXV0kc3R5bGUkc2hvcnROYW1lXG5bMV0gXCJCZWxnaWFuIFRyaXBlbFwiXG5cbiRkYXRhW1sxXV0kc3R5bGUkZGVzY3JpcHRpb25cblsxXSBcIlRyaXBlbHMgYXJlIG9mdGVuIGNoYXJhY3Rlcml6ZWQgYnkgYSBjb21wbGV4LCBzb21ldGltZXMgbWlsZCBzcGljeSBjaGFyYWN0ZXIuIENsb3ZlLWxpa2UgcGhlbm9saWMgZmxhdm9yIGFuZCBhcm9tYSBtYXkgYmUgZXZpZGVudCBhdCBleHRyZW1lbHkgbG93IGxldmVscy4gWWVhc3QtZ2VuZXJhdGVkICBmcnVpdHkgZXN0ZXJzLCBpbmNsdWRpbmcgYmFuYW5hLCBhcmUgYWxzbyBjb21tb24sIGJ1dCBub3QgbmVjZXNzYXJ5LiBUaGVzZSBwYWxlL2xpZ2h0LWNvbG9yZWQgYWxlcyBtYXkgZmluaXNoIHN3ZWV0LCB0aG91Z2ggYW55IHN3ZWV0IGZpbmlzaCBzaG91bGQgYmUgbGlnaHQuIFRoZSBiZWVyIGlzIGNoYXJhY3RlcmlzdGljYWxseSBtZWRpdW0gYW5kIGNsZWFuIGluIGJvZHkgd2l0aCBhbiBlcXVhbGl6aW5nIGhvcC9tYWx0IGJhbGFuY2UgYW5kIGEgcGVyY2VwdGlvbiBvZiBtZWRpdW0gdG8gbWVkaXVtIGhpZ2ggaG9wIGJpdHRlcm5lc3MuIFRyYWRpdGlvbmFsIEJlbGdpYW4gVHJpcGVscyBhcmUgb2Z0ZW4gd2VsbCBhdHRlbnVhdGVkLiBCcmV3aW5nIHN1Z2FyIG1heSBiZSB1c2VkIHRvIGxpZ2h0ZW4gdGhlIHBlcmNlcHRpb24gb2YgYm9keS4gSXRzIHN3ZWV0bmVzcyB3aWxsIGNvbWUgZnJvbSB2ZXJ5IHBhbGUgbWFsdHMuIFRoZXJlIHNob3VsZCBub3QgYmUgY2hhcmFjdGVyIGZyb20gYW55IHJvYXN0ZWQgb3IgZGFyayBtYWx0cy4gTG93IGhvcCBmbGF2b3IgaXMgYWNjZXB0YWJsZS4gQWxjb2hvbCBzdHJlbmd0aCBhbmQgZmxhdm9yIHNob3VsZCBiZSBwZXJjZWl2ZWQgYXMgZXZpZGVudC4gSGVhZCByZXRlbnRpb24gaXMgZGVuc2UgYW5kIG1vdXNzZS1saWtlLiBDaGlsbCBoYXplIGlzIGFjY2VwdGFibGUgYXQgbG93IHNlcnZpbmcgdGVtcGVyYXR1cmVzLiBUcmFkaXRpb25hbCBUcmlwZWxzIGFyZSBib3R0bGUgY29uZGl0aW9uZWQsIG1heSBleGhpYml0IHNsaWdodCB5ZWFzdCBoYXplIGJ1dCB0aGUgeWVhc3Qgc2hvdWxkIG5vdCBiZSBpbnRlbnRpb25hbGx5IHJvdXNlZC4gT3hpZGF0aXZlIGNoYXJhY3RlciBpZiBldmlkZW50IGluIGFnZWQgVHJpcGVscyBzaG91bGQgYmUgbWlsZCBhbmQgcGxlYXNhbnQuXCJcblxuJGRhdGFbWzFdXSRzdHlsZSRpYnVNaW5cblsxXSBcIjIwXCJcblxuJGRhdGFbWzFdXSRzdHlsZSRpYnVNYXhcblsxXSBcIjQ1XCJcblxuJGRhdGFbWzFdXSRzdHlsZSRhYnZNaW5cblsxXSBcIjdcIlxuXG4kZGF0YVtbMV1dJHN0eWxlJGFidk1heFxuWzFdIFwiMTBcIlxuXG4kZGF0YVtbMV1dJHN0eWxlJHNybU1pblxuWzFdIFwiNFwiXG5cbiRkYXRhW1sxXV0kc3R5bGUkc3JtTWF4XG5bMV0gXCI5XCJcblxuJGRhdGFbWzFdXSRzdHlsZSRvZ01pblxuWzFdIFwiMS4wN1wiXG5cbiRkYXRhW1sxXV0kc3R5bGUkZmdNaW5cblsxXSBcIjEuMDFcIlxuXG4kZGF0YVtbMV1dJHN0eWxlJGZnTWF4XG5bMV0gXCIxLjAxOFwiXG5cbiRkYXRhW1sxXV0kc3R5bGUkY3JlYXRlRGF0ZVxuWzFdIFwiMjAxMi0wMy0yMSAyMDowNjo0NlwiXG5cbiRkYXRhW1sxXV0kc3R5bGUkdXBkYXRlRGF0ZVxuWzFdIFwiMjAxNS0wNC0wNyAxNTozMTo1MFwiXG5cblxuXG4kZGF0YVtbMl1dXG4kZGF0YVtbMl1dJGlkXG5bMV0gXCJjdDBIeHpcIlxuXG4kZGF0YVtbMl1dJG5hbWVcblsxXSBcIkNoYXJrb290YSBSeWVcIlxuXG4kZGF0YVtbMl1dJG5hbWVEaXNwbGF5XG5bMV0gXCJDaGFya29vdGEgUnllICgyMDEyKVwiXG5cbiRkYXRhW1syXV0kYWJ2XG5bMV0gXCI5LjM1XCJcblxuJGRhdGFbWzJdXSRhdmFpbGFibGVJZFxuWzFdIDJcblxuJGRhdGFbWzJdXSRzdHlsZUlkXG5bMV0gOTBcblxuJGRhdGFbWzJdXSRpc09yZ2FuaWNcblsxXSBcIk5cIlxuXG4kZGF0YVtbMl1dJGlzUmV0aXJlZFxuWzFdIFwiTlwiXG5cbiRkYXRhW1syXV0keWVhclxuWzFdIDIwMTJcblxuJGRhdGFbWzJdXSRsYWJlbHNcbiRkYXRhW1syXV0kbGFiZWxzJGljb25cblsxXSBcImh0dHBzOi8vYnJld2VyeWRiLWltYWdlcy5zMy5hbWF6b25hd3MuY29tL2JlZXIvY3QwSHh6L3VwbG9hZF9zdGROMlYtaWNvbi5wbmdcIlxuXG4kZGF0YVtbMl1dJGxhYmVscyRtZWRpdW1cblsxXSBcImh0dHBzOi8vYnJld2VyeWRiLWltYWdlcy5zMy5hbWF6b25hd3MuY29tL2JlZXIvY3QwSHh6L3VwbG9hZF9zdGROMlYtbWVkaXVtLnBuZ1wiXG5cbiRkYXRhW1syXV0kbGFiZWxzJGxhcmdlXG5bMV0gXCJodHRwczovL2JyZXdlcnlkYi1pbWFnZXMuczMuYW1hem9uYXdzLmNvbS9iZWVyL2N0MEh4ei91cGxvYWRfc3RkTjJWLWxhcmdlLnBuZ1wiXG5cbiRkYXRhW1syXV0kbGFiZWxzJGNvbnRlbnRBd2FyZUljb25cblsxXSBcImh0dHBzOi8vYnJld2VyeWRiLWltYWdlcy5zMy5hbWF6b25hd3MuY29tL2JlZXIvY3QwSHh6L3VwbG9hZF9zdGROMlYtY29udGVudEF3YXJlSWNvbi5wbmdcIlxuXG4kZGF0YVtbMl1dJGxhYmVscyRjb250ZW50QXdhcmVNZWRpdW1cblsxXSBcImh0dHBzOi8vYnJld2VyeWRiLWltYWdlcy5zMy5hbWF6b25hd3MuY29tL2JlZXIvY3QwSHh6L3VwbG9hZF9zdGROMlYtY29udGVudEF3YXJlTWVkaXVtLnBuZ1wiXG5cbiRkYXRhW1syXV0kbGFiZWxzJGNvbnRlbnRBd2FyZUxhcmdlXG5bMV0gXCJodHRwczovL2JyZXdlcnlkYi1pbWFnZXMuczMuYW1hem9uYXdzLmNvbS9iZWVyL2N0MEh4ei91cGxvYWRfc3RkTjJWLWNvbnRlbnRBd2FyZUxhcmdlLnBuZ1wiXG5cblxuJGRhdGFbWzJdXSRzdGF0dXNcblsxXSBcInZlcmlmaWVkXCJcblxuJGRhdGFbWzJdXSRzdGF0dXNEaXNwbGF5XG5bMV0gXCJWZXJpZmllZFwiXG5cbiRkYXRhW1syXV0kb3JpZ2luYWxHcmF2aXR5XG5bMV0gXCIxLjEwMVwiXG5cbiRkYXRhW1syXV0kY3JlYXRlRGF0ZVxuWzFdIFwiMjAxMi0wOC0yNSAxOTo0MTo1NlwiXG5cbiRkYXRhW1syXV0kdXBkYXRlRGF0ZVxuWzFdIFwiMjAxOC0xMS0wMiAwMjoxNToxNFwiXG5cbiRkYXRhW1syXV0kYXZhaWxhYmxlXG4kZGF0YVtbMl1dJGF2YWlsYWJsZSRpZFxuWzFdIDJcblxuJGRhdGFbWzJdXSRhdmFpbGFibGUkbmFtZVxuWzFdIFwiTGltaXRlZFwiXG5cbiRkYXRhW1syXV0kYXZhaWxhYmxlJGRlc2NyaXB0aW9uXG5bMV0gXCJMaW1pdGVkIGF2YWlsYWJpbGl0eS5cIlxuXG5cbiRkYXRhW1syXV0kc3R5bGVcbiRkYXRhW1syXV0kc3R5bGUkaWRcblsxXSA5MFxuXG4kZGF0YVtbMl1dJHN0eWxlJGNhdGVnb3J5SWRcblsxXSA3XG5cbiRkYXRhW1syXV0kc3R5bGUkY2F0ZWdvcnlcbiRkYXRhW1syXV0kc3R5bGUkY2F0ZWdvcnkkaWRcblsxXSA3XG5cbiRkYXRhW1syXV0kc3R5bGUkY2F0ZWdvcnkkbmFtZVxuWzFdIFwiRXVyb3BlYW4tZ2VybWFuaWMgTGFnZXJcIlxuXG4kZGF0YVtbMl1dJHN0eWxlJGNhdGVnb3J5JGNyZWF0ZURhdGVcblsxXSBcIjIwMTItMDMtMjEgMjA6MDY6NDZcIlxuXG5cbiRkYXRhW1syXV0kc3R5bGUkbmFtZVxuWzFdIFwiR2VybWFuLVN0eWxlIERvcHBlbGJvY2tcIlxuXG4kZGF0YVtbMl1dJHN0eWxlJHNob3J0TmFtZVxuWzFdIFwiRG9wcGVsYm9ja1wiXG5cbiRkYXRhW1syXV0kc3R5bGUkZGVzY3JpcHRpb25cblsxXSBcIk1hbHR5IHN3ZWV0bmVzcyBpcyBkb21pbmFudCBidXQgc2hvdWxkIG5vdCBiZSBjbG95aW5nLiBNYWx0IGNoYXJhY3RlciBpcyBtb3JlIHJlbWluaXNjZW50IG9mIGZyZXNoIGFuZCBsaWdodGx5IHRvYXN0ZWQgTXVuaWNoLSBzdHlsZSBtYWx0LCBtb3JlIHNvIHRoYW4gY2FyYW1lbCBvciB0b2ZmZWUgbWFsdCBjaGFyYWN0ZXIuIFNvbWUgZWxlbWVudHMgb2YgY2FyYW1lbCBhbmQgdG9mZmVlIGNhbiBiZSBldmlkZW50IGFuZCBjb250cmlidXRlIHRvIGNvbXBsZXhpdHksIGJ1dCB0aGUgcHJlZG9taW5hbnQgbWFsdCBjaGFyYWN0ZXIgaXMgYW4gZXhwcmVzc2lvbiBvZiB0b2FzdGVkIGJhcmxleSBtYWx0LiBEb3BwZWxib2NrcyBhcmUgZnVsbCBib2RpZWQgYW5kIGRlZXAgYW1iZXIgdG8gZGFyayBicm93biBpbiBjb2xvci4gQXN0cmluZ2VuY3kgZnJvbSByb2FzdCBtYWx0cyBpcyBhYnNlbnQuIEFsY29ob2xpYyBzdHJlbmd0aCBpcyBoaWdoLCBhbmQgaG9wIHJhdGVzIGluY3JlYXNlIHdpdGggZ3Jhdml0eS4gSG9wIGJpdHRlcm5lc3MgYW5kIGZsYXZvciBzaG91bGQgYmUgbG93IGFuZCBob3AgYXJvbWEgYWJzZW50LiBGcnVpdHkgZXN0ZXJzIGFyZSBjb21tb25seSBwZXJjZWl2ZWQgYnV0IGF0IGxvdyB0byBtb2RlcmF0ZSBsZXZlbHMuIERpYWNldHlsIHNob3VsZCBiZSBhYnNlbnRcIlxuXG4kZGF0YVtbMl1dJHN0eWxlJGlidU1pblxuWzFdIFwiMTdcIlxuXG4kZGF0YVtbMl1dJHN0eWxlJGlidU1heFxuWzFdIFwiMjdcIlxuXG4kZGF0YVtbMl1dJHN0eWxlJGFidk1pblxuWzFdIFwiNi41XCJcblxuJGRhdGFbWzJdXSRzdHlsZSRhYnZNYXhcblsxXSBcIjhcIlxuXG4kZGF0YVtbMl1dJHN0eWxlJHNybU1pblxuWzFdIFwiMTJcIlxuXG4kZGF0YVtbMl1dJHN0eWxlJHNybU1heFxuWzFdIFwiMzBcIlxuXG4kZGF0YVtbMl1dJHN0eWxlJG9nTWluXG5bMV0gXCIxLjA3NFwiXG5cbiRkYXRhW1syXV0kc3R5bGUkZmdNaW5cblsxXSBcIjEuMDE0XCJcblxuJGRhdGFbWzJdXSRzdHlsZSRmZ01heFxuWzFdIFwiMS4wMlwiXG5cbiRkYXRhW1syXV0kc3R5bGUkY3JlYXRlRGF0ZVxuWzFdIFwiMjAxMi0wMy0yMSAyMDowNjo0NlwiXG5cbiRkYXRhW1syXV0kc3R5bGUkdXBkYXRlRGF0ZVxuWzFdIFwiMjAxNS0wNC0wNyAxNTozOTowOFwiXG5cblxuXG4kZGF0YVtbM11dXG4kZGF0YVtbM11dJGlkXG5bMV0gXCJPRllmZjdcIlxuXG4kZGF0YVtbM11dJG5hbWVcblsxXSBcIkVudmlvdXNcIlxuXG4kZGF0YVtbM11dJG5hbWVEaXNwbGF5XG5bMV0gXCJFbnZpb3VzICgyMDEyKVwiXG5cbiRkYXRhW1szXV0kZGVzY3JpcHRpb25cblsxXSBcIk1pY2hpZ2FuIHBlYXJzIGZ1ZWwgYSBzZWNvbmQgZmVybWVudGF0aW9uLCBwcm92aWRpbmcgc3VidGxlIG51YW5jZSBiZXR3ZWVuIGdyYWluICYgZnJ1aXQuIEEgc2x1bWJlciBvbiBvYWsgYW5kIGxvY2FsIHJhc3BiZXJyaWVzIGFkZHMgZGVwdGggYW5kIHRhcnRuZXNzLlwiXG5cbiRkYXRhW1szXV0kYWJ2XG5bMV0gXCI3LjVcIlxuXG4kZGF0YVtbM11dJGdsYXNzd2FyZUlkXG5bMV0gOFxuXG4kZGF0YVtbM11dJGF2YWlsYWJsZUlkXG5bMV0gMlxuXG4kZGF0YVtbM11dJHN0eWxlSWRcblsxXSAxMTlcblxuJGRhdGFbWzNdXSRpc09yZ2FuaWNcblsxXSBcIk5cIlxuXG4kZGF0YVtbM11dJGlzUmV0aXJlZFxuWzFdIFwiTlwiXG5cbiRkYXRhW1szXV0keWVhclxuWzFdIDIwMTJcblxuJGRhdGFbWzNdXSRsYWJlbHNcbiRkYXRhW1szXV0kbGFiZWxzJGljb25cblsxXSBcImh0dHBzOi8vYnJld2VyeWRiLWltYWdlcy5zMy5hbWF6b25hd3MuY29tL2JlZXIvT0ZZZmY3L3VwbG9hZF9SRFdWVW0taWNvbi5wbmdcIlxuXG4kZGF0YVtbM11dJGxhYmVscyRtZWRpdW1cblsxXSBcImh0dHBzOi8vYnJld2VyeWRiLWltYWdlcy5zMy5hbWF6b25hd3MuY29tL2JlZXIvT0ZZZmY3L3VwbG9hZF9SRFdWVW0tbWVkaXVtLnBuZ1wiXG5cbiRkYXRhW1szXV0kbGFiZWxzJGxhcmdlXG5bMV0gXCJodHRwczovL2JyZXdlcnlkYi1pbWFnZXMuczMuYW1hem9uYXdzLmNvbS9iZWVyL09GWWZmNy91cGxvYWRfUkRXVlVtLWxhcmdlLnBuZ1wiXG5cbiRkYXRhW1szXV0kbGFiZWxzJGNvbnRlbnRBd2FyZUljb25cblsxXSBcImh0dHBzOi8vYnJld2VyeWRiLWltYWdlcy5zMy5hbWF6b25hd3MuY29tL2JlZXIvT0ZZZmY3L3VwbG9hZF9SRFdWVW0tY29udGVudEF3YXJlSWNvbi5wbmdcIlxuXG4kZGF0YVtbM11dJGxhYmVscyRjb250ZW50QXdhcmVNZWRpdW1cblsxXSBcImh0dHBzOi8vYnJld2VyeWRiLWltYWdlcy5zMy5hbWF6b25hd3MuY29tL2JlZXIvT0ZZZmY3L3VwbG9hZF9SRFdWVW0tY29udGVudEF3YXJlTWVkaXVtLnBuZ1wiXG5cbiRkYXRhW1szXV0kbGFiZWxzJGNvbnRlbnRBd2FyZUxhcmdlXG5bMV0gXCJodHRwczovL2JyZXdlcnlkYi1pbWFnZXMuczMuYW1hem9uYXdzLmNvbS9iZWVyL09GWWZmNy91cGxvYWRfUkRXVlVtLWNvbnRlbnRBd2FyZUxhcmdlLnBuZ1wiXG5cblxuJGRhdGFbWzNdXSRzdGF0dXNcblsxXSBcInZlcmlmaWVkXCJcblxuJGRhdGFbWzNdXSRzdGF0dXNEaXNwbGF5XG5bMV0gXCJWZXJpZmllZFwiXG5cbiRkYXRhW1szXV0kZm9vZFBhaXJpbmdzXG5bMV0gXCJjaGFyY3V0ZXJpZSwgcm9hc3RlZCBwb3VsdHJ5LCBncmlsbGVkIHN0b25lIGZydWl0cy5cIlxuXG4kZGF0YVtbM11dJG9yaWdpbmFsR3Jhdml0eVxuWzFdIFwiMS4wNzAzXCJcblxuJGRhdGFbWzNdXSRjcmVhdGVEYXRlXG5bMV0gXCIyMDEyLTA4LTI1IDE3OjQ2OjQ3XCJcblxuJGRhdGFbWzNdXSR1cGRhdGVEYXRlXG5bMV0gXCIyMDE4LTExLTAyIDAyOjE1OjE0XCJcblxuJGRhdGFbWzNdXSRnbGFzc1xuJGRhdGFbWzNdXSRnbGFzcyRpZFxuWzFdIDhcblxuJGRhdGFbWzNdXSRnbGFzcyRuYW1lXG5bMV0gXCJUdWxpcFwiXG5cbiRkYXRhW1szXV0kZ2xhc3MkY3JlYXRlRGF0ZVxuWzFdIFwiMjAxMi0wMS0wMyAwMjo0MTozM1wiXG5cblxuJGRhdGFbWzNdXSRhdmFpbGFibGVcbiRkYXRhW1szXV0kYXZhaWxhYmxlJGlkXG5bMV0gMlxuXG4kZGF0YVtbM11dJGF2YWlsYWJsZSRuYW1lXG5bMV0gXCJMaW1pdGVkXCJcblxuJGRhdGFbWzNdXSRhdmFpbGFibGUkZGVzY3JpcHRpb25cblsxXSBcIkxpbWl0ZWQgYXZhaWxhYmlsaXR5LlwiXG5cblxuJGRhdGFbWzNdXSRzdHlsZVxuJGRhdGFbWzNdXSRzdHlsZSRpZFxuWzFdIDExOVxuXG4kZGF0YVtbM11dJHN0eWxlJGNhdGVnb3J5SWRcblsxXSAxMVxuXG4kZGF0YVtbM11dJHN0eWxlJGNhdGVnb3J5XG4kZGF0YVtbM11dJHN0eWxlJGNhdGVnb3J5JGlkXG5bMV0gMTFcblxuJGRhdGFbWzNdXSRzdHlsZSRjYXRlZ29yeSRuYW1lXG5bMV0gXCJIeWJyaWQvbWl4ZWQgQmVlclwiXG5cbiRkYXRhW1szXV0kc3R5bGUkY2F0ZWdvcnkkY3JlYXRlRGF0ZVxuWzFdIFwiMjAxMi0wMy0yMSAyMDowNjo0NlwiXG5cblxuJGRhdGFbWzNdXSRzdHlsZSRuYW1lXG5bMV0gXCJGcnVpdCBCZWVyXCJcblxuJGRhdGFbWzNdXSRzdHlsZSRzaG9ydE5hbWVcblsxXSBcIkZydWl0IEJlZXJcIlxuXG4kZGF0YVtbM11dJHN0eWxlJGRlc2NyaXB0aW9uXG5bMV0gXCJGcnVpdCBiZWVycyBhcmUgYW55IGJlZXJzIHVzaW5nIGZydWl0IG9yIGZydWl0IGV4dHJhY3RzIGFzIGFuIGFkanVuY3QgaW4gZWl0aGVyLCB0aGUgbWFzaCwga2V0dGxlLCBwcmltYXJ5IG9yIHNlY29uZGFyeSBmZXJtZW50YXRpb24gcHJvdmlkaW5nIG9idmlvdXMgKHJhbmdpbmcgZnJvbSBzdWJ0bGUgdG8gaW50ZW5zZSksIHlldCBoYXJtb25pb3VzLCBmcnVpdCBxdWFsaXRpZXMuIEZydWl0IHF1YWxpdGllcyBzaG91bGQgbm90IGJlIG92ZXJwb3dlcmVkIGJ5IGhvcCBjaGFyYWN0ZXIuIElmIGEgZnJ1aXQgKHN1Y2ggYXMganVuaXBlciBiZXJyeSkgaGFzIGFuIGhlcmJhbCBvciBzcGljZSBxdWFsaXR5LCBpdCBpcyBtb3JlIGFwcHJvcHJpYXRlIHRvIGNvbnNpZGVyIGl0IGluIHRoZSBoZXJiIGFuZCBzcGljZSBiZWVycyBjYXRlZ29yeS4gQWNpZGljIGJhY3RlcmlhbCAobm90IHdpbGQgeWVhc3QpIGZlcm1lbnRhdGlvbiBjaGFyYWN0ZXJzIG1heSBiZSBldmlkZW50IChidXQgbm90IG5lY2Vzc2FyeSkgdGhleSB3b3VsZCBjb250cmlidXRlIHRvIGFjaWRpdHkgYW5kIGVuaGFuY2UgZnJ1aXR5IGJhbGFuY2UuIENsZWFyIG9yIGhhenkgYmVlciBpcyBhY2NlcHRhYmxlIGluIGFwcGVhcmFuY2UuIEEgc3RhdGVtZW50IGJ5IHRoZSBicmV3ZXIgZXhwbGFpbmluZyB3aGF0IGZydWl0cyBhcmUgdXNlZCBpcyBlc3NlbnRpYWwgaW4gb3JkZXIgZm9yIGZhaXIgYXNzZXNzbWVudCBpbiBjb21wZXRpdGlvbnMuIElmIHRoaXMgYmVlciBpcyBhIGNsYXNzaWMgc3R5bGUgd2l0aCBmcnVpdCwgdGhlIGJyZXdlciBzaG91bGQgYWxzbyBzcGVjaWZ5IHRoZSBjbGFzc2ljIHN0eWxlLlwiXG5cbiRkYXRhW1szXV0kc3R5bGUkaWJ1TWluXG5bMV0gXCI1XCJcblxuJGRhdGFbWzNdXSRzdHlsZSRpYnVNYXhcblsxXSBcIjcwXCJcblxuJGRhdGFbWzNdXSRzdHlsZSRhYnZNaW5cblsxXSBcIjIuNVwiXG5cbiRkYXRhW1szXV0kc3R5bGUkYWJ2TWF4XG5bMV0gXCIxMlwiXG5cbiRkYXRhW1szXV0kc3R5bGUkc3JtTWluXG5bMV0gXCI1XCJcblxuJGRhdGFbWzNdXSRzdHlsZSRzcm1NYXhcblsxXSBcIjUwXCJcblxuJGRhdGFbWzNdXSRzdHlsZSRvZ01pblxuWzFdIFwiMS4wM1wiXG5cbiRkYXRhW1szXV0kc3R5bGUkZmdNaW5cblsxXSBcIjEuMDA2XCJcblxuJGRhdGFbWzNdXSRzdHlsZSRmZ01heFxuWzFdIFwiMS4wM1wiXG5cbiRkYXRhW1szXV0kc3R5bGUkY3JlYXRlRGF0ZVxuWzFdIFwiMjAxMi0wMy0yMSAyMDowNjo0NlwiXG5cbiRkYXRhW1szXV0kc3R5bGUkdXBkYXRlRGF0ZVxuWzFdIFwiMjAxNS0wNC0wNyAxNTo0NDoyMVwiXG5cblxuXG5cbiRzdGF0dXNcblsxXSBcInN1Y2Nlc3NcIlxuIn0= -->
-<pre><code>$currentPage
-[1] 1
-
-$numberOfPages
-[1] 1
-
-$totalResults
-[1] 3
+<!-- rnb-output-begin eyJkYXRhIjoiJG1lc3NhZ2VcblsxXSBcIlJFQUQgT05MWSBNT0RFOiBSZXF1ZXN0IFN1Y2Nlc3NmdWxcIlxuXG4kZGF0YVxuJGRhdGEkaWRcblsxXSBcIldIUWlzY1wiXG5cbiRkYXRhJG5hbWVcblsxXSBcIkRyYWdvbidzIE1pbGtcIlxuXG4kZGF0YSRuYW1lRGlzcGxheVxuWzFdIFwiRHJhZ29uJ3MgTWlsa1wiXG5cbiRkYXRhJGRlc2NyaXB0aW9uXG5bMV0gXCJBIGJhcnJlbC1hZ2VkLCBzdHJvbmctYWxlIHdpdGggYSBzb2Z0IGFuZCByaWNoIGNhcmFtZWwtbWFsdCBjaGFyYWN0ZXIgaW50ZXJtaW5nbGVkIHdpdGggZGVlcCB2YW5pbGxhIHRvbmVzIGRhbmNpbmcgaW4gYW4gb2FrIGJhdGguIFVubWlzdGFrYWJseSBkaXN0aW5jdGl2ZSBhbmQgaGF1bnRpbmdseSByZW1hcmthYmxlLCBEcmFnb24ncyBNaWxrJ3Mgd2FybWluZyBjb21wbGV4aXR5IHBhaXJzIHdlbGwgd2l0aCBzbW9rZWQgbWVhdHMgYW5kIGNoZWVzZXMsIHJlZCBtZWF0LCBvciBhIG5pY2UgY2lnYXIuXCJcblxuJGRhdGEkYWJ2XG5bMV0gXCIxMVwiXG5cbiRkYXRhJGlidVxuWzFdIFwiMzFcIlxuXG4kZGF0YSRnbGFzc3dhcmVJZFxuWzFdIDhcblxuJGRhdGEkc3JtSWRcblsxXSA0MVxuXG4kZGF0YSRhdmFpbGFibGVJZFxuWzFdIDFcblxuJGRhdGEkc3R5bGVJZFxuWzFdIDQzXG5cbiRkYXRhJGlzT3JnYW5pY1xuWzFdIFwiTlwiXG5cbiRkYXRhJGlzUmV0aXJlZFxuWzFdIFwiTlwiXG5cbiRkYXRhJGxhYmVsc1xuJGRhdGEkbGFiZWxzJGljb25cblsxXSBcImh0dHBzOi8vYnJld2VyeWRiLWltYWdlcy5zMy5hbWF6b25hd3MuY29tL2JlZXIvV0hRaXNjL3VwbG9hZF8yRnFRdGktaWNvbi5wbmdcIlxuXG4kZGF0YSRsYWJlbHMkbWVkaXVtXG5bMV0gXCJodHRwczovL2JyZXdlcnlkYi1pbWFnZXMuczMuYW1hem9uYXdzLmNvbS9iZWVyL1dIUWlzYy91cGxvYWRfMkZxUXRpLW1lZGl1bS5wbmdcIlxuXG4kZGF0YSRsYWJlbHMkbGFyZ2VcblsxXSBcImh0dHBzOi8vYnJld2VyeWRiLWltYWdlcy5zMy5hbWF6b25hd3MuY29tL2JlZXIvV0hRaXNjL3VwbG9hZF8yRnFRdGktbGFyZ2UucG5nXCJcblxuJGRhdGEkbGFiZWxzJGNvbnRlbnRBd2FyZUljb25cblsxXSBcImh0dHBzOi8vYnJld2VyeWRiLWltYWdlcy5zMy5hbWF6b25hd3MuY29tL2JlZXIvV0hRaXNjL3VwbG9hZF8yRnFRdGktY29udGVudEF3YXJlSWNvbi5wbmdcIlxuXG4kZGF0YSRsYWJlbHMkY29udGVudEF3YXJlTWVkaXVtXG5bMV0gXCJodHRwczovL2JyZXdlcnlkYi1pbWFnZXMuczMuYW1hem9uYXdzLmNvbS9iZWVyL1dIUWlzYy91cGxvYWRfMkZxUXRpLWNvbnRlbnRBd2FyZU1lZGl1bS5wbmdcIlxuXG4kZGF0YSRsYWJlbHMkY29udGVudEF3YXJlTGFyZ2VcblsxXSBcImh0dHBzOi8vYnJld2VyeWRiLWltYWdlcy5zMy5hbWF6b25hd3MuY29tL2JlZXIvV0hRaXNjL3VwbG9hZF8yRnFRdGktY29udGVudEF3YXJlTGFyZ2UucG5nXCJcblxuXG4kZGF0YSRzdGF0dXNcblsxXSBcInZlcmlmaWVkXCJcblxuJGRhdGEkc3RhdHVzRGlzcGxheVxuWzFdIFwiVmVyaWZpZWRcIlxuXG4kZGF0YSRmb29kUGFpcmluZ3NcblsxXSBcIlJlZCBtZWF0LCBzbW9rZWQgZm9vZHMsIGJhbHNhbWljLCByaWNoIGNoZWVzZSAmIGRhcmsgY2hvY29sYXRlLlwiXG5cbiRkYXRhJHNlcnZpbmdUZW1wZXJhdHVyZVxuWzFdIFwiY29vbFwiXG5cbiRkYXRhJHNlcnZpbmdUZW1wZXJhdHVyZURpc3BsYXlcblsxXSBcIkNvb2wgLSAoOC0xMkMvNDUtNTRGKVwiXG5cbiRkYXRhJG9yaWdpbmFsR3Jhdml0eVxuWzFdIFwiMS4wOTZcIlxuXG4kZGF0YSRjcmVhdGVEYXRlXG5bMV0gXCIyMDEyLTAxLTAzIDAyOjQzOjA2XCJcblxuJGRhdGEkdXBkYXRlRGF0ZVxuWzFdIFwiMjAxOC0xMS0wMiAwMjoxNToxNFwiXG5cbiRkYXRhJGdsYXNzXG4kZGF0YSRnbGFzcyRpZFxuWzFdIDhcblxuJGRhdGEkZ2xhc3MkbmFtZVxuWzFdIFwiVHVsaXBcIlxuXG4kZGF0YSRnbGFzcyRjcmVhdGVEYXRlXG5bMV0gXCIyMDEyLTAxLTAzIDAyOjQxOjMzXCJcblxuXG4kZGF0YSRzcm1cbiRkYXRhJHNybSRpZFxuWzFdIDQxXG5cbiRkYXRhJHNybSRuYW1lXG5bMV0gXCJPdmVyIDQwXCJcblxuJGRhdGEkc3JtJGhleFxuWzFdIFwiMDAwMDAwXCJcblxuXG4kZGF0YSRhdmFpbGFibGVcbiRkYXRhJGF2YWlsYWJsZSRpZFxuWzFdIDFcblxuJGRhdGEkYXZhaWxhYmxlJG5hbWVcblsxXSBcIlllYXIgUm91bmRcIlxuXG4kZGF0YSRhdmFpbGFibGUkZGVzY3JpcHRpb25cblsxXSBcIkF2YWlsYWJsZSB5ZWFyIHJvdW5kIGFzIGEgc3RhcGxlIGJlZXIuXCJcblxuXG4kZGF0YSRzdHlsZVxuJGRhdGEkc3R5bGUkaWRcblsxXSA0M1xuXG4kZGF0YSRzdHlsZSRjYXRlZ29yeUlkXG5bMV0gM1xuXG4kZGF0YSRzdHlsZSRjYXRlZ29yeVxuJGRhdGEkc3R5bGUkY2F0ZWdvcnkkaWRcblsxXSAzXG5cbiRkYXRhJHN0eWxlJGNhdGVnb3J5JG5hbWVcblsxXSBcIk5vcnRoIEFtZXJpY2FuIE9yaWdpbiBBbGVzXCJcblxuJGRhdGEkc3R5bGUkY2F0ZWdvcnkkY3JlYXRlRGF0ZVxuWzFdIFwiMjAxMi0wMy0yMSAyMDowNjo0NVwiXG5cblxuJGRhdGEkc3R5bGUkbmFtZVxuWzFdIFwiQW1lcmljYW4tU3R5bGUgSW1wZXJpYWwgU3RvdXRcIlxuXG4kZGF0YSRzdHlsZSRzaG9ydE5hbWVcblsxXSBcIkFtZXJpY2FuIEltcGVyaWFsIFN0b3V0XCJcblxuJGRhdGEkc3R5bGUkZGVzY3JpcHRpb25cblsxXSBcIkJsYWNrIGluIGNvbG9yLCBBbWVyaWNhbi1zdHlsZSBpbXBlcmlhbCBzdG91dHMgdHlwaWNhbGx5IGhhdmUgYSBoaWdoIGFsY29ob2wgY29udGVudC4gR2VuZXJhbGx5IGNoYXJhY3Rlcml6ZWQgYXMgdmVyeSByb2J1c3QuIFRoZSBleHRyZW1lbHkgcmljaCBtYWx0eSBmbGF2b3IgYW5kIGFyb21hIGFyZSBiYWxhbmNlZCB3aXRoIGFzc2VydGl2ZSBob3BwaW5nIGFuZCBmcnVpdHktZXN0ZXIgY2hhcmFjdGVyaXN0aWNzLiBCaXR0ZXJuZXNzIHNob3VsZCBiZSBtb2RlcmF0ZWx5IGhpZ2ggdG8gdmVyeSBoaWdoIGFuZCBiYWxhbmNlZCB3aXRoIGZ1bGwgc3dlZXQgbWFsdCBjaGFyYWN0ZXIuIFJvYXN0ZWQgbWFsdCBhc3RyaW5nZW5jeSBhbmQgYml0dGVybmVzcyBjYW4gYmUgbW9kZXJhdGVseSBwZXJjZWl2ZWQgYnV0IHNob3VsZCBub3Qgb3ZlcndoZWxtIHRoZSBvdmVyYWxsIGNoYXJhY3Rlci4gSG9wIGFyb21hIGlzIHVzdWFsbHkgbW9kZXJhdGVseS1oaWdoIHRvIG92ZXJ3aGVsbWluZ2x5IGhvcC1mbG9yYWwsIC1jaXRydXMgb3IgLWhlcmJhbC4gRGlhY2V0eWwgKGJ1dHRlcnNjb3RjaCkgbGV2ZWxzIHNob3VsZCBiZSBhYnNlbnQuXCJcblxuJGRhdGEkc3R5bGUkaWJ1TWluXG5bMV0gXCI1MFwiXG5cbiRkYXRhJHN0eWxlJGlidU1heFxuWzFdIFwiODBcIlxuXG4kZGF0YSRzdHlsZSRhYnZNaW5cblsxXSBcIjdcIlxuXG4kZGF0YSRzdHlsZSRhYnZNYXhcblsxXSBcIjEyXCJcblxuJGRhdGEkc3R5bGUkc3JtTWluXG5bMV0gXCI0MFwiXG5cbiRkYXRhJHN0eWxlJHNybU1heFxuWzFdIFwiNDBcIlxuXG4kZGF0YSRzdHlsZSRvZ01pblxuWzFdIFwiMS4wOFwiXG5cbiRkYXRhJHN0eWxlJGZnTWluXG5bMV0gXCIxLjAyXCJcblxuJGRhdGEkc3R5bGUkZmdNYXhcblsxXSBcIjEuMDNcIlxuXG4kZGF0YSRzdHlsZSRjcmVhdGVEYXRlXG5bMV0gXCIyMDEyLTAzLTIxIDIwOjA2OjQ2XCJcblxuJGRhdGEkc3R5bGUkdXBkYXRlRGF0ZVxuWzFdIFwiMjAxNS0wNC0wNyAxNToyODo0OVwiXG5cblxuXG4kc3RhdHVzXG5bMV0gXCJzdWNjZXNzXCJcbiJ9 -->
+<pre><code>$message
+[1] &quot;READ ONLY MODE: Request Successful&quot;
 
 $data
-$data[[1]]
-$data[[1]]$id
-[1] &quot;Du7C2e&quot;
+$data$id
+[1] &quot;WHQisc&quot;
 
-$data[[1]]$name
-[1] &quot;Black Tulip&quot;
+$data$name
+[1] &quot;Dragon's Milk&quot;
 
-$data[[1]]$nameDisplay
-[1] &quot;Black Tulip (2012)&quot;
+$data$nameDisplay
+[1] &quot;Dragon's Milk&quot;
 
-$data[[1]]$description
-[1] &quot;Mysterious, alluring and seductive, while tantalizingly elusive.  Ester-laden character reveals and enigmatic dance between Belgian ale yeast and Michigan beet sugar, conjuring hints of bananas before a dry finish.&quot;
+$data$description
+[1] &quot;A barrel-aged, strong-ale with a soft and rich caramel-malt character intermingled with deep vanilla tones dancing in an oak bath. Unmistakably distinctive and hauntingly remarkable, Dragon's Milk's warming complexity pairs well with smoked meats and cheeses, red meat, or a nice cigar.&quot;
 
-$data[[1]]$abv
-[1] &quot;8.8&quot;
+$data$abv
+[1] &quot;11&quot;
 
-$data[[1]]$ibu
-[1] &quot;21&quot;
+$data$ibu
+[1] &quot;31&quot;
 
-$data[[1]]$styleId
-[1] 59
-
-$data[[1]]$isOrganic
-[1] &quot;N&quot;
-
-$data[[1]]$isRetired
-[1] &quot;N&quot;
-
-$data[[1]]$year
-[1] 2012
-
-$data[[1]]$labels
-$data[[1]]$labels$icon
-[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-icon.png&quot;
-
-$data[[1]]$labels$medium
-[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-medium.png&quot;
-
-$data[[1]]$labels$large
-[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-large.png&quot;
-
-$data[[1]]$labels$contentAwareIcon
-[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-contentAwareIcon.png&quot;
-
-$data[[1]]$labels$contentAwareMedium
-[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-contentAwareMedium.png&quot;
-
-$data[[1]]$labels$contentAwareLarge
-[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-contentAwareLarge.png&quot;
-
-
-$data[[1]]$status
-[1] &quot;verified&quot;
-
-$data[[1]]$statusDisplay
-[1] &quot;Verified&quot;
-
-$data[[1]]$foodPairings
-[1] &quot;Melon, Semi-hard cheese, berries &amp; ginger&quot;
-
-$data[[1]]$createDate
-[1] &quot;2012-01-03 02:42:51&quot;
-
-$data[[1]]$updateDate
-[1] &quot;2018-11-02 02:15:14&quot;
-
-$data[[1]]$style
-$data[[1]]$style$id
-[1] 59
-
-$data[[1]]$style$categoryId
-[1] 5
-
-$data[[1]]$style$category
-$data[[1]]$style$category$id
-[1] 5
-
-$data[[1]]$style$category$name
-[1] &quot;Belgian And French Origin Ales&quot;
-
-$data[[1]]$style$category$createDate
-[1] &quot;2012-03-21 20:06:46&quot;
-
-
-$data[[1]]$style$name
-[1] &quot;Belgian-Style Tripel&quot;
-
-$data[[1]]$style$shortName
-[1] &quot;Belgian Tripel&quot;
-
-$data[[1]]$style$description
-[1] &quot;Tripels are often characterized by a complex, sometimes mild spicy character. Clove-like phenolic flavor and aroma may be evident at extremely low levels. Yeast-generated  fruity esters, including banana, are also common, but not necessary. These pale/light-colored ales may finish sweet, though any sweet finish should be light. The beer is characteristically medium and clean in body with an equalizing hop/malt balance and a perception of medium to medium high hop bitterness. Traditional Belgian Tripels are often well attenuated. Brewing sugar may be used to lighten the perception of body. Its sweetness will come from very pale malts. There should not be character from any roasted or dark malts. Low hop flavor is acceptable. Alcohol strength and flavor should be perceived as evident. Head retention is dense and mousse-like. Chill haze is acceptable at low serving temperatures. Traditional Tripels are bottle conditioned, may exhibit slight yeast haze but the yeast should not be intentionally roused. Oxidative character if evident in aged Tripels should be mild and pleasant.&quot;
-
-$data[[1]]$style$ibuMin
-[1] &quot;20&quot;
-
-$data[[1]]$style$ibuMax
-[1] &quot;45&quot;
-
-$data[[1]]$style$abvMin
-[1] &quot;7&quot;
-
-$data[[1]]$style$abvMax
-[1] &quot;10&quot;
-
-$data[[1]]$style$srmMin
-[1] &quot;4&quot;
-
-$data[[1]]$style$srmMax
-[1] &quot;9&quot;
-
-$data[[1]]$style$ogMin
-[1] &quot;1.07&quot;
-
-$data[[1]]$style$fgMin
-[1] &quot;1.01&quot;
-
-$data[[1]]$style$fgMax
-[1] &quot;1.018&quot;
-
-$data[[1]]$style$createDate
-[1] &quot;2012-03-21 20:06:46&quot;
-
-$data[[1]]$style$updateDate
-[1] &quot;2015-04-07 15:31:50&quot;
-
-
-
-$data[[2]]
-$data[[2]]$id
-[1] &quot;ct0Hxz&quot;
-
-$data[[2]]$name
-[1] &quot;Charkoota Rye&quot;
-
-$data[[2]]$nameDisplay
-[1] &quot;Charkoota Rye (2012)&quot;
-
-$data[[2]]$abv
-[1] &quot;9.35&quot;
-
-$data[[2]]$availableId
-[1] 2
-
-$data[[2]]$styleId
-[1] 90
-
-$data[[2]]$isOrganic
-[1] &quot;N&quot;
-
-$data[[2]]$isRetired
-[1] &quot;N&quot;
-
-$data[[2]]$year
-[1] 2012
-
-$data[[2]]$labels
-$data[[2]]$labels$icon
-[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-icon.png&quot;
-
-$data[[2]]$labels$medium
-[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-medium.png&quot;
-
-$data[[2]]$labels$large
-[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-large.png&quot;
-
-$data[[2]]$labels$contentAwareIcon
-[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-contentAwareIcon.png&quot;
-
-$data[[2]]$labels$contentAwareMedium
-[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-contentAwareMedium.png&quot;
-
-$data[[2]]$labels$contentAwareLarge
-[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-contentAwareLarge.png&quot;
-
-
-$data[[2]]$status
-[1] &quot;verified&quot;
-
-$data[[2]]$statusDisplay
-[1] &quot;Verified&quot;
-
-$data[[2]]$originalGravity
-[1] &quot;1.101&quot;
-
-$data[[2]]$createDate
-[1] &quot;2012-08-25 19:41:56&quot;
-
-$data[[2]]$updateDate
-[1] &quot;2018-11-02 02:15:14&quot;
-
-$data[[2]]$available
-$data[[2]]$available$id
-[1] 2
-
-$data[[2]]$available$name
-[1] &quot;Limited&quot;
-
-$data[[2]]$available$description
-[1] &quot;Limited availability.&quot;
-
-
-$data[[2]]$style
-$data[[2]]$style$id
-[1] 90
-
-$data[[2]]$style$categoryId
-[1] 7
-
-$data[[2]]$style$category
-$data[[2]]$style$category$id
-[1] 7
-
-$data[[2]]$style$category$name
-[1] &quot;European-germanic Lager&quot;
-
-$data[[2]]$style$category$createDate
-[1] &quot;2012-03-21 20:06:46&quot;
-
-
-$data[[2]]$style$name
-[1] &quot;German-Style Doppelbock&quot;
-
-$data[[2]]$style$shortName
-[1] &quot;Doppelbock&quot;
-
-$data[[2]]$style$description
-[1] &quot;Malty sweetness is dominant but should not be cloying. Malt character is more reminiscent of fresh and lightly toasted Munich- style malt, more so than caramel or toffee malt character. Some elements of caramel and toffee can be evident and contribute to complexity, but the predominant malt character is an expression of toasted barley malt. Doppelbocks are full bodied and deep amber to dark brown in color. Astringency from roast malts is absent. Alcoholic strength is high, and hop rates increase with gravity. Hop bitterness and flavor should be low and hop aroma absent. Fruity esters are commonly perceived but at low to moderate levels. Diacetyl should be absent&quot;
-
-$data[[2]]$style$ibuMin
-[1] &quot;17&quot;
-
-$data[[2]]$style$ibuMax
-[1] &quot;27&quot;
-
-$data[[2]]$style$abvMin
-[1] &quot;6.5&quot;
-
-$data[[2]]$style$abvMax
-[1] &quot;8&quot;
-
-$data[[2]]$style$srmMin
-[1] &quot;12&quot;
-
-$data[[2]]$style$srmMax
-[1] &quot;30&quot;
-
-$data[[2]]$style$ogMin
-[1] &quot;1.074&quot;
-
-$data[[2]]$style$fgMin
-[1] &quot;1.014&quot;
-
-$data[[2]]$style$fgMax
-[1] &quot;1.02&quot;
-
-$data[[2]]$style$createDate
-[1] &quot;2012-03-21 20:06:46&quot;
-
-$data[[2]]$style$updateDate
-[1] &quot;2015-04-07 15:39:08&quot;
-
-
-
-$data[[3]]
-$data[[3]]$id
-[1] &quot;OFYff7&quot;
-
-$data[[3]]$name
-[1] &quot;Envious&quot;
-
-$data[[3]]$nameDisplay
-[1] &quot;Envious (2012)&quot;
-
-$data[[3]]$description
-[1] &quot;Michigan pears fuel a second fermentation, providing subtle nuance between grain &amp; fruit. A slumber on oak and local raspberries adds depth and tartness.&quot;
-
-$data[[3]]$abv
-[1] &quot;7.5&quot;
-
-$data[[3]]$glasswareId
+$data$glasswareId
 [1] 8
 
-$data[[3]]$availableId
-[1] 2
+$data$srmId
+[1] 41
 
-$data[[3]]$styleId
-[1] 119
+$data$availableId
+[1] 1
 
-$data[[3]]$isOrganic
+$data$styleId
+[1] 43
+
+$data$isOrganic
 [1] &quot;N&quot;
 
-$data[[3]]$isRetired
+$data$isRetired
 [1] &quot;N&quot;
 
-$data[[3]]$year
-[1] 2012
+$data$labels
+$data$labels$icon
+[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-icon.png&quot;
 
-$data[[3]]$labels
-$data[[3]]$labels$icon
-[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-icon.png&quot;
+$data$labels$medium
+[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-medium.png&quot;
 
-$data[[3]]$labels$medium
-[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-medium.png&quot;
+$data$labels$large
+[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-large.png&quot;
 
-$data[[3]]$labels$large
-[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-large.png&quot;
+$data$labels$contentAwareIcon
+[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-contentAwareIcon.png&quot;
 
-$data[[3]]$labels$contentAwareIcon
-[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-contentAwareIcon.png&quot;
+$data$labels$contentAwareMedium
+[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-contentAwareMedium.png&quot;
 
-$data[[3]]$labels$contentAwareMedium
-[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-contentAwareMedium.png&quot;
-
-$data[[3]]$labels$contentAwareLarge
-[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-contentAwareLarge.png&quot;
+$data$labels$contentAwareLarge
+[1] &quot;https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-contentAwareLarge.png&quot;
 
 
-$data[[3]]$status
+$data$status
 [1] &quot;verified&quot;
 
-$data[[3]]$statusDisplay
+$data$statusDisplay
 [1] &quot;Verified&quot;
 
-$data[[3]]$foodPairings
-[1] &quot;charcuterie, roasted poultry, grilled stone fruits.&quot;
+$data$foodPairings
+[1] &quot;Red meat, smoked foods, balsamic, rich cheese &amp; dark chocolate.&quot;
 
-$data[[3]]$originalGravity
-[1] &quot;1.0703&quot;
+$data$servingTemperature
+[1] &quot;cool&quot;
 
-$data[[3]]$createDate
-[1] &quot;2012-08-25 17:46:47&quot;
+$data$servingTemperatureDisplay
+[1] &quot;Cool - (8-12C/45-54F)&quot;
 
-$data[[3]]$updateDate
+$data$originalGravity
+[1] &quot;1.096&quot;
+
+$data$createDate
+[1] &quot;2012-01-03 02:43:06&quot;
+
+$data$updateDate
 [1] &quot;2018-11-02 02:15:14&quot;
 
-$data[[3]]$glass
-$data[[3]]$glass$id
+$data$glass
+$data$glass$id
 [1] 8
 
-$data[[3]]$glass$name
+$data$glass$name
 [1] &quot;Tulip&quot;
 
-$data[[3]]$glass$createDate
+$data$glass$createDate
 [1] &quot;2012-01-03 02:41:33&quot;
 
 
-$data[[3]]$available
-$data[[3]]$available$id
-[1] 2
+$data$srm
+$data$srm$id
+[1] 41
 
-$data[[3]]$available$name
-[1] &quot;Limited&quot;
+$data$srm$name
+[1] &quot;Over 40&quot;
 
-$data[[3]]$available$description
-[1] &quot;Limited availability.&quot;
-
-
-$data[[3]]$style
-$data[[3]]$style$id
-[1] 119
-
-$data[[3]]$style$categoryId
-[1] 11
-
-$data[[3]]$style$category
-$data[[3]]$style$category$id
-[1] 11
-
-$data[[3]]$style$category$name
-[1] &quot;Hybrid/mixed Beer&quot;
-
-$data[[3]]$style$category$createDate
-[1] &quot;2012-03-21 20:06:46&quot;
+$data$srm$hex
+[1] &quot;000000&quot;
 
 
-$data[[3]]$style$name
-[1] &quot;Fruit Beer&quot;
+$data$available
+$data$available$id
+[1] 1
 
-$data[[3]]$style$shortName
-[1] &quot;Fruit Beer&quot;
+$data$available$name
+[1] &quot;Year Round&quot;
 
-$data[[3]]$style$description
-[1] &quot;Fruit beers are any beers using fruit or fruit extracts as an adjunct in either, the mash, kettle, primary or secondary fermentation providing obvious (ranging from subtle to intense), yet harmonious, fruit qualities. Fruit qualities should not be overpowered by hop character. If a fruit (such as juniper berry) has an herbal or spice quality, it is more appropriate to consider it in the herb and spice beers category. Acidic bacterial (not wild yeast) fermentation characters may be evident (but not necessary) they would contribute to acidity and enhance fruity balance. Clear or hazy beer is acceptable in appearance. A statement by the brewer explaining what fruits are used is essential in order for fair assessment in competitions. If this beer is a classic style with fruit, the brewer should also specify the classic style.&quot;
+$data$available$description
+[1] &quot;Available year round as a staple beer.&quot;
 
-$data[[3]]$style$ibuMin
-[1] &quot;5&quot;
 
-$data[[3]]$style$ibuMax
-[1] &quot;70&quot;
+$data$style
+$data$style$id
+[1] 43
 
-$data[[3]]$style$abvMin
-[1] &quot;2.5&quot;
+$data$style$categoryId
+[1] 3
 
-$data[[3]]$style$abvMax
-[1] &quot;12&quot;
+$data$style$category
+$data$style$category$id
+[1] 3
 
-$data[[3]]$style$srmMin
-[1] &quot;5&quot;
+$data$style$category$name
+[1] &quot;North American Origin Ales&quot;
 
-$data[[3]]$style$srmMax
+$data$style$category$createDate
+[1] &quot;2012-03-21 20:06:45&quot;
+
+
+$data$style$name
+[1] &quot;American-Style Imperial Stout&quot;
+
+$data$style$shortName
+[1] &quot;American Imperial Stout&quot;
+
+$data$style$description
+[1] &quot;Black in color, American-style imperial stouts typically have a high alcohol content. Generally characterized as very robust. The extremely rich malty flavor and aroma are balanced with assertive hopping and fruity-ester characteristics. Bitterness should be moderately high to very high and balanced with full sweet malt character. Roasted malt astringency and bitterness can be moderately perceived but should not overwhelm the overall character. Hop aroma is usually moderately-high to overwhelmingly hop-floral, -citrus or -herbal. Diacetyl (butterscotch) levels should be absent.&quot;
+
+$data$style$ibuMin
 [1] &quot;50&quot;
 
-$data[[3]]$style$ogMin
+$data$style$ibuMax
+[1] &quot;80&quot;
+
+$data$style$abvMin
+[1] &quot;7&quot;
+
+$data$style$abvMax
+[1] &quot;12&quot;
+
+$data$style$srmMin
+[1] &quot;40&quot;
+
+$data$style$srmMax
+[1] &quot;40&quot;
+
+$data$style$ogMin
+[1] &quot;1.08&quot;
+
+$data$style$fgMin
+[1] &quot;1.02&quot;
+
+$data$style$fgMax
 [1] &quot;1.03&quot;
 
-$data[[3]]$style$fgMin
-[1] &quot;1.006&quot;
-
-$data[[3]]$style$fgMax
-[1] &quot;1.03&quot;
-
-$data[[3]]$style$createDate
+$data$style$createDate
 [1] &quot;2012-03-21 20:06:46&quot;
 
-$data[[3]]$style$updateDate
-[1] &quot;2015-04-07 15:44:21&quot;
-
+$data$style$updateDate
+[1] &quot;2015-04-07 15:28:49&quot;
 
 
 
@@ -768,7 +518,7 @@ $status
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p><br></p>
-<p>As you can see, the return type is JSON formatted. We can use the jsonlite package to convert this into something more manageable.</p>
+<p>As you can see, the return type is JSON formatted. We can use the <a href="https://cran.r-project.org/web/packages/jsonlite/vignettes/json-aaquickstart.html">jsonlite package</a> to convert this into something more manageable.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICAjIFRoaXMgZnVuY3Rpb24gY29uc2lzdGVudGx5IGZsYXR0ZW5zIGEganNvbiBsaXN0IGludG8gYSBkYXRhZnJhbWUuXG4gIGZsYXR0ZW5Kc29uTGlzdCA8LSBmdW5jdGlvbihqc29uTGlzdCl7XG4gICAgXG4gICAgcmVxdWlyZShkcGx5cilcbiAgICByZXF1aXJlKGpzb25saXRlKVxuICAgIFxuICAgICMgSWYganNvbkxpc3QgaXMgbm90IGEgbmFtZWQgbGlzdCwgbWFrZSBpdCBvbmUuXG4gICAgaWYobGVuZ3RoKG5hbWVzKGpzb25MaXN0W1sxXV0pKSA9PSAwKSBqc29uTGlzdCA8LSBsaXN0KGpzb25MaXN0KVxuICAgIFxuICAgIGZvcihpdGVtIGluIGpzb25MaXN0KXtcbiAgICAgIFxuICAgICAgaXRlbSA9IGRhdGEuZnJhbWUoaXRlbSwgc3RyaW5nc0FzRmFjdG9ycyA9IEYpXG4gICAgICBcbiAgICAgIGlmKCFleGlzdHMoJ2RmJywgaW5oZXJpdHMgPSBGQUxTRSkpe1xuICAgICAgICBkZiA8LSBmbGF0dGVuKGl0ZW0pXG4gICAgICB9ZWxzZXtcbiAgICAgICAgZGYgPC0gYmluZF9yb3dzKGRmLCBmbGF0dGVuKGl0ZW0pKVxuICAgICAgfVxuICAgIH1cbiAgICByZXR1cm4oZGYpXG4gIH1cbiAgcHJpbnQoZmxhdHRlbkpzb25MaXN0KHNhbXBsZVJlcXVlc3QkZGF0YSkgJT4lIGFzLmRhdGEuZnJhbWUoKSlcbmBgYCJ9 -->
@@ -795,79 +545,43 @@ $status
   }
   print(flattenJsonList(sampleRequest$data) %&gt;% as.data.frame())</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgaWQgICAgICAgICAgbmFtZSAgICAgICAgICBuYW1lRGlzcGxheVxuMSBEdTdDMmUgICBCbGFjayBUdWxpcCAgIEJsYWNrIFR1bGlwICgyMDEyKVxuMiBjdDBIeHogQ2hhcmtvb3RhIFJ5ZSBDaGFya29vdGEgUnllICgyMDEyKVxuMyBPRllmZjcgICAgICAgRW52aW91cyAgICAgICBFbnZpb3VzICgyMDEyKVxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uXG4xIE15c3RlcmlvdXMsIGFsbHVyaW5nIGFuZCBzZWR1Y3RpdmUsIHdoaWxlIHRhbnRhbGl6aW5nbHkgZWx1c2l2ZS4gIEVzdGVyLWxhZGVuIGNoYXJhY3RlciByZXZlYWxzIGFuZCBlbmlnbWF0aWMgZGFuY2UgYmV0d2VlbiBCZWxnaWFuIGFsZSB5ZWFzdCBhbmQgTWljaGlnYW4gYmVldCBzdWdhciwgY29uanVyaW5nIGhpbnRzIG9mIGJhbmFuYXMgYmVmb3JlIGEgZHJ5IGZpbmlzaC5cbjIgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPE5BPlxuMyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTWljaGlnYW4gcGVhcnMgZnVlbCBhIHNlY29uZCBmZXJtZW50YXRpb24sIHByb3ZpZGluZyBzdWJ0bGUgbnVhbmNlIGJldHdlZW4gZ3JhaW4gJiBmcnVpdC4gQSBzbHVtYmVyIG9uIG9hayBhbmQgbG9jYWwgcmFzcGJlcnJpZXMgYWRkcyBkZXB0aCBhbmQgdGFydG5lc3MuXG4gICBhYnYgIGlidSBzdHlsZUlkIGlzT3JnYW5pYyBpc1JldGlyZWQgeWVhclxuMSAgOC44ICAgMjEgICAgICA1OSAgICAgICAgIE4gICAgICAgICBOIDIwMTJcbjIgOS4zNSA8TkE+ICAgICAgOTAgICAgICAgICBOICAgICAgICAgTiAyMDEyXG4zICA3LjUgPE5BPiAgICAgMTE5ICAgICAgICAgTiAgICAgICAgIE4gMjAxMlxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxhYmVscy5pY29uXG4xIGh0dHBzOi8vYnJld2VyeWRiLWltYWdlcy5zMy5hbWF6b25hd3MuY29tL2JlZXIvRHU3QzJlL3VwbG9hZF9lbzh1WEUtaWNvbi5wbmdcbjIgaHR0cHM6Ly9icmV3ZXJ5ZGItaW1hZ2VzLnMzLmFtYXpvbmF3cy5jb20vYmVlci9jdDBIeHovdXBsb2FkX3N0ZE4yVi1pY29uLnBuZ1xuMyBodHRwczovL2JyZXdlcnlkYi1pbWFnZXMuczMuYW1hem9uYXdzLmNvbS9iZWVyL09GWWZmNy91cGxvYWRfUkRXVlVtLWljb24ucG5nXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGFiZWxzLm1lZGl1bVxuMSBodHRwczovL2JyZXdlcnlkYi1pbWFnZXMuczMuYW1hem9uYXdzLmNvbS9iZWVyL0R1N0MyZS91cGxvYWRfZW84dVhFLW1lZGl1bS5wbmdcbjIgaHR0cHM6Ly9icmV3ZXJ5ZGItaW1hZ2VzLnMzLmFtYXpvbmF3cy5jb20vYmVlci9jdDBIeHovdXBsb2FkX3N0ZE4yVi1tZWRpdW0ucG5nXG4zIGh0dHBzOi8vYnJld2VyeWRiLWltYWdlcy5zMy5hbWF6b25hd3MuY29tL2JlZXIvT0ZZZmY3L3VwbG9hZF9SRFdWVW0tbWVkaXVtLnBuZ1xuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxhYmVscy5sYXJnZVxuMSBodHRwczovL2JyZXdlcnlkYi1pbWFnZXMuczMuYW1hem9uYXdzLmNvbS9iZWVyL0R1N0MyZS91cGxvYWRfZW84dVhFLWxhcmdlLnBuZ1xuMiBodHRwczovL2JyZXdlcnlkYi1pbWFnZXMuczMuYW1hem9uYXdzLmNvbS9iZWVyL2N0MEh4ei91cGxvYWRfc3RkTjJWLWxhcmdlLnBuZ1xuMyBodHRwczovL2JyZXdlcnlkYi1pbWFnZXMuczMuYW1hem9uYXdzLmNvbS9iZWVyL09GWWZmNy91cGxvYWRfUkRXVlVtLWxhcmdlLnBuZ1xuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxhYmVscy5jb250ZW50QXdhcmVJY29uXG4xIGh0dHBzOi8vYnJld2VyeWRiLWltYWdlcy5zMy5hbWF6b25hd3MuY29tL2JlZXIvRHU3QzJlL3VwbG9hZF9lbzh1WEUtY29udGVudEF3YXJlSWNvbi5wbmdcbjIgaHR0cHM6Ly9icmV3ZXJ5ZGItaW1hZ2VzLnMzLmFtYXpvbmF3cy5jb20vYmVlci9jdDBIeHovdXBsb2FkX3N0ZE4yVi1jb250ZW50QXdhcmVJY29uLnBuZ1xuMyBodHRwczovL2JyZXdlcnlkYi1pbWFnZXMuczMuYW1hem9uYXdzLmNvbS9iZWVyL09GWWZmNy91cGxvYWRfUkRXVlVtLWNvbnRlbnRBd2FyZUljb24ucG5nXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGFiZWxzLmNvbnRlbnRBd2FyZU1lZGl1bVxuMSBodHRwczovL2JyZXdlcnlkYi1pbWFnZXMuczMuYW1hem9uYXdzLmNvbS9iZWVyL0R1N0MyZS91cGxvYWRfZW84dVhFLWNvbnRlbnRBd2FyZU1lZGl1bS5wbmdcbjIgaHR0cHM6Ly9icmV3ZXJ5ZGItaW1hZ2VzLnMzLmFtYXpvbmF3cy5jb20vYmVlci9jdDBIeHovdXBsb2FkX3N0ZE4yVi1jb250ZW50QXdhcmVNZWRpdW0ucG5nXG4zIGh0dHBzOi8vYnJld2VyeWRiLWltYWdlcy5zMy5hbWF6b25hd3MuY29tL2JlZXIvT0ZZZmY3L3VwbG9hZF9SRFdWVW0tY29udGVudEF3YXJlTWVkaXVtLnBuZ1xuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxhYmVscy5jb250ZW50QXdhcmVMYXJnZVxuMSBodHRwczovL2JyZXdlcnlkYi1pbWFnZXMuczMuYW1hem9uYXdzLmNvbS9iZWVyL0R1N0MyZS91cGxvYWRfZW84dVhFLWNvbnRlbnRBd2FyZUxhcmdlLnBuZ1xuMiBodHRwczovL2JyZXdlcnlkYi1pbWFnZXMuczMuYW1hem9uYXdzLmNvbS9iZWVyL2N0MEh4ei91cGxvYWRfc3RkTjJWLWNvbnRlbnRBd2FyZUxhcmdlLnBuZ1xuMyBodHRwczovL2JyZXdlcnlkYi1pbWFnZXMuczMuYW1hem9uYXdzLmNvbS9iZWVyL09GWWZmNy91cGxvYWRfUkRXVlVtLWNvbnRlbnRBd2FyZUxhcmdlLnBuZ1xuICAgIHN0YXR1cyBzdGF0dXNEaXNwbGF5ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGZvb2RQYWlyaW5nc1xuMSB2ZXJpZmllZCAgICAgIFZlcmlmaWVkICAgICAgICAgICBNZWxvbiwgU2VtaS1oYXJkIGNoZWVzZSwgYmVycmllcyAmIGdpbmdlclxuMiB2ZXJpZmllZCAgICAgIFZlcmlmaWVkICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPE5BPlxuMyB2ZXJpZmllZCAgICAgIFZlcmlmaWVkIGNoYXJjdXRlcmllLCByb2FzdGVkIHBvdWx0cnksIGdyaWxsZWQgc3RvbmUgZnJ1aXRzLlxuICAgICAgICAgICBjcmVhdGVEYXRlICAgICAgICAgIHVwZGF0ZURhdGUgc3R5bGUuaWQgc3R5bGUuY2F0ZWdvcnlJZCBzdHlsZS5jYXRlZ29yeS5pZFxuMSAyMDEyLTAxLTAzIDAyOjQyOjUxIDIwMTgtMTEtMDIgMDI6MTU6MTQgICAgICAgNTkgICAgICAgICAgICAgICAgNSAgICAgICAgICAgICAgICAgNVxuMiAyMDEyLTA4LTI1IDE5OjQxOjU2IDIwMTgtMTEtMDIgMDI6MTU6MTQgICAgICAgOTAgICAgICAgICAgICAgICAgNyAgICAgICAgICAgICAgICAgN1xuMyAyMDEyLTA4LTI1IDE3OjQ2OjQ3IDIwMTgtMTEtMDIgMDI6MTU6MTQgICAgICAxMTkgICAgICAgICAgICAgICAxMSAgICAgICAgICAgICAgICAxMVxuICAgICAgICAgICAgIHN0eWxlLmNhdGVnb3J5Lm5hbWUgc3R5bGUuY2F0ZWdvcnkuY3JlYXRlRGF0ZSAgICAgICAgICAgICAgc3R5bGUubmFtZVxuMSBCZWxnaWFuIEFuZCBGcmVuY2ggT3JpZ2luIEFsZXMgICAgICAgMjAxMi0wMy0yMSAyMDowNjo0NiAgICBCZWxnaWFuLVN0eWxlIFRyaXBlbFxuMiAgICAgICAgRXVyb3BlYW4tZ2VybWFuaWMgTGFnZXIgICAgICAgMjAxMi0wMy0yMSAyMDowNjo0NiBHZXJtYW4tU3R5bGUgRG9wcGVsYm9ja1xuMyAgICAgICAgICAgICAgSHlicmlkL21peGVkIEJlZXIgICAgICAgMjAxMi0wMy0yMSAyMDowNjo0NiAgICAgICAgICAgICAgRnJ1aXQgQmVlclxuICBzdHlsZS5zaG9ydE5hbWVcbjEgIEJlbGdpYW4gVHJpcGVsXG4yICAgICAgRG9wcGVsYm9ja1xuMyAgICAgIEZydWl0IEJlZXJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc3R5bGUuZGVzY3JpcHRpb25cbjEgVHJpcGVscyBhcmUgb2Z0ZW4gY2hhcmFjdGVyaXplZCBieSBhIGNvbXBsZXgsIHNvbWV0aW1lcyBtaWxkIHNwaWN5IGNoYXJhY3Rlci4gQ2xvdmUtbGlrZSBwaGVub2xpYyBmbGF2b3IgYW5kIGFyb21hIG1heSBiZSBldmlkZW50IGF0IGV4dHJlbWVseSBsb3cgbGV2ZWxzLiBZZWFzdC1nZW5lcmF0ZWQgIGZydWl0eSBlc3RlcnMsIGluY2x1ZGluZyBiYW5hbmEsIGFyZSBhbHNvIGNvbW1vbiwgYnV0IG5vdCBuZWNlc3NhcnkuIFRoZXNlIHBhbGUvbGlnaHQtY29sb3JlZCBhbGVzIG1heSBmaW5pc2ggc3dlZXQsIHRob3VnaCBhbnkgc3dlZXQgZmluaXNoIHNob3VsZCBiZSBsaWdodC4gVGhlIGJlZXIgaXMgY2hhcmFjdGVyaXN0aWNhbGx5IG1lZGl1bSBhbmQgY2xlYW4gaW4gYm9keSB3aXRoIGFuIGVxdWFsaXppbmcgaG9wL21hbHQgYmFsYW5jZSBhbmQgYSBwZXJjZXB0aW9uIG9mIG1lZGl1bSB0byBtZWRpdW0gaGlnaCBob3AgYml0dGVybmVzcy4gVHJhZGl0aW9uYWwgQmVsZ2lhbiBUcmlwZWxzIGFyZSBvZnRlbiB3ZWxsIGF0dGVudWF0ZWQuIEJyZXdpbmcgc3VnYXIgbWF5IGJlIHVzZWQgdG8gbGlnaHRlbiB0aGUgcGVyY2VwdGlvbiBvZiBib2R5LiBJdHMgc3dlZXRuZXNzIHdpbGwgY29tZSBmcm9tIHZlcnkgcGFsZSBtYWx0cy4gVGhlcmUgc2hvdWxkIG5vdCBiZSBjaGFyYWN0ZXIgZnJvbSBhbnkgcm9hc3RlZCBvciBkYXJrIG1hbHRzLiBMb3cgaG9wIGZsYXZvciBpcyBhY2NlcHRhYmxlLiBBbGNvaG9sIHN0cmVuZ3RoIGFuZCBmbGF2b3Igc2hvdWxkIGJlIHBlcmNlaXZlZCBhcyBldmlkZW50LiBIZWFkIHJldGVudGlvbiBpcyBkZW5zZSBhbmQgbW91c3NlLWxpa2UuIENoaWxsIGhhemUgaXMgYWNjZXB0YWJsZSBhdCBsb3cgc2VydmluZyB0ZW1wZXJhdHVyZXMuIFRyYWRpdGlvbmFsIFRyaXBlbHMgYXJlIGJvdHRsZSBjb25kaXRpb25lZCwgbWF5IGV4aGliaXQgc2xpZ2h0IHllYXN0IGhhemUgYnV0IHRoZSB5ZWFzdCBzaG91bGQgbm90IGJlIGludGVudGlvbmFsbHkgcm91c2VkLiBPeGlkYXRpdmUgY2hhcmFjdGVyIGlmIGV2aWRlbnQgaW4gYWdlZCBUcmlwZWxzIHNob3VsZCBiZSBtaWxkIGFuZCBwbGVhc2FudC5cbjIgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIE1hbHR5IHN3ZWV0bmVzcyBpcyBkb21pbmFudCBidXQgc2hvdWxkIG5vdCBiZSBjbG95aW5nLiBNYWx0IGNoYXJhY3RlciBpcyBtb3JlIHJlbWluaXNjZW50IG9mIGZyZXNoIGFuZCBsaWdodGx5IHRvYXN0ZWQgTXVuaWNoLSBzdHlsZSBtYWx0LCBtb3JlIHNvIHRoYW4gY2FyYW1lbCBvciB0b2ZmZWUgbWFsdCBjaGFyYWN0ZXIuIFNvbWUgZWxlbWVudHMgb2YgY2FyYW1lbCBhbmQgdG9mZmVlIGNhbiBiZSBldmlkZW50IGFuZCBjb250cmlidXRlIHRvIGNvbXBsZXhpdHksIGJ1dCB0aGUgcHJlZG9taW5hbnQgbWFsdCBjaGFyYWN0ZXIgaXMgYW4gZXhwcmVzc2lvbiBvZiB0b2FzdGVkIGJhcmxleSBtYWx0LiBEb3BwZWxib2NrcyBhcmUgZnVsbCBib2RpZWQgYW5kIGRlZXAgYW1iZXIgdG8gZGFyayBicm93biBpbiBjb2xvci4gQXN0cmluZ2VuY3kgZnJvbSByb2FzdCBtYWx0cyBpcyBhYnNlbnQuIEFsY29ob2xpYyBzdHJlbmd0aCBpcyBoaWdoLCBhbmQgaG9wIHJhdGVzIGluY3JlYXNlIHdpdGggZ3Jhdml0eS4gSG9wIGJpdHRlcm5lc3MgYW5kIGZsYXZvciBzaG91bGQgYmUgbG93IGFuZCBob3AgYXJvbWEgYWJzZW50LiBGcnVpdHkgZXN0ZXJzIGFyZSBjb21tb25seSBwZXJjZWl2ZWQgYnV0IGF0IGxvdyB0byBtb2RlcmF0ZSBsZXZlbHMuIERpYWNldHlsIHNob3VsZCBiZSBhYnNlbnRcbjMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgRnJ1aXQgYmVlcnMgYXJlIGFueSBiZWVycyB1c2luZyBmcnVpdCBvciBmcnVpdCBleHRyYWN0cyBhcyBhbiBhZGp1bmN0IGluIGVpdGhlciwgdGhlIG1hc2gsIGtldHRsZSwgcHJpbWFyeSBvciBzZWNvbmRhcnkgZmVybWVudGF0aW9uIHByb3ZpZGluZyBvYnZpb3VzIChyYW5naW5nIGZyb20gc3VidGxlIHRvIGludGVuc2UpLCB5ZXQgaGFybW9uaW91cywgZnJ1aXQgcXVhbGl0aWVzLiBGcnVpdCBxdWFsaXRpZXMgc2hvdWxkIG5vdCBiZSBvdmVycG93ZXJlZCBieSBob3AgY2hhcmFjdGVyLiBJZiBhIGZydWl0IChzdWNoIGFzIGp1bmlwZXIgYmVycnkpIGhhcyBhbiBoZXJiYWwgb3Igc3BpY2UgcXVhbGl0eSwgaXQgaXMgbW9yZSBhcHByb3ByaWF0ZSB0byBjb25zaWRlciBpdCBpbiB0aGUgaGVyYiBhbmQgc3BpY2UgYmVlcnMgY2F0ZWdvcnkuIEFjaWRpYyBiYWN0ZXJpYWwgKG5vdCB3aWxkIHllYXN0KSBmZXJtZW50YXRpb24gY2hhcmFjdGVycyBtYXkgYmUgZXZpZGVudCAoYnV0IG5vdCBuZWNlc3NhcnkpIHRoZXkgd291bGQgY29udHJpYnV0ZSB0byBhY2lkaXR5IGFuZCBlbmhhbmNlIGZydWl0eSBiYWxhbmNlLiBDbGVhciBvciBoYXp5IGJlZXIgaXMgYWNjZXB0YWJsZSBpbiBhcHBlYXJhbmNlLiBBIHN0YXRlbWVudCBieSB0aGUgYnJld2VyIGV4cGxhaW5pbmcgd2hhdCBmcnVpdHMgYXJlIHVzZWQgaXMgZXNzZW50aWFsIGluIG9yZGVyIGZvciBmYWlyIGFzc2Vzc21lbnQgaW4gY29tcGV0aXRpb25zLiBJZiB0aGlzIGJlZXIgaXMgYSBjbGFzc2ljIHN0eWxlIHdpdGggZnJ1aXQsIHRoZSBicmV3ZXIgc2hvdWxkIGFsc28gc3BlY2lmeSB0aGUgY2xhc3NpYyBzdHlsZS5cbiAgc3R5bGUuaWJ1TWluIHN0eWxlLmlidU1heCBzdHlsZS5hYnZNaW4gc3R5bGUuYWJ2TWF4IHN0eWxlLnNybU1pbiBzdHlsZS5zcm1NYXggc3R5bGUub2dNaW5cbjEgICAgICAgICAgIDIwICAgICAgICAgICA0NSAgICAgICAgICAgIDcgICAgICAgICAgIDEwICAgICAgICAgICAgNCAgICAgICAgICAgIDkgICAgICAgIDEuMDdcbjIgICAgICAgICAgIDE3ICAgICAgICAgICAyNyAgICAgICAgICA2LjUgICAgICAgICAgICA4ICAgICAgICAgICAxMiAgICAgICAgICAgMzAgICAgICAgMS4wNzRcbjMgICAgICAgICAgICA1ICAgICAgICAgICA3MCAgICAgICAgICAyLjUgICAgICAgICAgIDEyICAgICAgICAgICAgNSAgICAgICAgICAgNTAgICAgICAgIDEuMDNcbiAgc3R5bGUuZmdNaW4gc3R5bGUuZmdNYXggICAgc3R5bGUuY3JlYXRlRGF0ZSAgICBzdHlsZS51cGRhdGVEYXRlIGF2YWlsYWJsZUlkIG9yaWdpbmFsR3Jhdml0eVxuMSAgICAgICAgMS4wMSAgICAgICAxLjAxOCAyMDEyLTAzLTIxIDIwOjA2OjQ2IDIwMTUtMDQtMDcgMTU6MzE6NTAgICAgICAgICAgTkEgICAgICAgICAgICA8TkE+XG4yICAgICAgIDEuMDE0ICAgICAgICAxLjAyIDIwMTItMDMtMjEgMjA6MDY6NDYgMjAxNS0wNC0wNyAxNTozOTowOCAgICAgICAgICAgMiAgICAgICAgICAgMS4xMDFcbjMgICAgICAgMS4wMDYgICAgICAgIDEuMDMgMjAxMi0wMy0yMSAyMDowNjo0NiAyMDE1LTA0LTA3IDE1OjQ0OjIxICAgICAgICAgICAyICAgICAgICAgIDEuMDcwM1xuICBhdmFpbGFibGUuaWQgYXZhaWxhYmxlLm5hbWUgYXZhaWxhYmxlLmRlc2NyaXB0aW9uIGdsYXNzd2FyZUlkIGdsYXNzLmlkIGdsYXNzLm5hbWVcbjEgICAgICAgICAgIE5BICAgICAgICAgICA8TkE+ICAgICAgICAgICAgICAgICAgPE5BPiAgICAgICAgICBOQSAgICAgICBOQSAgICAgICA8TkE+XG4yICAgICAgICAgICAgMiAgICAgICAgTGltaXRlZCBMaW1pdGVkIGF2YWlsYWJpbGl0eS4gICAgICAgICAgTkEgICAgICAgTkEgICAgICAgPE5BPlxuMyAgICAgICAgICAgIDIgICAgICAgIExpbWl0ZWQgTGltaXRlZCBhdmFpbGFiaWxpdHkuICAgICAgICAgICA4ICAgICAgICA4ICAgICAgVHVsaXBcbiAgICAgZ2xhc3MuY3JlYXRlRGF0ZVxuMSAgICAgICAgICAgICAgICA8TkE+XG4yICAgICAgICAgICAgICAgIDxOQT5cbjMgMjAxMi0wMS0wMyAwMjo0MTozM1xuIn0= -->
-<pre><code>      id          name          nameDisplay
-1 Du7C2e   Black Tulip   Black Tulip (2012)
-2 ct0Hxz Charkoota Rye Charkoota Rye (2012)
-3 OFYff7       Envious       Envious (2012)
-                                                                                                                                                                                                             description
-1 Mysterious, alluring and seductive, while tantalizingly elusive.  Ester-laden character reveals and enigmatic dance between Belgian ale yeast and Michigan beet sugar, conjuring hints of bananas before a dry finish.
-2                                                                                                                                                                                                                   &lt;NA&gt;
-3                                                              Michigan pears fuel a second fermentation, providing subtle nuance between grain &amp; fruit. A slumber on oak and local raspberries adds depth and tartness.
-   abv  ibu styleId isOrganic isRetired year
-1  8.8   21      59         N         N 2012
-2 9.35 &lt;NA&gt;      90         N         N 2012
-3  7.5 &lt;NA&gt;     119         N         N 2012
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgaWQgICAgICAgICAgbmFtZSAgIG5hbWVEaXNwbGF5XG4xIFdIUWlzYyBEcmFnb24ncyBNaWxrIERyYWdvbidzIE1pbGtcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkZXNjcmlwdGlvblxuMSBBIGJhcnJlbC1hZ2VkLCBzdHJvbmctYWxlIHdpdGggYSBzb2Z0IGFuZCByaWNoIGNhcmFtZWwtbWFsdCBjaGFyYWN0ZXIgaW50ZXJtaW5nbGVkIHdpdGggZGVlcCB2YW5pbGxhIHRvbmVzIGRhbmNpbmcgaW4gYW4gb2FrIGJhdGguIFVubWlzdGFrYWJseSBkaXN0aW5jdGl2ZSBhbmQgaGF1bnRpbmdseSByZW1hcmthYmxlLCBEcmFnb24ncyBNaWxrJ3Mgd2FybWluZyBjb21wbGV4aXR5IHBhaXJzIHdlbGwgd2l0aCBzbW9rZWQgbWVhdHMgYW5kIGNoZWVzZXMsIHJlZCBtZWF0LCBvciBhIG5pY2UgY2lnYXIuXG4gIGFidiBpYnUgZ2xhc3N3YXJlSWQgc3JtSWQgYXZhaWxhYmxlSWQgc3R5bGVJZCBpc09yZ2FuaWMgaXNSZXRpcmVkXG4xICAxMSAgMzEgICAgICAgICAgIDggICAgNDEgICAgICAgICAgIDEgICAgICA0MyAgICAgICAgIE4gICAgICAgICBOXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGFiZWxzLmljb25cbjEgaHR0cHM6Ly9icmV3ZXJ5ZGItaW1hZ2VzLnMzLmFtYXpvbmF3cy5jb20vYmVlci9XSFFpc2MvdXBsb2FkXzJGcVF0aS1pY29uLnBuZ1xuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxhYmVscy5tZWRpdW1cbjEgaHR0cHM6Ly9icmV3ZXJ5ZGItaW1hZ2VzLnMzLmFtYXpvbmF3cy5jb20vYmVlci9XSFFpc2MvdXBsb2FkXzJGcVF0aS1tZWRpdW0ucG5nXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGFiZWxzLmxhcmdlXG4xIGh0dHBzOi8vYnJld2VyeWRiLWltYWdlcy5zMy5hbWF6b25hd3MuY29tL2JlZXIvV0hRaXNjL3VwbG9hZF8yRnFRdGktbGFyZ2UucG5nXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGFiZWxzLmNvbnRlbnRBd2FyZUljb25cbjEgaHR0cHM6Ly9icmV3ZXJ5ZGItaW1hZ2VzLnMzLmFtYXpvbmF3cy5jb20vYmVlci9XSFFpc2MvdXBsb2FkXzJGcVF0aS1jb250ZW50QXdhcmVJY29uLnBuZ1xuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxhYmVscy5jb250ZW50QXdhcmVNZWRpdW1cbjEgaHR0cHM6Ly9icmV3ZXJ5ZGItaW1hZ2VzLnMzLmFtYXpvbmF3cy5jb20vYmVlci9XSFFpc2MvdXBsb2FkXzJGcVF0aS1jb250ZW50QXdhcmVNZWRpdW0ucG5nXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGFiZWxzLmNvbnRlbnRBd2FyZUxhcmdlXG4xIGh0dHBzOi8vYnJld2VyeWRiLWltYWdlcy5zMy5hbWF6b25hd3MuY29tL2JlZXIvV0hRaXNjL3VwbG9hZF8yRnFRdGktY29udGVudEF3YXJlTGFyZ2UucG5nXG4gICAgc3RhdHVzIHN0YXR1c0Rpc3BsYXkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZm9vZFBhaXJpbmdzXG4xIHZlcmlmaWVkICAgICAgVmVyaWZpZWQgUmVkIG1lYXQsIHNtb2tlZCBmb29kcywgYmFsc2FtaWMsIHJpY2ggY2hlZXNlICYgZGFyayBjaG9jb2xhdGUuXG4gIHNlcnZpbmdUZW1wZXJhdHVyZSBzZXJ2aW5nVGVtcGVyYXR1cmVEaXNwbGF5IG9yaWdpbmFsR3Jhdml0eSAgICAgICAgICBjcmVhdGVEYXRlXG4xICAgICAgICAgICAgICAgY29vbCAgICAgQ29vbCAtICg4LTEyQy80NS01NEYpICAgICAgICAgICAxLjA5NiAyMDEyLTAxLTAzIDAyOjQzOjA2XG4gICAgICAgICAgIHVwZGF0ZURhdGUgZ2xhc3MuaWQgZ2xhc3MubmFtZSAgICBnbGFzcy5jcmVhdGVEYXRlIHNybS5pZCBzcm0ubmFtZSBzcm0uaGV4XG4xIDIwMTgtMTEtMDIgMDI6MTU6MTQgICAgICAgIDggICAgICBUdWxpcCAyMDEyLTAxLTAzIDAyOjQxOjMzICAgICA0MSAgT3ZlciA0MCAgMDAwMDAwXG4gIGF2YWlsYWJsZS5pZCBhdmFpbGFibGUubmFtZSAgICAgICAgICAgICAgICAgIGF2YWlsYWJsZS5kZXNjcmlwdGlvbiBzdHlsZS5pZCBzdHlsZS5jYXRlZ29yeUlkXG4xICAgICAgICAgICAgMSAgICAgWWVhciBSb3VuZCBBdmFpbGFibGUgeWVhciByb3VuZCBhcyBhIHN0YXBsZSBiZWVyLiAgICAgICA0MyAgICAgICAgICAgICAgICAzXG4gIHN0eWxlLmNhdGVnb3J5LmlkICAgICAgICBzdHlsZS5jYXRlZ29yeS5uYW1lIHN0eWxlLmNhdGVnb3J5LmNyZWF0ZURhdGVcbjEgICAgICAgICAgICAgICAgIDMgTm9ydGggQW1lcmljYW4gT3JpZ2luIEFsZXMgICAgICAgMjAxMi0wMy0yMSAyMDowNjo0NVxuICAgICAgICAgICAgICAgICAgICAgc3R5bGUubmFtZSAgICAgICAgIHN0eWxlLnNob3J0TmFtZVxuMSBBbWVyaWNhbi1TdHlsZSBJbXBlcmlhbCBTdG91dCBBbWVyaWNhbiBJbXBlcmlhbCBTdG91dFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzdHlsZS5kZXNjcmlwdGlvblxuMSBCbGFjayBpbiBjb2xvciwgQW1lcmljYW4tc3R5bGUgaW1wZXJpYWwgc3RvdXRzIHR5cGljYWxseSBoYXZlIGEgaGlnaCBhbGNvaG9sIGNvbnRlbnQuIEdlbmVyYWxseSBjaGFyYWN0ZXJpemVkIGFzIHZlcnkgcm9idXN0LiBUaGUgZXh0cmVtZWx5IHJpY2ggbWFsdHkgZmxhdm9yIGFuZCBhcm9tYSBhcmUgYmFsYW5jZWQgd2l0aCBhc3NlcnRpdmUgaG9wcGluZyBhbmQgZnJ1aXR5LWVzdGVyIGNoYXJhY3RlcmlzdGljcy4gQml0dGVybmVzcyBzaG91bGQgYmUgbW9kZXJhdGVseSBoaWdoIHRvIHZlcnkgaGlnaCBhbmQgYmFsYW5jZWQgd2l0aCBmdWxsIHN3ZWV0IG1hbHQgY2hhcmFjdGVyLiBSb2FzdGVkIG1hbHQgYXN0cmluZ2VuY3kgYW5kIGJpdHRlcm5lc3MgY2FuIGJlIG1vZGVyYXRlbHkgcGVyY2VpdmVkIGJ1dCBzaG91bGQgbm90IG92ZXJ3aGVsbSB0aGUgb3ZlcmFsbCBjaGFyYWN0ZXIuIEhvcCBhcm9tYSBpcyB1c3VhbGx5IG1vZGVyYXRlbHktaGlnaCB0byBvdmVyd2hlbG1pbmdseSBob3AtZmxvcmFsLCAtY2l0cnVzIG9yIC1oZXJiYWwuIERpYWNldHlsIChidXR0ZXJzY290Y2gpIGxldmVscyBzaG91bGQgYmUgYWJzZW50LlxuICBzdHlsZS5pYnVNaW4gc3R5bGUuaWJ1TWF4IHN0eWxlLmFidk1pbiBzdHlsZS5hYnZNYXggc3R5bGUuc3JtTWluIHN0eWxlLnNybU1heCBzdHlsZS5vZ01pblxuMSAgICAgICAgICAgNTAgICAgICAgICAgIDgwICAgICAgICAgICAgNyAgICAgICAgICAgMTIgICAgICAgICAgIDQwICAgICAgICAgICA0MCAgICAgICAgMS4wOFxuICBzdHlsZS5mZ01pbiBzdHlsZS5mZ01heCAgICBzdHlsZS5jcmVhdGVEYXRlICAgIHN0eWxlLnVwZGF0ZURhdGVcbjEgICAgICAgIDEuMDIgICAgICAgIDEuMDMgMjAxMi0wMy0yMSAyMDowNjo0NiAyMDE1LTA0LTA3IDE1OjI4OjQ5XG4ifQ== -->
+<pre><code>      id          name   nameDisplay
+1 WHQisc Dragon's Milk Dragon's Milk
+                                                                                                                                                                                                                                                                                     description
+1 A barrel-aged, strong-ale with a soft and rich caramel-malt character intermingled with deep vanilla tones dancing in an oak bath. Unmistakably distinctive and hauntingly remarkable, Dragon's Milk's warming complexity pairs well with smoked meats and cheeses, red meat, or a nice cigar.
+  abv ibu glasswareId srmId availableId styleId isOrganic isRetired
+1  11  31           8    41           1      43         N         N
                                                                    labels.icon
-1 https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-icon.png
-2 https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-icon.png
-3 https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-icon.png
+1 https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-icon.png
                                                                    labels.medium
-1 https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-medium.png
-2 https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-medium.png
-3 https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-medium.png
+1 https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-medium.png
                                                                    labels.large
-1 https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-large.png
-2 https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-large.png
-3 https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-large.png
+1 https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-large.png
                                                                    labels.contentAwareIcon
-1 https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-contentAwareIcon.png
-2 https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-contentAwareIcon.png
-3 https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-contentAwareIcon.png
+1 https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-contentAwareIcon.png
                                                                    labels.contentAwareMedium
-1 https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-contentAwareMedium.png
-2 https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-contentAwareMedium.png
-3 https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-contentAwareMedium.png
+1 https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-contentAwareMedium.png
                                                                    labels.contentAwareLarge
-1 https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-contentAwareLarge.png
-2 https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-contentAwareLarge.png
-3 https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-contentAwareLarge.png
-    status statusDisplay                                        foodPairings
-1 verified      Verified           Melon, Semi-hard cheese, berries &amp; ginger
-2 verified      Verified                                                &lt;NA&gt;
-3 verified      Verified charcuterie, roasted poultry, grilled stone fruits.
-           createDate          updateDate style.id style.categoryId style.category.id
-1 2012-01-03 02:42:51 2018-11-02 02:15:14       59                5                 5
-2 2012-08-25 19:41:56 2018-11-02 02:15:14       90                7                 7
-3 2012-08-25 17:46:47 2018-11-02 02:15:14      119               11                11
-             style.category.name style.category.createDate              style.name
-1 Belgian And French Origin Ales       2012-03-21 20:06:46    Belgian-Style Tripel
-2        European-germanic Lager       2012-03-21 20:06:46 German-Style Doppelbock
-3              Hybrid/mixed Beer       2012-03-21 20:06:46              Fruit Beer
-  style.shortName
-1  Belgian Tripel
-2      Doppelbock
-3      Fruit Beer
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 style.description
-1 Tripels are often characterized by a complex, sometimes mild spicy character. Clove-like phenolic flavor and aroma may be evident at extremely low levels. Yeast-generated  fruity esters, including banana, are also common, but not necessary. These pale/light-colored ales may finish sweet, though any sweet finish should be light. The beer is characteristically medium and clean in body with an equalizing hop/malt balance and a perception of medium to medium high hop bitterness. Traditional Belgian Tripels are often well attenuated. Brewing sugar may be used to lighten the perception of body. Its sweetness will come from very pale malts. There should not be character from any roasted or dark malts. Low hop flavor is acceptable. Alcohol strength and flavor should be perceived as evident. Head retention is dense and mousse-like. Chill haze is acceptable at low serving temperatures. Traditional Tripels are bottle conditioned, may exhibit slight yeast haze but the yeast should not be intentionally roused. Oxidative character if evident in aged Tripels should be mild and pleasant.
-2                                                                                                                                                                                                                                                                                                                                                                                                                                   Malty sweetness is dominant but should not be cloying. Malt character is more reminiscent of fresh and lightly toasted Munich- style malt, more so than caramel or toffee malt character. Some elements of caramel and toffee can be evident and contribute to complexity, but the predominant malt character is an expression of toasted barley malt. Doppelbocks are full bodied and deep amber to dark brown in color. Astringency from roast malts is absent. Alcoholic strength is high, and hop rates increase with gravity. Hop bitterness and flavor should be low and hop aroma absent. Fruity esters are commonly perceived but at low to moderate levels. Diacetyl should be absent
-3                                                                                                                                                                                                                                                                Fruit beers are any beers using fruit or fruit extracts as an adjunct in either, the mash, kettle, primary or secondary fermentation providing obvious (ranging from subtle to intense), yet harmonious, fruit qualities. Fruit qualities should not be overpowered by hop character. If a fruit (such as juniper berry) has an herbal or spice quality, it is more appropriate to consider it in the herb and spice beers category. Acidic bacterial (not wild yeast) fermentation characters may be evident (but not necessary) they would contribute to acidity and enhance fruity balance. Clear or hazy beer is acceptable in appearance. A statement by the brewer explaining what fruits are used is essential in order for fair assessment in competitions. If this beer is a classic style with fruit, the brewer should also specify the classic style.
+1 https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-contentAwareLarge.png
+    status statusDisplay                                                    foodPairings
+1 verified      Verified Red meat, smoked foods, balsamic, rich cheese &amp; dark chocolate.
+  servingTemperature servingTemperatureDisplay originalGravity          createDate
+1               cool     Cool - (8-12C/45-54F)           1.096 2012-01-03 02:43:06
+           updateDate glass.id glass.name    glass.createDate srm.id srm.name srm.hex
+1 2018-11-02 02:15:14        8      Tulip 2012-01-03 02:41:33     41  Over 40  000000
+  available.id available.name                  available.description style.id style.categoryId
+1            1     Year Round Available year round as a staple beer.       43                3
+  style.category.id        style.category.name style.category.createDate
+1                 3 North American Origin Ales       2012-03-21 20:06:45
+                     style.name         style.shortName
+1 American-Style Imperial Stout American Imperial Stout
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         style.description
+1 Black in color, American-style imperial stouts typically have a high alcohol content. Generally characterized as very robust. The extremely rich malty flavor and aroma are balanced with assertive hopping and fruity-ester characteristics. Bitterness should be moderately high to very high and balanced with full sweet malt character. Roasted malt astringency and bitterness can be moderately perceived but should not overwhelm the overall character. Hop aroma is usually moderately-high to overwhelmingly hop-floral, -citrus or -herbal. Diacetyl (butterscotch) levels should be absent.
   style.ibuMin style.ibuMax style.abvMin style.abvMax style.srmMin style.srmMax style.ogMin
-1           20           45            7           10            4            9        1.07
-2           17           27          6.5            8           12           30       1.074
-3            5           70          2.5           12            5           50        1.03
-  style.fgMin style.fgMax    style.createDate    style.updateDate availableId originalGravity
-1        1.01       1.018 2012-03-21 20:06:46 2015-04-07 15:31:50          NA            &lt;NA&gt;
-2       1.014        1.02 2012-03-21 20:06:46 2015-04-07 15:39:08           2           1.101
-3       1.006        1.03 2012-03-21 20:06:46 2015-04-07 15:44:21           2          1.0703
-  available.id available.name available.description glasswareId glass.id glass.name
-1           NA           &lt;NA&gt;                  &lt;NA&gt;          NA       NA       &lt;NA&gt;
-2            2        Limited Limited availability.          NA       NA       &lt;NA&gt;
-3            2        Limited Limited availability.           8        8      Tulip
-     glass.createDate
-1                &lt;NA&gt;
-2                &lt;NA&gt;
-3 2012-01-03 02:41:33</code></pre>
+1           50           80            7           12           40           40        1.08
+  style.fgMin style.fgMax    style.createDate    style.updateDate
+1        1.02        1.03 2012-03-21 20:06:46 2015-04-07 15:28:49</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -875,7 +589,7 @@ $status
 <div id="api-documentation---r-functions" class="section level3">
 <h3>API Documentation -&gt; R Functions</h3>
 <p><br></p>
-<p>For the example above, the documenation is all about Beer which I’ll call our object. Clicking around on the endpoint pages, we see that documentation pages can be used as object names. The current page is “beer-index”“, and is followed below by”beer-adjunct&quot; and “beer-brewery”. Other examples include “brewery-index” and “brewery-beer”, so it makes sense to scrape a page to correspond to our object name.</p>
+<p>For the example above, the documenation is all about Beer which I’ll call our object. Clicking around on the endpoint pages, we see that documentation pages can be used as object names. The current page is “beer-index”, and is followed below by “beer-adjunct” and “beer-brewery”. Other examples include “brewery-index” and “brewery-beer”, so it makes sense to scrape a page to correspond to our object name.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4gIHN1cHByZXNzUGFja2FnZVN0YXJ0dXBNZXNzYWdlcyhyZXF1aXJlKHRpZHl2ZXJzZSkpXG5cbiAgIyBFdmVudHVhbGx5IHdlJ2QgbGlrZSB0byBzY3JhcGUgdGhlIHdob2xlIHNpdGUgc28gbGV0cyBwcmVwYXJlLlxuICBwYWdlcyA9IGMoJ2JlZXItaW5kZXgnLCAnYmVlci1hZGp1bmN0JywgJ2JlZXItYnJld2VyeScpXG5cbiAgZm9yKHBhZ2UgaW4gcGFnZXMpeyBcbiAgICBcbiAgICAgb2JqZWN0IDwtIHBhZ2UgJT4lIHN0cl9yZXBsYWNlKCctJywgJyAnKSAlPiUgc3RyX3RvX3RpdGxlKCkgJT4lIHN0cl9yZXBsYWNlKCcgJywgJycpICU+JSBzdHJfcmVwbGFjZSgnSW5kZXgnLCAnJylcbiAgICBcbiAgICAgcHJpbnQob2JqZWN0KVxuICB9XG5gYGAifQ== -->
@@ -1007,7 +721,7 @@ $status
 <p><br></p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4gIHBhZ2VzIDwtIGMoJ2JlZXItaW5kZXgnLCAnYmVlci1hZGp1bmN0JywgJ2JlZXItYnJld2VyeScpXG5cbiAgIyBFdmVudHVhbGx5IHdlJ2xsIGV4cGFuZCB0aGlzIHRvIGFsbCBwYWdlcy5cbiAgZm9yKHBhZ2UgaW4gcGFnZXMpeyBcbiAgICBcbiAgICBodG1sIDwtIHJlYWRfaHRtbChwYXN0ZTAoZnVuY3Rpb25zVXJsLCBwYWdlKSlcbiAgXG4gICAgIyBFYWNoIG1ldGhvZCBiZWNvbWVzIGEgZnVuY3Rpb24uXG4gICAgYXBpTWV0aG9kcyA8LSBodG1sICU+JSBodG1sX25vZGVzKCdoMyBzcGFuJykgJT4lIHJ2ZXN0OjpodG1sX3RleHQoKVxuICAgIFxuICAgIG1ldGhvZHNBbmRFbmRwb2ludHMgPC0gTlVMTFxuICAgIGZvcihpIGluIDE6bGVuZ3RoKGFwaU1ldGhvZHMpKXtcbiAgICAgIFxuICAgICAgYXBpTWV0aG9kVGV4dCA8LSBhcGlNZXRob2RzW1tpXV1cbiAgICAgIFxuICAgICAgIyBHcmFiIGFwaSBtZXRob2QgKEdFVCwgUE9TVCwgUFVULCBERUxFVEUpXG4gICAgICBhcGlNZXRob2QgPC0gc3RyX3N1YihhcGlNZXRob2RUZXh0LCAxLCBhcGlNZXRob2RUZXh0ICU+JSBzdHJfbG9jYXRlKCc6JykgJT4lIGV4dHJhY3QyKDEpIC0gMSlcbiAgICAgIFxuICAgICAgIyBHcmFiIGVuZHBvaW50IGZvciByZXF1ZXN0LlxuICAgICAgZW5kcG9pbnQgPC0gYXBpTWV0aG9kVGV4dCAlPiUgc3RyX3N1YihhcGlNZXRob2RUZXh0ICU+JSBzdHJfbG9jYXRlKCc6JykgJT4lIGV4dHJhY3QyKDEpICsgMiwgbmNoYXIoYXBpTWV0aG9kVGV4dCkpXG4gICAgICBcbiAgICAgIG1ldGhvZHNBbmRFbmRwb2ludHMgPC0gYmluZF9yb3dzKG1ldGhvZHNBbmRFbmRwb2ludHMsIHRpYmJsZShNZXRob2QgPSBhcGlNZXRob2QsIEVuZHBvaW50ID0gZW5kcG9pbnQpKVxuICAgIH1cbiAgICBcbiAgICBwcmludChwYWdlKVxuICAgIHByaW50KG1ldGhvZHNBbmRFbmRwb2ludHMpXG4gIH1cbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4gIHBhZ2VzIDwtIGMoJ2JlZXItaW5kZXgnLCAnYmVlci1hZGp1bmN0JywgJ2JlZXItYnJld2VyeScpXG5cbiAgIyBFdmVudHVhbGx5IHdlJ2xsIGV4cGFuZCB0aGlzIHRvIGFsbCBwYWdlcy5cbiAgZm9yKHBhZ2UgaW4gcGFnZXMpeyBcbiAgICBcbiAgICBodG1sIDwtIHJlYWRfaHRtbChwYXN0ZTAoZnVuY3Rpb25zVXJsLCBwYWdlKSlcbiAgXG4gICAgIyBFYWNoIG1ldGhvZCBiZWNvbWVzIGEgZnVuY3Rpb24uXG4gICAgYXBpTWV0aG9kcyA8LSBodG1sICU+JSBodG1sX25vZGVzKCdoMyBzcGFuJykgJT4lIHJ2ZXN0OjpodG1sX3RleHQoKVxuICAgIFxuICAgIG1ldGhvZHNBbmRFbmRwb2ludHMgPC0gTlVMTFxuICAgIGZvcihpIGluIDE6bGVuZ3RoKGFwaU1ldGhvZHMpKXtcbiAgICAgIFxuICAgICAgYXBpTWV0aG9kVGV4dCA8LSBhcGlNZXRob2RzW1tpXV1cbiAgICAgIFxuICAgICAgIyBHcmFiIGFwaSBtZXRob2QgKEdFVCwgUE9TVCwgUFVULCBERUxFVEUpXG4gICAgICBhcGlNZXRob2QgPC0gc3RyX3N1YihhcGlNZXRob2RUZXh0LCAxLCBhcGlNZXRob2RUZXh0ICU+JSBzdHJfbG9jYXRlKCc6JykgJT4lIGV4dHJhY3QyKDEpIC0gMSlcbiAgICAgIFxuICAgICAgIyBHcmFiIGVuZHBvaW50IGZvciByZXF1ZXN0LlxuICAgICAgZW5kcG9pbnQgPC0gYXBpTWV0aG9kVGV4dCAlPiUgc3RyX3N1YihhcGlNZXRob2RUZXh0ICU+JSBzdHJfbG9jYXRlKCc6JykgJT4lIGV4dHJhY3QyKDEpICsgMiwgbmNoYXIoYXBpTWV0aG9kVGV4dCkpXG4gICAgICBcbiAgICAgIG1ldGhvZHNBbmRFbmRwb2ludHMgPC0gYmluZF9yb3dzKG1ldGhvZHNBbmRFbmRwb2ludHMsIHRpYmJsZShNZXRob2QgPSBhcGlNZXRob2QsIEVuZHBvaW50ID0gZW5kcG9pbnQpKVxuICAgIH1cbiAgICBcbiAgICBwcmludChwYWdlKVxuICAgIHByaW50KG1ldGhvZHNBbmRFbmRwb2ludHMpXG4gICAgY2F0KCdcXG5cXG4nKVxuICB9XG5gYGAifQ== -->
 <pre class="r"><code>
   pages &lt;- c('beer-index', 'beer-adjunct', 'beer-brewery')
 
@@ -1035,12 +749,13 @@ $status
     
     print(page)
     print(methodsAndEndpoints)
+    cat('\n\n')
   }</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p><br></p>
-<p>Now we’re cooking. While we’re at it, could we scrape the page name of each documentation page we will want functions for? It turns out that each of those page labels are “li a”&quot; elements on the documentation page. Finding those elements and grabbing their ‘href’ attribute will give us each page URL we’ll need.</p>
+<p>Now we’re cooking. While we’re at it, could we scrape the page name of each documentation page we will want functions for? It turns out that each of those page labels are “li a” elements on the documentation page. Finding those elements and grabbing their ‘href’ attribute will give us each page URL we’ll need.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4gICMgVGhpcyBmdW5jdGlvbiByZXR1cm5zIGFsbCBhcGkgZW5kcG9pbnQgcGFnZXMuXG4gIGdldEFsbEFQSXBhZ2VzIDwtIGZ1bmN0aW9uKCl7XG4gICAgXG4gICAgaHRtbCA8LSByZWFkX2h0bWwocGFzdGUwKGZ1bmN0aW9uc1VybCkpXG4gICAgXG4gICAgcGFnZXMgPC0gaHRtbCAlPiUgaHRtbF9ub2RlcygnbGkgYScpICU+JSBodG1sX2F0dHIoJ2hyZWYnKVxuICAgIFxuICAgIHBhZ2VzIDwtIHBhZ2VzW3BhZ2VzICU+JSBzdHJfd2hpY2goJy9kZXZlbG9wZXJzL2RvY3MvZW5kcG9pbnQvJyldICU+JSBzdHJfcmVwbGFjZV9hbGwoJy9kZXZlbG9wZXJzL2RvY3MvZW5kcG9pbnQvJywgJycpXG4gICAgXG4gICAgcmV0dXJuKHBhZ2VzKVxuICB9XG5cbiAgZ2V0QWxsQVBJcGFnZXMoKVxuYGBgIn0= -->
@@ -1063,10 +778,16 @@ $status
 <!-- rnb-text-begin -->
 <p><br></p>
 <p>So how do we translate the api method and endpoint into a function? Let’s start by generating the easiest function: getEveryBeer(…).</p>
+</div>
+<div id="generating-.r-files" class="section level3">
+<h3>Generating .R Files</h3>
+<p><br></p>
+<p>R has a very handy but dangerous function called sink() which will funnel all output that would normally go to the console to a file instead. If we’re clever with it we can generate a .R file with functions on the fly. <em>Warning:</em> If you forget to turn the sink off so to speak, you won’t get any output from functions you run later. You will think you’ve broken RStudio and start Googling for fixes until you realize that all the console output is still going to the .R file!!! Hypothetically speaking…</p>
+<p><br></p>
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiR2VuZXJhdGluZyBCcmV3ZXJ5REIgQVBJIEZ1bmN0aW9ucyIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKIyMjIEludHJvZHVjdGlvbgoKPGJyPgoKQW4gQVBJIG9yIEFwcGxpY2F0aW9uIFByb2dyYW0gSW50ZXJmYWNlIGlzIGEgc3RhbmRhcmQgdG9vbCBmb3IgY3JlYXRpbmcgc29mdHdhcmUgYXBwbGljYXRpb25zLiBUaGVyZSBhcmUgbWFueSB3ZWxsLWtub3duIEFQSXMgc3VjaCBhcyB0aGUgR29vZ2xlIEFQSXMgYmFja2luZyBEb2NzLCBEcml2ZSwgQ2FsZW5kYXIsIEFzc2lzdGFudCBhbmQgW2xvdHMgbW9yZV0oaHR0cHM6Ly9kZXZlbG9wZXJzLmdvb2dsZS5jb20vYXBpcy1leHBsb3Jlci8pLiBUaGlzIG5vdGVib29rIGlzIGRlZGljYXRlZCB0byBhdXRvbWF0aWNhbGx5IGdlbmVyYXRpbmcgYSBwYWNrYWdlIGNvbnRhaW5pbmcgaHVtYW4tcmVhZGFibGUgZnVuY3Rpb25zIHdoaWNoIHV0aWxpemUgdGhlIFtCcmV3ZXJ5REIgQVBJXShodHRwczovL3d3dy5icmV3ZXJ5ZGIuY29tL2RldmVsb3BlcnMpLiBUaGlzIHdpbGwgYWxsb3cgdXMgdG8gc2VhcmNoIEJyZXdlcnlEQiBkYXRhYmFzZSBhbmQgZmluZCBhbGwgc29ydHMgb2YgZGF0YSBvbiBiZWVyIGFuZCBicmV3ZXJpZXMhCgo8YnI+CgpHZW5lcmFsbHkgQVBJIGRvY3VtZW50YXRpb24gaXMgZ2VuZXJhdGVkIGluIEhUTUwuIFdlIHdpbGwgaW4gYSB3YXkgcmV2ZXJzZSBlbmdpbmVlciB0aGlzLCBzY3JhcGluZyBIVE1MIGRvY3VtZW50YXRpb24gYW5kIHB1bGxpbmcgb3V0IHRoZSBBUEkgbWV0aG9kcyBhbmQgb2JqZWN0cy4gQSBtZXRob2QgaXMgYW4gYWN0aW9uIHdoaWxlIGFuIG9iamVjdCBpcyB0aGUgdGhpbmcgdGhhdCBhIG1ldGhvZCBhY3RzIG9uLiAKCjxicj4KCiFbPGJyPjxpPkV4YW1wbGUgb2YgSFRNTCBEb2N1bWVudGF0aW9uIGZvciBhbiBBUEk8L2k+XShpbWFnZXMvZXhhbXBsZUFQSWRvYy5wbmcpCgo8YnI+CgojIyMgQVBJIENhbGxzCgo8YnI+CgpUbyBtYWtlIGFuIEFQSSBjYWxsLCB3ZSB1c2UgdGhlIFtodHRyIHBhY2thZ2VdKGh0dHBzOi8vY3Jhbi5yLXByb2plY3Qub3JnL3dlYi9wYWNrYWdlcy9odHRyL3ZpZ25ldHRlcy9xdWlja3N0YXJ0Lmh0bWwpIHRvIHBlcmZvcm0gdGhlIHJlcXVlc3QuIFdlIHdpbGwgbmVlZCB0byBzcGVjaWZ5IHRoZSBBUEkgbWV0aG9kIChHRVQsIFBPU1QsIFBVVCBhbmQgREVMRVRFKSBhbmQgdGhlIGVuZHBvaW50IFVSTCB3aGVyZSB3ZSB3aWxsIHNlbmQgb3VyIHJlcXVlc3QuIEFkZGl0aW9uYWxseSwgZWFjaCBBUEkgaGFzIHNwZWNpYWwgd2F5cyBvZiBnaXZpbmcgcGVybWlzc2lvbiBmb3IgeW91IHRvIGFjY2VzcyB0aGVpciBBUEkuIFRvIG1ha2UgQVBJIGNhbGxzIHRvIHRoZSBCcmV3ZXJ5REIgQVBJLCB3ZSBuZWVkIHRvIG9idGFpbiBhICJrZXkiIGFuZCBhdHRhY2ggaXQgYXMgYSBxdWVyeSBwYXJhbWV0ZXIgdG8gb3VyIGNhbGwuIFRvIG9idGFpbiB5b3VyIG93biwgZm9sbG93IHRoZSBbZGV2ZWxvcGVyIGluc3RydWN0aW9uc10oaHR0cHM6Ly93d3cuYnJld2VyeWRiLmNvbS9kZXZlbG9wZXJzKS4KCjxicj4KCkhlcmUncyBjb2RlIEkgdXNlIHRvIGNoZWNrIG15IGF1dGhlbnRpY2F0aW9uIHdoZW4gd29ya2luZyB3aXRoIEFQSXMuIAoKYGBge3J9CgogIGNoZWNrQXV0aGVudGljYXRpb24gPC0gZnVuY3Rpb24oKXsKICAKICAgIHJlcXVpcmUoaHR0cikKICAgIHJlcXVpcmUoanNvbmxpdGUpCiAgICByZXF1aXJlKHRpZHl2ZXJzZSkKICAgIAogICAgb3BzIDwtIFN5cy5nZXRlbnYoKQogICAgcmVxdWlyZWRPcHRpb25zIDwtIGMoImJyZXdlcnlkYktleSIpCiAgICAKICAgIGZvcihvcHRpb24gaW4gcmVxdWlyZWRPcHRpb25zKXsKICAgICAgaWYoU3lzLmdldGVudihvcHRpb24pID09ICcnKXsKICAgICAgICBzdG9wKHBhc3RlMCgnUmVxdWlyZWQgb3B0aW9uICcsIG9wdGlvbiwgJyBoYXMgbm90IGJlZW4gc2V0ISBTZXQgaXRzIHZhbHVlIHVzaW5nIFN5cy5zZXRlbnYoJywgb3B0aW9uLCAnID0gInsnLCBvcHRpb24sICdWYWx1ZX0iKS4nKSkKICAgICAgfQogICAgfQogIH0KCiAgcHJpbnQoY2hlY2tBdXRoZW50aWNhdGlvbigpKQoKYGBgCgo8YnI+CgpJIGhhdmUgYSBmaWxlIHdoaWNoIGlzIHBsYWNlZCBpbiBteSAuZ2l0aWdub3JlIHdoaWNoIHNldHMgbXkgQVBJIGNyZWRlbnRpYWxzIGZvciBhIHNlc3Npb24gYnV0IGlzbid0IGluYWR2ZXJ0ZW50bHkgcG9zdGVkIHRvIEdpdEh1YiEKCmBgYHtyfQoKICBzb3VyY2UoJy4uLy4uL2FwaUNyZWRlbnRpYWxzLlInKQoKYGBgCgo8YnI+CgpBbmQgaGVyZSdzIGNvZGUgdG8gbWFrZSBhbiBBUEkgY2FsbCB1c2luZyBCcmV3ZXJEQidzIHN5bnRheC4gSSd2ZSBhZGRlZCBzb21lIGZlYXR1cmVzIHdlJ2xsIG5lZWQgbGF0ZXIuCgpgYGB7cn0KCiAgIyBUaGlzIGZ1bmN0aW9uIG1ha2VzIGEgQnJld2VyeURCIEFQSSByZXF1ZXN0LgogIG1ha2VSZXF1ZXN0IDwtIGZ1bmN0aW9uKGVuZHBvaW50LCB2ZXJiLCBwYXJhbXMgPSBOVUxMKXsKICAKICAgIHJlcXVpcmUoaHR0cikKICAgIHJlcXVpcmUodGlkeXZlcnNlKQogICAgcmVxdWlyZShtYWdyaXR0cikKICAgIAogICAgY2hlY2tBdXRoZW50aWNhdGlvbigpCiAgICAKICAgIGJhc2VVcmwgPC0gJ2h0dHBzOi8vc2FuZGJveC1hcGkuYnJld2VyeWRiLmNvbS92MicKICAgIAogICAgZW5kcG9pbnQgJTw+JSBwYXN0ZTAoJy8/a2V5PScsIFN5cy5nZXRlbnYoJ2JyZXdlcnlkYktleScpKQogIAogICAgaWYobGVuZ3RoKHBhcmFtcykgPiAwKSBlbmRwb2ludCAlPD4lIHBhc3RlMCgnJicsIHBhc3RlKHBhc3RlKG5hbWVzKHBhcmFtcyksIGFzLmNoYXJhY3RlcihwYXJhbXMpLCBzZXAgPSAnPScpLCBjb2xsYXBzZSA9ICcmJykpCiAgCiAgICByZXF1ZXN0IDwtIHBhc3RlMCh2ZXJiLCAnKCInLCBiYXNlVXJsLCBlbmRwb2ludCwgJyIsIGFjY2VwdF9qc29uKCkpJykKICAKICAgIGV2YWwocGFyc2UodGV4dCA9IHBhc3RlMCgncmVzcG9uc2UgPC0gJywgcmVxdWVzdCkpKQogICAgCiAgICBpZihyZXNwb25zZSRzdGF0dXNfY29kZSA8IDMwMCl7CiAgICAgIHJldHVybihjb250ZW50KHJlc3BvbnNlKSkKICAgIH1lbHNlewogICAgICBzdG9wKGNvbnRlbnQocmVzcG9uc2UpKQogICAgfQogIH0KCiAgIyBUZXN0aW5nIGl0IG91dC4KICBzYW1wbGVSZXF1ZXN0IDwtIG1ha2VSZXF1ZXN0KCcvYmVlcnMnLCAnR0VUJywgcGFyYW1zID0gbGlzdCh5ZWFyID0gJzIwMTInKSkKICBwcmludChzYW1wbGVSZXF1ZXN0KQpgYGAKCjxicj4KCkFzIHlvdSBjYW4gc2VlLCB0aGUgcmV0dXJuIHR5cGUgaXMgSlNPTiBmb3JtYXR0ZWQuIFdlIGNhbiB1c2UgdGhlIGpzb25saXRlIHBhY2thZ2UgdG8gY29udmVydCB0aGlzIGludG8gc29tZXRoaW5nIG1vcmUgbWFuYWdlYWJsZS4KCmBgYHtyfQoKICAjIFRoaXMgZnVuY3Rpb24gY29uc2lzdGVudGx5IGZsYXR0ZW5zIGEganNvbiBsaXN0IGludG8gYSBkYXRhZnJhbWUuCiAgZmxhdHRlbkpzb25MaXN0IDwtIGZ1bmN0aW9uKGpzb25MaXN0KXsKICAgIAogICAgcmVxdWlyZShkcGx5cikKICAgIHJlcXVpcmUoanNvbmxpdGUpCiAgICAKICAgICMgSWYganNvbkxpc3QgaXMgbm90IGEgbmFtZWQgbGlzdCwgbWFrZSBpdCBvbmUuCiAgICBpZihsZW5ndGgobmFtZXMoanNvbkxpc3RbWzFdXSkpID09IDApIGpzb25MaXN0IDwtIGxpc3QoanNvbkxpc3QpCiAgICAKICAgIGZvcihpdGVtIGluIGpzb25MaXN0KXsKICAgICAgCiAgICAgIGl0ZW0gPSBkYXRhLmZyYW1lKGl0ZW0sIHN0cmluZ3NBc0ZhY3RvcnMgPSBGKQogICAgICAKICAgICAgaWYoIWV4aXN0cygnZGYnLCBpbmhlcml0cyA9IEZBTFNFKSl7CiAgICAgICAgZGYgPC0gZmxhdHRlbihpdGVtKQogICAgICB9ZWxzZXsKICAgICAgICBkZiA8LSBiaW5kX3Jvd3MoZGYsIGZsYXR0ZW4oaXRlbSkpCiAgICAgIH0KICAgIH0KICAgIHJldHVybihkZikKICB9CgogIHByaW50KGZsYXR0ZW5Kc29uTGlzdChzYW1wbGVSZXF1ZXN0JGRhdGEpICU+JSBhcy5kYXRhLmZyYW1lKCkpCgpgYGAKCiMjIyBBUEkgRG9jdW1lbnRhdGlvbiAtPiBSIEZ1bmN0aW9ucwoKPGJyPgoKRm9yIHRoZSBleGFtcGxlIGFib3ZlLCB0aGUgZG9jdW1lbmF0aW9uIGlzIGFsbCBhYm91dCBCZWVyIHdoaWNoIEknbGwgY2FsbCBvdXIgb2JqZWN0LiBDbGlja2luZyBhcm91bmQgb24gdGhlIGVuZHBvaW50IHBhZ2VzLCB3ZSBzZWUgdGhhdCBkb2N1bWVudGF0aW9uIHBhZ2VzIGNhbiBiZSB1c2VkIGFzIG9iamVjdCBuYW1lcy4gVGhlIGN1cnJlbnQgcGFnZSBpcyAiYmVlci1pbmRleCIiLCBhbmQgaXMgZm9sbG93ZWQgYmVsb3cgYnkgImJlZXItYWRqdW5jdCIgYW5kICJiZWVyLWJyZXdlcnkiLiBPdGhlciBleGFtcGxlcyBpbmNsdWRlICJicmV3ZXJ5LWluZGV4IiBhbmQgImJyZXdlcnktYmVlciIsIHNvIGl0IG1ha2VzIHNlbnNlIHRvIHNjcmFwZSBhIHBhZ2UgdG8gY29ycmVzcG9uZCB0byBvdXIgb2JqZWN0IG5hbWUuCgpgYGB7cn0KCiAgc3VwcHJlc3NQYWNrYWdlU3RhcnR1cE1lc3NhZ2VzKHJlcXVpcmUodGlkeXZlcnNlKSkKCiAgIyBFdmVudHVhbGx5IHdlJ2QgbGlrZSB0byBzY3JhcGUgdGhlIHdob2xlIHNpdGUgc28gbGV0cyBwcmVwYXJlLgogIHBhZ2VzID0gYygnYmVlci1pbmRleCcsICdiZWVyLWFkanVuY3QnLCAnYmVlci1icmV3ZXJ5JykKCiAgZm9yKHBhZ2UgaW4gcGFnZXMpeyAKICAgIAogICAgIG9iamVjdCA8LSBwYWdlICU+JSBzdHJfcmVwbGFjZSgnLScsICcgJykgJT4lIHN0cl90b190aXRsZSgpICU+JSBzdHJfcmVwbGFjZSgnICcsICcnKSAlPiUgc3RyX3JlcGxhY2UoJ0luZGV4JywgJycpCiAgICAKICAgICBwcmludChvYmplY3QpCiAgfQpgYGAKCjxicj4KClRoZSBiZWVyLWluZGV4IHBhZ2UgbGlzdHMgQVBJIG1ldGhvZHMgZm9yIGludGVyYWN0aW5nIHdpdGggQmVlciBvYmplY3RzLiBUaGVzZSBmaXZlIG1haW4gc2VjdGlvbnMgc3BlbGwgb3V0IGEgbG9naWNhbCBtZXRob2QgZm9yIGdlbmVyYXRpbmcgZnVuY3Rpb24gbmFtZXMuCgo8YnI+Cgp8IERvY3VtZW50YXRpb24gICAgICAgIHwgTWV0aG9kfCBFbmRwb2ludCBVUkwgIHwgUiBGdW5jdGlvbiAgICAgICAgfCBXaGF0IGl0IGRvZXMgICAgICAgICAgICAgICAgICAgIHwKfCA6LS0tLS0tLS0tLS0tLS0tLS0tOiB8Oi0tLS0tOnwgOi0tLS0tLS0tLS0tLTp8Oi0tLS0tLS0tLS0tLS0tLS0tOnw6LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLTp8CnwgR0VUOiAvYmVlcnMgICAgICAgICAgfCBHRVQgICB8IC9iZWVycyAgICAgICAgfCBnZXRFdmVyeUJlZXIoLi4uKSB8IExpc3RzIGV2ZXJ5IGJlZXIgICAgICAgICAgICAgICAgfAp8IEdFVDogL2JlZXIvOmJlZXJJZCAgIHwgR0VUICAgfCAvYmVlci86YmVlcklkIHwgZ2V0QmVlciguLi4pICAgICAgfCBHZXRzIGRldGFpbHMgb24gYSBzcGVjaWZpYyBiZWVyIHwKfCBQT1NUOiAvYmVlcnMgICAgICAgICB8IFBPU1QgIHwgL2JlZXJzICAgICAgICB8IGNyZWF0ZUJlZXIoLi4uKSAgIHwgQ3JlYXRlcyBhIG5ldyBiZWVyICAgICAgICAgICAgICB8CnwgUFVUOiAvYmVlci86YmVlcklkICAgfCBQVVQgICB8IC9iZWVyLzpiZWVySWQgfCBtb2RpZnlCZWVyKC4uLikgICB8IE1vZGlmaWVzIGEgc3BlY2lmaWMgYmVlciAgICAgICAgfAp8IERFTEVURTogL2JlZXIvOmJlZXJJZHwgREVMRVRFfCAvYmVlci86YmVlcklkIHwgZGVsZXRlQmVlciguLi4pICAgfCBEZWxldGVzIGEgc3BlY2lmaWMgYmVlciAgICAgICAgIHwKCjxicj4KClNvIGhvdyBkbyB3ZSBnbyBhYm91dCBnZW5lcmF0aW5nIGZ1bmN0aW9ucz8gW1RoZSBSdmVzdCBQYWNrYWdlXShodHRwczovL2dpdGh1Yi5jb20vdGlkeXZlcnNlL3J2ZXN0L2Jsb2IvbWFzdGVyL1JFQURNRS5tZCkhCgo8YnI+CgojIyMgU2NyYXBpbmcgSFRNTCBBUEkgRG9jdW1lbnRhdGlvbgoKPGJyPgoKT25jZSB3ZSBoYXZlIGlkZW50aWZpZWQgd2hlcmUgb24gdGhlIHNjcmVlbiBhcmUgdGhlIEFQSSBtZXRob2RzIGFuZCBlbmRwb2ludHMsIHdlIG5lZWQgdG8gcHVsbCB0aGF0IGluZm9ybWF0aW9uIGludG8gUi4gUnZlc3QgYWxsb3dzIHVzIHRvIHNlYXJjaCBhIHN0YXRpYyB3ZWIgcGFnZSBmb3IgaHRtbCBub2RlcyBhbmQgYXR0cmlidXRlcy4gSSBmaW5kIGl0IGVhc2llc3QgdG8gdXNlIGEgdG9vbCBsaWtlIFtHb29nbGUgQ2hyb21lJ3MgU2VsZWN0b3IgR2FkZ2V0XShodHRwczovL2Nocm9tZS5nb29nbGUuY29tL3dlYnN0b3JlL3NlYXJjaC9zZWxlY3RvciUyMGdhZGdldCkgdG8gaWRlbnRpZnkgdGhlIHNwZWNpZmljIEhUTUwgZWxlbWVudHMgdG8gc2NyYXBlLgoKIVs8YnI+PGk+U2VsZWN0b3IgR2FkZ2V0IGluIHRoZSBDaHJvbWUgV2ViIFN0b3JlPC9pPl0oaW1hZ2VzL3NlbGVjdG9yR2FkZ2V0LnBuZykKCjxicj4KCkxldCdzIGdldCBzY3JhcGluZyEgSXQgdHVybnMgb3V0IHRoYXQgb3VyIG1ldGhvZC9lbmRwb2ludCB0ZXh0cyBjb3JyZXNwb25kIHRvICJoMyBzcGFuIiBlbGVtZW50cy4gVGhleSB3aWxsIG5lZWQgdG8gYmUgc3BsaXQgb24gdGhlIGNvbG9uIHJpZ2h0IGFmdGVyIHRoZSBhcGkgbWV0aG9kIHRleHQuIEVnLiAiR0VUOiIgL2JlZXJzIiBiZWNvbWVzIGFwaU1ldGhvZCAiR0VUIiBhbmQgZW5kcG9pbnQgIi9iZWVycyIuCgpgYGB7cn0KCiAgc3VwcHJlc3NQYWNrYWdlU3RhcnR1cE1lc3NhZ2VzKHJlcXVpcmUocnZlc3QpKQogIHN1cHByZXNzUGFja2FnZVN0YXJ0dXBNZXNzYWdlcyhyZXF1aXJlKG1hZ3JpdHRyKSkKCiAgZnVuY3Rpb25zVXJsIDwtICdodHRwczovL3d3dy5icmV3ZXJ5ZGIuY29tL2RldmVsb3BlcnMvZG9jcy9lbmRwb2ludC8nCiAgCiAgIyBFdmVudHVhbGx5IHdlJ2xsIGV4cGFuZCB0aGlzIHRvIGFsbCBwYWdlcy4KICBmb3IocGFnZSBpbiAnYmVlci1pbmRleCcpeyAKICAgIAogICAgaHRtbCA8LSByZWFkX2h0bWwocGFzdGUwKGZ1bmN0aW9uc1VybCwgcGFnZSkpCiAgCiAgICAjIEVhY2ggbWV0aG9kIGJlY29tZXMgYSBmdW5jdGlvbi4KICAgIGFwaU1ldGhvZHMgPC0gaHRtbCAlPiUgaHRtbF9ub2RlcygnaDMgc3BhbicpICU+JSBydmVzdDo6aHRtbF90ZXh0KCkKICAgIAogICAgbWV0aG9kc0FuZEVuZHBvaW50cyA8LSBOVUxMCiAgICBmb3IoaSBpbiAxOmxlbmd0aChhcGlNZXRob2RzKSl7CiAgICAgIAogICAgICBhcGlNZXRob2RUZXh0IDwtIGFwaU1ldGhvZHNbW2ldXQogICAgICAKICAgICAgIyBHcmFiIGFwaSBtZXRob2QgKEdFVCwgUE9TVCwgUFVULCBERUxFVEUpCiAgICAgIGFwaU1ldGhvZCA8LSBzdHJfc3ViKGFwaU1ldGhvZFRleHQsIDEsIGFwaU1ldGhvZFRleHQgJT4lIHN0cl9sb2NhdGUoJzonKSAlPiUgZXh0cmFjdDIoMSkgLSAxKQogICAgICAKICAgICAgIyBHcmFiIGVuZHBvaW50IGZvciByZXF1ZXN0LgogICAgICBlbmRwb2ludCA8LSBhcGlNZXRob2RUZXh0ICU+JSBzdHJfc3ViKGFwaU1ldGhvZFRleHQgJT4lIHN0cl9sb2NhdGUoJzonKSAlPiUgZXh0cmFjdDIoMSkgKyAyLCBuY2hhcihhcGlNZXRob2RUZXh0KSkKICAgICAgCiAgICAgIG1ldGhvZHNBbmRFbmRwb2ludHMgPC0gYmluZF9yb3dzKG1ldGhvZHNBbmRFbmRwb2ludHMsIHRpYmJsZShNZXRob2QgPSBhcGlNZXRob2QsIEVuZHBvaW50ID0gZW5kcG9pbnQpKQogICAgfQogICAgCiAgICBwcmludChtZXRob2RzQW5kRW5kcG9pbnRzKQogIH0KYGBgCgo8YnI+CgpKdXN0IGZvciBmdW56aWVzLCBsZXQncyBydW4gaXQgb24gc29tZSBtb3JlIHBhZ2VzIHRvIG1ha2Ugc3VyZSB0aGUgZG9jdW1lbnRhdGlvbiBpcyBjb25zaXN0ZW50LgoKPGJyPgoKYGBge3J9CgogIHBhZ2VzIDwtIGMoJ2JlZXItaW5kZXgnLCAnYmVlci1hZGp1bmN0JywgJ2JlZXItYnJld2VyeScpCgogICMgRXZlbnR1YWxseSB3ZSdsbCBleHBhbmQgdGhpcyB0byBhbGwgcGFnZXMuCiAgZm9yKHBhZ2UgaW4gcGFnZXMpeyAKICAgIAogICAgaHRtbCA8LSByZWFkX2h0bWwocGFzdGUwKGZ1bmN0aW9uc1VybCwgcGFnZSkpCiAgCiAgICAjIEVhY2ggbWV0aG9kIGJlY29tZXMgYSBmdW5jdGlvbi4KICAgIGFwaU1ldGhvZHMgPC0gaHRtbCAlPiUgaHRtbF9ub2RlcygnaDMgc3BhbicpICU+JSBydmVzdDo6aHRtbF90ZXh0KCkKICAgIAogICAgbWV0aG9kc0FuZEVuZHBvaW50cyA8LSBOVUxMCiAgICBmb3IoaSBpbiAxOmxlbmd0aChhcGlNZXRob2RzKSl7CiAgICAgIAogICAgICBhcGlNZXRob2RUZXh0IDwtIGFwaU1ldGhvZHNbW2ldXQogICAgICAKICAgICAgIyBHcmFiIGFwaSBtZXRob2QgKEdFVCwgUE9TVCwgUFVULCBERUxFVEUpCiAgICAgIGFwaU1ldGhvZCA8LSBzdHJfc3ViKGFwaU1ldGhvZFRleHQsIDEsIGFwaU1ldGhvZFRleHQgJT4lIHN0cl9sb2NhdGUoJzonKSAlPiUgZXh0cmFjdDIoMSkgLSAxKQogICAgICAKICAgICAgIyBHcmFiIGVuZHBvaW50IGZvciByZXF1ZXN0LgogICAgICBlbmRwb2ludCA8LSBhcGlNZXRob2RUZXh0ICU+JSBzdHJfc3ViKGFwaU1ldGhvZFRleHQgJT4lIHN0cl9sb2NhdGUoJzonKSAlPiUgZXh0cmFjdDIoMSkgKyAyLCBuY2hhcihhcGlNZXRob2RUZXh0KSkKICAgICAgCiAgICAgIG1ldGhvZHNBbmRFbmRwb2ludHMgPC0gYmluZF9yb3dzKG1ldGhvZHNBbmRFbmRwb2ludHMsIHRpYmJsZShNZXRob2QgPSBhcGlNZXRob2QsIEVuZHBvaW50ID0gZW5kcG9pbnQpKQogICAgfQogICAgCiAgICBwcmludChwYWdlKQogICAgcHJpbnQobWV0aG9kc0FuZEVuZHBvaW50cykKICB9CmBgYAoKPGJyPgoKTm93IHdlJ3JlIGNvb2tpbmcuIFdoaWxlIHdlJ3JlIGF0IGl0LCBjb3VsZCB3ZSBzY3JhcGUgdGhlIHBhZ2UgbmFtZSBvZiBlYWNoIGRvY3VtZW50YXRpb24gcGFnZSB3ZSB3aWxsIHdhbnQgZnVuY3Rpb25zIGZvcj8gSXQgdHVybnMgb3V0IHRoYXQgZWFjaCBvZiB0aG9zZSBwYWdlIGxhYmVscyBhcmUgImxpIGEiIiBlbGVtZW50cyBvbiB0aGUgZG9jdW1lbnRhdGlvbiBwYWdlLiBGaW5kaW5nIHRob3NlIGVsZW1lbnRzIGFuZCBncmFiYmluZyB0aGVpciAnaHJlZicgYXR0cmlidXRlIHdpbGwgZ2l2ZSB1cyBlYWNoIHBhZ2UgVVJMIHdlJ2xsIG5lZWQuCgpgYGB7cn0KCiAgIyBUaGlzIGZ1bmN0aW9uIHJldHVybnMgYWxsIGFwaSBlbmRwb2ludCBwYWdlcy4KICBnZXRBbGxBUElwYWdlcyA8LSBmdW5jdGlvbigpewogICAgCiAgICBodG1sIDwtIHJlYWRfaHRtbChwYXN0ZTAoZnVuY3Rpb25zVXJsKSkKICAgIAogICAgcGFnZXMgPC0gaHRtbCAlPiUgaHRtbF9ub2RlcygnbGkgYScpICU+JSBodG1sX2F0dHIoJ2hyZWYnKQogICAgCiAgICBwYWdlcyA8LSBwYWdlc1twYWdlcyAlPiUgc3RyX3doaWNoKCcvZGV2ZWxvcGVycy9kb2NzL2VuZHBvaW50LycpXSAlPiUgc3RyX3JlcGxhY2VfYWxsKCcvZGV2ZWxvcGVycy9kb2NzL2VuZHBvaW50LycsICcnKQogICAgCiAgICByZXR1cm4ocGFnZXMpCiAgfQoKICBnZXRBbGxBUElwYWdlcygpCmBgYAoKPGJyPgoKU28gaG93IGRvIHdlIHRyYW5zbGF0ZSB0aGUgYXBpIG1ldGhvZCBhbmQgZW5kcG9pbnQgaW50byBhIGZ1bmN0aW9uPyBMZXQncyBzdGFydCBieSBnZW5lcmF0aW5nIHRoZSBlYXNpZXN0IGZ1bmN0aW9uOiBnZXRFdmVyeUJlZXIoLi4uKS4gCgoKCgoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiR2VuZXJhdGluZyBCcmV3ZXJ5REIgQVBJIEZ1bmN0aW9ucyIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKIyMjIEludHJvZHVjdGlvbgoKPGJyPgoKQW4gQVBJIG9yIEFwcGxpY2F0aW9uIFByb2dyYW0gSW50ZXJmYWNlIGlzIGEgc3RhbmRhcmQgdG9vbCBmb3IgY3JlYXRpbmcgc29mdHdhcmUgYXBwbGljYXRpb25zLiBUaGVyZSBhcmUgbWFueSB3ZWxsLWtub3duIEFQSXMgc3VjaCBhcyB0aGUgR29vZ2xlIEFQSXMgYmFja2luZyBEb2NzLCBEcml2ZSwgQ2FsZW5kYXIsIEFzc2lzdGFudCBhbmQgW2xvdHMgbW9yZV0oaHR0cHM6Ly9kZXZlbG9wZXJzLmdvb2dsZS5jb20vYXBpcy1leHBsb3Jlci8pLiBUaGlzIG5vdGVib29rIGlzIGRlZGljYXRlZCB0byBhdXRvbWF0aWNhbGx5IGdlbmVyYXRpbmcgYSBwYWNrYWdlIGNvbnRhaW5pbmcgaHVtYW4tcmVhZGFibGUgZnVuY3Rpb25zIHdoaWNoIHV0aWxpemUgdGhlIFtCcmV3ZXJ5REIgQVBJXShodHRwczovL3d3dy5icmV3ZXJ5ZGIuY29tL2RldmVsb3BlcnMpLiBUaGlzIHdpbGwgYWxsb3cgdXMgdG8gc2VhcmNoIEJyZXdlcnlEQiBkYXRhYmFzZSBhbmQgZmluZCBhbGwgc29ydHMgb2YgZGF0YSBvbiBiZWVyIGFuZCBicmV3ZXJpZXMhCgo8YnI+CgpHZW5lcmFsbHkgQVBJIGRvY3VtZW50YXRpb24gaXMgZ2VuZXJhdGVkIGluIEhUTUwuIFdlIHdpbGwgaW4gYSB3YXkgcmV2ZXJzZSBlbmdpbmVlciB0aGlzLCBzY3JhcGluZyBIVE1MIGRvY3VtZW50YXRpb24gYW5kIHB1bGxpbmcgb3V0IHRoZSBBUEkgbWV0aG9kcyBhbmQgb2JqZWN0cy4gQSBtZXRob2QgaXMgYW4gYWN0aW9uIHdoaWxlIGFuIG9iamVjdCBpcyB0aGUgdGhpbmcgdGhhdCBhIG1ldGhvZCBhY3RzIG9uLiAKCjxicj4KCiFbPGJyPjxpPkV4YW1wbGUgb2YgSFRNTCBEb2N1bWVudGF0aW9uIGZvciBhbiBBUEk8L2k+XShpbWFnZXMvZXhhbXBsZUFQSWRvYy5wbmcpCgo8YnI+CgojIyMgQVBJIENhbGxzCgo8YnI+CgpUbyBtYWtlIGFuIEFQSSBjYWxsLCB3ZSB1c2UgdGhlIFtodHRyIHBhY2thZ2VdKGh0dHBzOi8vY3Jhbi5yLXByb2plY3Qub3JnL3dlYi9wYWNrYWdlcy9odHRyL3ZpZ25ldHRlcy9xdWlja3N0YXJ0Lmh0bWwpIHRvIHBlcmZvcm0gdGhlIHJlcXVlc3QuIFdlIHdpbGwgbmVlZCB0byBzcGVjaWZ5IHRoZSBBUEkgbWV0aG9kIChHRVQsIFBPU1QsIFBVVCBhbmQgREVMRVRFKSBhbmQgdGhlIGVuZHBvaW50IFVSTCB3aGVyZSB3ZSB3aWxsIHNlbmQgb3VyIHJlcXVlc3QuIEFkZGl0aW9uYWxseSwgZWFjaCBBUEkgaGFzIHNwZWNpYWwgd2F5cyBvZiBnaXZpbmcgcGVybWlzc2lvbiBmb3IgeW91IHRvIGFjY2VzcyB0aGVpciBBUEkuIFRvIG1ha2UgQVBJIGNhbGxzIHRvIHRoZSBCcmV3ZXJ5REIgQVBJLCB3ZSBuZWVkIHRvIG9idGFpbiBhICJrZXkiIGFuZCBhdHRhY2ggaXQgYXMgYSBxdWVyeSBwYXJhbWV0ZXIgdG8gb3VyIGNhbGwuIFRvIG9idGFpbiB5b3VyIG93biwgZm9sbG93IHRoZSBbZGV2ZWxvcGVyIGluc3RydWN0aW9uc10oaHR0cHM6Ly93d3cuYnJld2VyeWRiLmNvbS9kZXZlbG9wZXJzKS4KCjxicj4KCkhlcmUncyBjb2RlIEkgdXNlIHRvIGNoZWNrIG15IGF1dGhlbnRpY2F0aW9uIHdoZW4gd29ya2luZyB3aXRoIEFQSXMuIAoKYGBge3IgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KCiAgY2hlY2tBdXRoZW50aWNhdGlvbiA8LSBmdW5jdGlvbigpewogIAogICAgc3VwcHJlc3NQYWNrYWdlU3RhcnR1cE1lc3NhZ2VzKHJlcXVpcmUoaHR0cikpCiAgICBzdXBwcmVzc1BhY2thZ2VTdGFydHVwTWVzc2FnZXMocmVxdWlyZShqc29ubGl0ZSkpCiAgICBzdXBwcmVzc1BhY2thZ2VTdGFydHVwTWVzc2FnZXMocmVxdWlyZSh0aWR5dmVyc2UpKQogICAgCiAgICBvcHMgPC0gU3lzLmdldGVudigpCiAgICByZXF1aXJlZE9wdGlvbnMgPC0gYygiYnJld2VyeWRiS2V5IikKICAgIAogICAgZm9yKG9wdGlvbiBpbiByZXF1aXJlZE9wdGlvbnMpewogICAgICBpZihTeXMuZ2V0ZW52KG9wdGlvbikgPT0gJycpewogICAgICAgIHN0b3AocGFzdGUwKCdSZXF1aXJlZCBvcHRpb24gJywgb3B0aW9uLCAnIGhhcyBub3QgYmVlbiBzZXQhIFNldCBpdHMgdmFsdWUgdXNpbmcgU3lzLnNldGVudignLCBvcHRpb24sICcgPSAieycsIG9wdGlvbiwgJ1ZhbHVlfSIpLicpKQogICAgICB9CiAgICB9CiAgfQoKICB0cnkoe2NoZWNrQXV0aGVudGljYXRpb24oKX0pCgpgYGAKCjxicj4KCkkgaGF2ZSBhIGZpbGUgd2hpY2ggaXMgcGxhY2VkIGluIG15IC5naXRpZ25vcmUgd2hpY2ggc2V0cyBteSBBUEkgY3JlZGVudGlhbHMgZm9yIGEgc2Vzc2lvbiBidXQgaXNuJ3QgaW5hZHZlcnRlbnRseSBwb3N0ZWQgdG8gR2l0SHViIQoKYGBge3J9CgogIHNvdXJjZSgnLi4vLi4vYXBpQ3JlZGVudGlhbHMuUicpCgpgYGAKCjxicj4KCkFuZCBoZXJlJ3MgY29kZSB0byBtYWtlIGFuIEFQSSBjYWxsIHVzaW5nIEJyZXdlckRCJ3Mgc3ludGF4LiBJJ3ZlIGFkZGVkIHNvbWUgZmVhdHVyZXMgd2UnbGwgbmVlZCBsYXRlci4KCmBgYHtyfQoKICAjIFRoaXMgZnVuY3Rpb24gbWFrZXMgYSBCcmV3ZXJ5REIgQVBJIHJlcXVlc3QuCiAgbWFrZVJlcXVlc3QgPC0gZnVuY3Rpb24oZW5kcG9pbnQsIHZlcmIsIHBhcmFtcyA9IE5VTEwpewogIAogICAgc3VwcHJlc3NQYWNrYWdlU3RhcnR1cE1lc3NhZ2VzKHJlcXVpcmUoaHR0cikpCiAgICBzdXBwcmVzc1BhY2thZ2VTdGFydHVwTWVzc2FnZXMocmVxdWlyZSh0aWR5dmVyc2UpKQogICAgc3VwcHJlc3NQYWNrYWdlU3RhcnR1cE1lc3NhZ2VzKHJlcXVpcmUobWFncml0dHIpKQogICAgCiAgICBjaGVja0F1dGhlbnRpY2F0aW9uKCkKICAgIAogICAgYmFzZVVybCA8LSAnaHR0cHM6Ly9zYW5kYm94LWFwaS5icmV3ZXJ5ZGIuY29tL3YyJwogICAgCiAgICBlbmRwb2ludCAlPD4lIHBhc3RlMCgnLz9rZXk9JywgU3lzLmdldGVudignYnJld2VyeWRiS2V5JykpCiAgCiAgICBpZihsZW5ndGgocGFyYW1zKSA+IDApIGVuZHBvaW50ICU8PiUgcGFzdGUwKCcmJywgVVJMZW5jb2RlKHBhc3RlKHBhc3RlKG5hbWVzKHBhcmFtcyksIGFzLmNoYXJhY3RlcihwYXJhbXMpLCBzZXAgPSAnPScpLCBjb2xsYXBzZSA9ICcmJykpKQogIAogICAgcmVxdWVzdCA8LSBwYXN0ZTAodmVyYiwgJygiJywgYmFzZVVybCwgZW5kcG9pbnQsICciLCBhY2NlcHRfanNvbigpKScpCiAgCiAgICBldmFsKHBhcnNlKHRleHQgPSBwYXN0ZTAoJ3Jlc3BvbnNlIDwtICcsIHJlcXVlc3QpKSkKICAgIAogICAgaWYocmVzcG9uc2Ukc3RhdHVzX2NvZGUgPCAzMDApewogICAgICByZXR1cm4oY29udGVudChyZXNwb25zZSkpCiAgICB9ZWxzZXsKICAgICAgc3RvcChjb250ZW50KHJlc3BvbnNlKSkKICAgIH0KICB9CgogICMgVGVzdGluZyBpdCBvdXQuCiAgc2FtcGxlUmVxdWVzdCA8LSBtYWtlUmVxdWVzdCgnL2JlZXIvV0hRaXNjJywgJ0dFVCcpCiAgcHJpbnQoc2FtcGxlUmVxdWVzdCkKYGBgCgo8YnI+CgpBcyB5b3UgY2FuIHNlZSwgdGhlIHJldHVybiB0eXBlIGlzIEpTT04gZm9ybWF0dGVkLiBXZSBjYW4gdXNlIHRoZSBbanNvbmxpdGUgcGFja2FnZV0oaHR0cHM6Ly9jcmFuLnItcHJvamVjdC5vcmcvd2ViL3BhY2thZ2VzL2pzb25saXRlL3ZpZ25ldHRlcy9qc29uLWFhcXVpY2tzdGFydC5odG1sKSB0byBjb252ZXJ0IHRoaXMgaW50byBzb21ldGhpbmcgbW9yZSBtYW5hZ2VhYmxlLgoKYGBge3J9CgogICMgVGhpcyBmdW5jdGlvbiBjb25zaXN0ZW50bHkgZmxhdHRlbnMgYSBqc29uIGxpc3QgaW50byBhIGRhdGFmcmFtZS4KICBmbGF0dGVuSnNvbkxpc3QgPC0gZnVuY3Rpb24oanNvbkxpc3QpewogICAgCiAgICBzdXBwcmVzc1BhY2thZ2VTdGFydHVwTWVzc2FnZXMocmVxdWlyZShkcGx5cikpCiAgICBzdXBwcmVzc1BhY2thZ2VTdGFydHVwTWVzc2FnZXMocmVxdWlyZShqc29ubGl0ZSkpCiAgICAKICAgICMgSWYganNvbkxpc3QgaXMgbm90IGEgbmFtZWQgbGlzdCwgbWFrZSBpdCBvbmUuCiAgICBpZihsZW5ndGgobmFtZXMoanNvbkxpc3RbWzFdXSkpID09IDApIGpzb25MaXN0IDwtIGxpc3QoanNvbkxpc3QpCiAgICAKICAgIGZvcihpdGVtIGluIGpzb25MaXN0KXsKICAgICAgCiAgICAgIGl0ZW0gPSBkYXRhLmZyYW1lKGl0ZW0sIHN0cmluZ3NBc0ZhY3RvcnMgPSBGKQogICAgICAKICAgICAgaWYoIWV4aXN0cygnZGYnLCBpbmhlcml0cyA9IEZBTFNFKSl7CiAgICAgICAgZGYgPC0gZmxhdHRlbihpdGVtKQogICAgICB9ZWxzZXsKICAgICAgICBkZiA8LSBiaW5kX3Jvd3MoZGYsIGZsYXR0ZW4oaXRlbSkpCiAgICAgIH0KICAgIH0KICAgIHJldHVybihkZikKICB9CgogIHByaW50KGZsYXR0ZW5Kc29uTGlzdChzYW1wbGVSZXF1ZXN0JGRhdGEpICU+JSBhcy5kYXRhLmZyYW1lKCkpCgpgYGAKCiMjIyBBUEkgRG9jdW1lbnRhdGlvbiAtPiBSIEZ1bmN0aW9ucwoKPGJyPgoKRm9yIHRoZSBleGFtcGxlIGFib3ZlLCB0aGUgZG9jdW1lbmF0aW9uIGlzIGFsbCBhYm91dCBCZWVyIHdoaWNoIEknbGwgY2FsbCBvdXIgb2JqZWN0LiBDbGlja2luZyBhcm91bmQgb24gdGhlIGVuZHBvaW50IHBhZ2VzLCB3ZSBzZWUgdGhhdCBkb2N1bWVudGF0aW9uIHBhZ2VzIGNhbiBiZSB1c2VkIGFzIG9iamVjdCBuYW1lcy4gVGhlIGN1cnJlbnQgcGFnZSBpcyAiYmVlci1pbmRleCIsIGFuZCBpcyBmb2xsb3dlZCBiZWxvdyBieSAiYmVlci1hZGp1bmN0IiBhbmQgImJlZXItYnJld2VyeSIuIE90aGVyIGV4YW1wbGVzIGluY2x1ZGUgImJyZXdlcnktaW5kZXgiIGFuZCAiYnJld2VyeS1iZWVyIiwgc28gaXQgbWFrZXMgc2Vuc2UgdG8gc2NyYXBlIGEgcGFnZSB0byBjb3JyZXNwb25kIHRvIG91ciBvYmplY3QgbmFtZS4KCmBgYHtyfQoKICBzdXBwcmVzc1BhY2thZ2VTdGFydHVwTWVzc2FnZXMocmVxdWlyZSh0aWR5dmVyc2UpKQoKICAjIEV2ZW50dWFsbHkgd2UnZCBsaWtlIHRvIHNjcmFwZSB0aGUgd2hvbGUgc2l0ZSBzbyBsZXRzIHByZXBhcmUuCiAgcGFnZXMgPSBjKCdiZWVyLWluZGV4JywgJ2JlZXItYWRqdW5jdCcsICdiZWVyLWJyZXdlcnknKQoKICBmb3IocGFnZSBpbiBwYWdlcyl7IAogICAgCiAgICAgb2JqZWN0IDwtIHBhZ2UgJT4lIHN0cl9yZXBsYWNlKCctJywgJyAnKSAlPiUgc3RyX3RvX3RpdGxlKCkgJT4lIHN0cl9yZXBsYWNlKCcgJywgJycpICU+JSBzdHJfcmVwbGFjZSgnSW5kZXgnLCAnJykKICAgIAogICAgIHByaW50KG9iamVjdCkKICB9CmBgYAoKPGJyPgoKVGhlIGJlZXItaW5kZXggcGFnZSBsaXN0cyBBUEkgbWV0aG9kcyBmb3IgaW50ZXJhY3Rpbmcgd2l0aCBCZWVyIG9iamVjdHMuIFRoZXNlIGZpdmUgbWFpbiBzZWN0aW9ucyBzcGVsbCBvdXQgYSBsb2dpY2FsIG1ldGhvZCBmb3IgZ2VuZXJhdGluZyBmdW5jdGlvbiBuYW1lcy4KCjxicj4KCnwgRG9jdW1lbnRhdGlvbiAgICAgICAgfCBNZXRob2R8IEVuZHBvaW50IFVSTCAgfCBSIEZ1bmN0aW9uICAgICAgICB8IFdoYXQgaXQgZG9lcyAgICAgICAgICAgICAgICAgICAgfAp8IDotLS0tLS0tLS0tLS0tLS0tLS06IHw6LS0tLS06fCA6LS0tLS0tLS0tLS0tOnw6LS0tLS0tLS0tLS0tLS0tLS06fDotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tOnwKfCBHRVQ6IC9iZWVycyAgICAgICAgICB8IEdFVCAgIHwgL2JlZXJzICAgICAgICB8IGdldEV2ZXJ5QmVlciguLi4pIHwgTGlzdHMgZXZlcnkgYmVlciAgICAgICAgICAgICAgICB8CnwgR0VUOiAvYmVlci86YmVlcklkICAgfCBHRVQgICB8IC9iZWVyLzpiZWVySWQgfCBnZXRCZWVyKC4uLikgICAgICB8IEdldHMgZGV0YWlscyBvbiBhIHNwZWNpZmljIGJlZXIgfAp8IFBPU1Q6IC9iZWVycyAgICAgICAgIHwgUE9TVCAgfCAvYmVlcnMgICAgICAgIHwgY3JlYXRlQmVlciguLi4pICAgfCBDcmVhdGVzIGEgbmV3IGJlZXIgICAgICAgICAgICAgIHwKfCBQVVQ6IC9iZWVyLzpiZWVySWQgICB8IFBVVCAgIHwgL2JlZXIvOmJlZXJJZCB8IG1vZGlmeUJlZXIoLi4uKSAgIHwgTW9kaWZpZXMgYSBzcGVjaWZpYyBiZWVyICAgICAgICB8CnwgREVMRVRFOiAvYmVlci86YmVlcklkfCBERUxFVEV8IC9iZWVyLzpiZWVySWQgfCBkZWxldGVCZWVyKC4uLikgICB8IERlbGV0ZXMgYSBzcGVjaWZpYyBiZWVyICAgICAgICAgfAoKPGJyPgoKU28gaG93IGRvIHdlIGdvIGFib3V0IGdlbmVyYXRpbmcgZnVuY3Rpb25zPyBbVGhlIFJ2ZXN0IFBhY2thZ2VdKGh0dHBzOi8vZ2l0aHViLmNvbS90aWR5dmVyc2UvcnZlc3QvYmxvYi9tYXN0ZXIvUkVBRE1FLm1kKSEKCjxicj4KCiMjIyBTY3JhcGluZyBIVE1MIEFQSSBEb2N1bWVudGF0aW9uCgo8YnI+CgpPbmNlIHdlIGhhdmUgaWRlbnRpZmllZCB3aGVyZSBvbiB0aGUgc2NyZWVuIGFyZSB0aGUgQVBJIG1ldGhvZHMgYW5kIGVuZHBvaW50cywgd2UgbmVlZCB0byBwdWxsIHRoYXQgaW5mb3JtYXRpb24gaW50byBSLiBSdmVzdCBhbGxvd3MgdXMgdG8gc2VhcmNoIGEgc3RhdGljIHdlYiBwYWdlIGZvciBodG1sIG5vZGVzIGFuZCBhdHRyaWJ1dGVzLiBJIGZpbmQgaXQgZWFzaWVzdCB0byB1c2UgYSB0b29sIGxpa2UgW0dvb2dsZSBDaHJvbWUncyBTZWxlY3RvciBHYWRnZXRdKGh0dHBzOi8vY2hyb21lLmdvb2dsZS5jb20vd2Vic3RvcmUvc2VhcmNoL3NlbGVjdG9yJTIwZ2FkZ2V0KSB0byBpZGVudGlmeSB0aGUgc3BlY2lmaWMgSFRNTCBlbGVtZW50cyB0byBzY3JhcGUuCgohWzxicj48aT5TZWxlY3RvciBHYWRnZXQgaW4gdGhlIENocm9tZSBXZWIgU3RvcmU8L2k+XShpbWFnZXMvc2VsZWN0b3JHYWRnZXQucG5nKQoKPGJyPgoKTGV0J3MgZ2V0IHNjcmFwaW5nISBJdCB0dXJucyBvdXQgdGhhdCBvdXIgbWV0aG9kL2VuZHBvaW50IHRleHRzIGNvcnJlc3BvbmQgdG8gImgzIHNwYW4iIGVsZW1lbnRzLiBUaGV5IHdpbGwgbmVlZCB0byBiZSBzcGxpdCBvbiB0aGUgY29sb24gcmlnaHQgYWZ0ZXIgdGhlIGFwaSBtZXRob2QgdGV4dC4gRWcuICJHRVQ6IiAvYmVlcnMiIGJlY29tZXMgYXBpTWV0aG9kICJHRVQiIGFuZCBlbmRwb2ludCAiL2JlZXJzIi4KCmBgYHtyfQoKICBzdXBwcmVzc1BhY2thZ2VTdGFydHVwTWVzc2FnZXMocmVxdWlyZShydmVzdCkpCiAgc3VwcHJlc3NQYWNrYWdlU3RhcnR1cE1lc3NhZ2VzKHJlcXVpcmUobWFncml0dHIpKQoKICBmdW5jdGlvbnNVcmwgPC0gJ2h0dHBzOi8vd3d3LmJyZXdlcnlkYi5jb20vZGV2ZWxvcGVycy9kb2NzL2VuZHBvaW50LycKICAKICAjIEV2ZW50dWFsbHkgd2UnbGwgZXhwYW5kIHRoaXMgdG8gYWxsIHBhZ2VzLgogIGZvcihwYWdlIGluICdiZWVyLWluZGV4Jyl7IAogICAgCiAgICBodG1sIDwtIHJlYWRfaHRtbChwYXN0ZTAoZnVuY3Rpb25zVXJsLCBwYWdlKSkKICAKICAgICMgRWFjaCBtZXRob2QgYmVjb21lcyBhIGZ1bmN0aW9uLgogICAgYXBpTWV0aG9kcyA8LSBodG1sICU+JSBodG1sX25vZGVzKCdoMyBzcGFuJykgJT4lIHJ2ZXN0OjpodG1sX3RleHQoKQogICAgCiAgICBtZXRob2RzQW5kRW5kcG9pbnRzIDwtIE5VTEwKICAgIGZvcihpIGluIDE6bGVuZ3RoKGFwaU1ldGhvZHMpKXsKICAgICAgCiAgICAgIGFwaU1ldGhvZFRleHQgPC0gYXBpTWV0aG9kc1tbaV1dCiAgICAgIAogICAgICAjIEdyYWIgYXBpIG1ldGhvZCAoR0VULCBQT1NULCBQVVQsIERFTEVURSkKICAgICAgYXBpTWV0aG9kIDwtIHN0cl9zdWIoYXBpTWV0aG9kVGV4dCwgMSwgYXBpTWV0aG9kVGV4dCAlPiUgc3RyX2xvY2F0ZSgnOicpICU+JSBleHRyYWN0MigxKSAtIDEpCiAgICAgIAogICAgICAjIEdyYWIgZW5kcG9pbnQgZm9yIHJlcXVlc3QuCiAgICAgIGVuZHBvaW50IDwtIGFwaU1ldGhvZFRleHQgJT4lIHN0cl9zdWIoYXBpTWV0aG9kVGV4dCAlPiUgc3RyX2xvY2F0ZSgnOicpICU+JSBleHRyYWN0MigxKSArIDIsIG5jaGFyKGFwaU1ldGhvZFRleHQpKQogICAgICAKICAgICAgbWV0aG9kc0FuZEVuZHBvaW50cyA8LSBiaW5kX3Jvd3MobWV0aG9kc0FuZEVuZHBvaW50cywgdGliYmxlKE1ldGhvZCA9IGFwaU1ldGhvZCwgRW5kcG9pbnQgPSBlbmRwb2ludCkpCiAgICB9CiAgICAKICAgIHByaW50KG1ldGhvZHNBbmRFbmRwb2ludHMpCiAgfQpgYGAKCjxicj4KCkp1c3QgZm9yIGZ1bnppZXMsIGxldCdzIHJ1biBpdCBvbiBzb21lIG1vcmUgcGFnZXMgdG8gbWFrZSBzdXJlIHRoZSBkb2N1bWVudGF0aW9uIGlzIGNvbnNpc3RlbnQuCgo8YnI+CgpgYGB7cn0KCiAgcGFnZXMgPC0gYygnYmVlci1pbmRleCcsICdiZWVyLWFkanVuY3QnLCAnYmVlci1icmV3ZXJ5JykKCiAgIyBFdmVudHVhbGx5IHdlJ2xsIGV4cGFuZCB0aGlzIHRvIGFsbCBwYWdlcy4KICBmb3IocGFnZSBpbiBwYWdlcyl7IAogICAgCiAgICBodG1sIDwtIHJlYWRfaHRtbChwYXN0ZTAoZnVuY3Rpb25zVXJsLCBwYWdlKSkKICAKICAgICMgRWFjaCBtZXRob2QgYmVjb21lcyBhIGZ1bmN0aW9uLgogICAgYXBpTWV0aG9kcyA8LSBodG1sICU+JSBodG1sX25vZGVzKCdoMyBzcGFuJykgJT4lIHJ2ZXN0OjpodG1sX3RleHQoKQogICAgCiAgICBtZXRob2RzQW5kRW5kcG9pbnRzIDwtIE5VTEwKICAgIGZvcihpIGluIDE6bGVuZ3RoKGFwaU1ldGhvZHMpKXsKICAgICAgCiAgICAgIGFwaU1ldGhvZFRleHQgPC0gYXBpTWV0aG9kc1tbaV1dCiAgICAgIAogICAgICAjIEdyYWIgYXBpIG1ldGhvZCAoR0VULCBQT1NULCBQVVQsIERFTEVURSkKICAgICAgYXBpTWV0aG9kIDwtIHN0cl9zdWIoYXBpTWV0aG9kVGV4dCwgMSwgYXBpTWV0aG9kVGV4dCAlPiUgc3RyX2xvY2F0ZSgnOicpICU+JSBleHRyYWN0MigxKSAtIDEpCiAgICAgIAogICAgICAjIEdyYWIgZW5kcG9pbnQgZm9yIHJlcXVlc3QuCiAgICAgIGVuZHBvaW50IDwtIGFwaU1ldGhvZFRleHQgJT4lIHN0cl9zdWIoYXBpTWV0aG9kVGV4dCAlPiUgc3RyX2xvY2F0ZSgnOicpICU+JSBleHRyYWN0MigxKSArIDIsIG5jaGFyKGFwaU1ldGhvZFRleHQpKQogICAgICAKICAgICAgbWV0aG9kc0FuZEVuZHBvaW50cyA8LSBiaW5kX3Jvd3MobWV0aG9kc0FuZEVuZHBvaW50cywgdGliYmxlKE1ldGhvZCA9IGFwaU1ldGhvZCwgRW5kcG9pbnQgPSBlbmRwb2ludCkpCiAgICB9CiAgICAKICAgIHByaW50KHBhZ2UpCiAgICBwcmludChtZXRob2RzQW5kRW5kcG9pbnRzKQogICAgY2F0KCdcblxuJykKICB9CmBgYAoKPGJyPgoKTm93IHdlJ3JlIGNvb2tpbmcuIFdoaWxlIHdlJ3JlIGF0IGl0LCBjb3VsZCB3ZSBzY3JhcGUgdGhlIHBhZ2UgbmFtZSBvZiBlYWNoIGRvY3VtZW50YXRpb24gcGFnZSB3ZSB3aWxsIHdhbnQgZnVuY3Rpb25zIGZvcj8gSXQgdHVybnMgb3V0IHRoYXQgZWFjaCBvZiB0aG9zZSBwYWdlIGxhYmVscyBhcmUgImxpIGEiIGVsZW1lbnRzIG9uIHRoZSBkb2N1bWVudGF0aW9uIHBhZ2UuIEZpbmRpbmcgdGhvc2UgZWxlbWVudHMgYW5kIGdyYWJiaW5nIHRoZWlyICdocmVmJyBhdHRyaWJ1dGUgd2lsbCBnaXZlIHVzIGVhY2ggcGFnZSBVUkwgd2UnbGwgbmVlZC4KCmBgYHtyfQoKICAjIFRoaXMgZnVuY3Rpb24gcmV0dXJucyBhbGwgYXBpIGVuZHBvaW50IHBhZ2VzLgogIGdldEFsbEFQSXBhZ2VzIDwtIGZ1bmN0aW9uKCl7CiAgICAKICAgIGh0bWwgPC0gcmVhZF9odG1sKHBhc3RlMChmdW5jdGlvbnNVcmwpKQogICAgCiAgICBwYWdlcyA8LSBodG1sICU+JSBodG1sX25vZGVzKCdsaSBhJykgJT4lIGh0bWxfYXR0cignaHJlZicpCiAgICAKICAgIHBhZ2VzIDwtIHBhZ2VzW3BhZ2VzICU+JSBzdHJfd2hpY2goJy9kZXZlbG9wZXJzL2RvY3MvZW5kcG9pbnQvJyldICU+JSBzdHJfcmVwbGFjZV9hbGwoJy9kZXZlbG9wZXJzL2RvY3MvZW5kcG9pbnQvJywgJycpCiAgICAKICAgIHJldHVybihwYWdlcykKICB9CgogIGdldEFsbEFQSXBhZ2VzKCkKYGBgCgo8YnI+CgpTbyBob3cgZG8gd2UgdHJhbnNsYXRlIHRoZSBhcGkgbWV0aG9kIGFuZCBlbmRwb2ludCBpbnRvIGEgZnVuY3Rpb24/IExldCdzIHN0YXJ0IGJ5IGdlbmVyYXRpbmcgdGhlIGVhc2llc3QgZnVuY3Rpb246IGdldEV2ZXJ5QmVlciguLi4pLiAKCiMjIyBHZW5lcmF0aW5nIC5SIEZpbGVzCgo8YnI+CgpSIGhhcyBhIHZlcnkgaGFuZHkgYnV0IGRhbmdlcm91cyBmdW5jdGlvbiBjYWxsZWQgc2luaygpIHdoaWNoIHdpbGwgZnVubmVsIGFsbCBvdXRwdXQgdGhhdCB3b3VsZCBub3JtYWxseSBnbyB0byB0aGUgY29uc29sZSB0byBhIGZpbGUgaW5zdGVhZC4gSWYgd2UncmUgY2xldmVyIHdpdGggaXQgd2UgY2FuIGdlbmVyYXRlIGEgLlIgZmlsZSB3aXRoIGZ1bmN0aW9ucyBvbiB0aGUgZmx5LiAqV2FybmluZzoqIElmIHlvdSBmb3JnZXQgdG8gdHVybiB0aGUgc2luayBvZmYgc28gdG8gc3BlYWssIHlvdSB3b24ndCBnZXQgYW55IG91dHB1dCBmcm9tIGZ1bmN0aW9ucyB5b3UgcnVuIGxhdGVyLiBZb3Ugd2lsbCB0aGluayB5b3UndmUgYnJva2VuIFJTdHVkaW8gYW5kIHN0YXJ0IEdvb2dsaW5nIGZvciBmaXhlcyB1bnRpbCB5b3UgcmVhbGl6ZSB0aGF0IGFsbCB0aGUgY29uc29sZSBvdXRwdXQgaXMgc3RpbGwgZ29pbmcgdG8gdGhlIC5SIGZpbGUhISEgSHlwb3RoZXRpY2FsbHkgc3BlYWtpbmcuLi4KCjxicj4KCgoKCg==</div>
 
 
 

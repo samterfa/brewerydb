@@ -29,13 +29,13 @@ To make an API call, we use the [httr package](https://cran.r-project.org/web/pa
 
 Here's code I use to check my authentication when working with APIs. 
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 
   checkAuthentication <- function(){
   
-    require(httr)
-    require(jsonlite)
-    require(tidyverse)
+    suppressPackageStartupMessages(require(httr))
+    suppressPackageStartupMessages(require(jsonlite))
+    suppressPackageStartupMessages(require(tidyverse))
     
     ops <- Sys.getenv()
     requiredOptions <- c("brewerydbKey")
@@ -47,7 +47,7 @@ Here's code I use to check my authentication when working with APIs.
     }
   }
 
-  print(checkAuthentication())
+  try({checkAuthentication()})
 
 ```
 
@@ -70,9 +70,9 @@ And here's code to make an API call using BrewerDB's syntax. I've added some fea
   # This function makes a BreweryDB API request.
   makeRequest <- function(endpoint, verb, params = NULL){
   
-    require(httr)
-    require(tidyverse)
-    require(magrittr)
+    suppressPackageStartupMessages(require(httr))
+    suppressPackageStartupMessages(require(tidyverse))
+    suppressPackageStartupMessages(require(magrittr))
     
     checkAuthentication()
     
@@ -80,7 +80,7 @@ And here's code to make an API call using BrewerDB's syntax. I've added some fea
     
     endpoint %<>% paste0('/?key=', Sys.getenv('brewerydbKey'))
   
-    if(length(params) > 0) endpoint %<>% paste0('&', paste(paste(names(params), as.character(params), sep = '='), collapse = '&'))
+    if(length(params) > 0) endpoint %<>% paste0('&', URLencode(paste(paste(names(params), as.character(params), sep = '='), collapse = '&')))
   
     request <- paste0(verb, '("', baseUrl, endpoint, '", accept_json())')
   
@@ -94,21 +94,21 @@ And here's code to make an API call using BrewerDB's syntax. I've added some fea
   }
 
   # Testing it out.
-  sampleRequest <- makeRequest('/beers', 'GET', params = list(year = '2012'))
+  sampleRequest <- makeRequest('/beer/WHQisc', 'GET')
   print(sampleRequest)
 ```
 
 <br>
 
-As you can see, the return type is JSON formatted. We can use the jsonlite package to convert this into something more manageable.
+As you can see, the return type is JSON formatted. We can use the [jsonlite package](https://cran.r-project.org/web/packages/jsonlite/vignettes/json-aaquickstart.html) to convert this into something more manageable.
 
 ```{r}
 
   # This function consistently flattens a json list into a dataframe.
   flattenJsonList <- function(jsonList){
     
-    require(dplyr)
-    require(jsonlite)
+    suppressPackageStartupMessages(require(dplyr))
+    suppressPackageStartupMessages(require(jsonlite))
     
     # If jsonList is not a named list, make it one.
     if(length(names(jsonList[[1]])) == 0) jsonList <- list(jsonList)
@@ -134,7 +134,7 @@ As you can see, the return type is JSON formatted. We can use the jsonlite packa
 
 <br>
 
-For the example above, the documenation is all about Beer which I'll call our object. Clicking around on the endpoint pages, we see that documentation pages can be used as object names. The current page is "beer-index"", and is followed below by "beer-adjunct" and "beer-brewery". Other examples include "brewery-index" and "brewery-beer", so it makes sense to scrape a page to correspond to our object name.
+For the example above, the documenation is all about Beer which I'll call our object. Clicking around on the endpoint pages, we see that documentation pages can be used as object names. The current page is "beer-index", and is followed below by "beer-adjunct" and "beer-brewery". Other examples include "brewery-index" and "brewery-beer", so it makes sense to scrape a page to correspond to our object name.
 
 ```{r}
 
@@ -250,12 +250,13 @@ Just for funzies, let's run it on some more pages to make sure the documentation
     
     print(page)
     print(methodsAndEndpoints)
+    cat('\n\n')
   }
 ```
 
 <br>
 
-Now we're cooking. While we're at it, could we scrape the page name of each documentation page we will want functions for? It turns out that each of those page labels are "li a"" elements on the documentation page. Finding those elements and grabbing their 'href' attribute will give us each page URL we'll need.
+Now we're cooking. While we're at it, could we scrape the page name of each documentation page we will want functions for? It turns out that each of those page labels are "li a" elements on the documentation page. Finding those elements and grabbing their 'href' attribute will give us each page URL we'll need.
 
 ```{r}
 
@@ -278,6 +279,13 @@ Now we're cooking. While we're at it, could we scrape the page name of each docu
 
 So how do we translate the api method and endpoint into a function? Let's start by generating the easiest function: getEveryBeer(...). 
 
+### Generating .R Files
+
+<br>
+
+R has a very handy but dangerous function called sink() which will funnel all output that would normally go to the console to a file instead. If we're clever with it we can generate a .R file with functions on the fly. *Warning:* If you forget to turn the sink off so to speak, you won't get any output from functions you run later. You will think you've broken RStudio and start Googling for fixes until you realize that all the console output is still going to the .R file!!! Hypothetically speaking...
+
+<br>
 
 
 

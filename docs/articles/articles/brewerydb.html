@@ -109,9 +109,9 @@
 <p>Here’s code I use to check my authentication when working with APIs.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  checkAuthentication &lt;-<span class="st"> </span><span class="cf">function</span>(){
   
-    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(httr)
-    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(jsonlite)
-    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(tidyverse)
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(httr))
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(jsonlite))
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(tidyverse))
     
     ops &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.getenv">Sys.getenv</a></span>()
     requiredOptions &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"brewerydbKey"</span>)
@@ -123,26 +123,9 @@
     }
   }
 
-  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw">checkAuthentication</span>())</code></pre></div>
-<pre><code>## Loading required package: httr</code></pre>
-<pre><code>## Loading required package: jsonlite</code></pre>
-<pre><code>## Loading required package: tidyverse</code></pre>
-<pre><code>## ── Attaching packages ────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
-<pre><code>## ✔ ggplot2 3.1.0       ✔ purrr   0.3.2  
-## ✔ tibble  2.1.1       ✔ dplyr   0.8.0.1
-## ✔ tidyr   0.8.3       ✔ stringr 1.4.0  
-## ✔ readr   1.3.1       ✔ forcats 0.4.0</code></pre>
-<pre><code>## Warning: package 'tibble' was built under R version 3.5.2</code></pre>
-<pre><code>## Warning: package 'tidyr' was built under R version 3.5.2</code></pre>
-<pre><code>## Warning: package 'purrr' was built under R version 3.5.2</code></pre>
-<pre><code>## Warning: package 'dplyr' was built under R version 3.5.2</code></pre>
-<pre><code>## Warning: package 'stringr' was built under R version 3.5.2</code></pre>
-<pre><code>## Warning: package 'forcats' was built under R version 3.5.2</code></pre>
-<pre><code>## ── Conflicts ───────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter()  masks stats::filter()
-## ✖ purrr::flatten() masks jsonlite::flatten()
-## ✖ dplyr::lag()     masks stats::lag()</code></pre>
-<pre><code>## NULL</code></pre>
+  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/try">try</a></span>({<span class="kw">checkAuthentication</span>()})</code></pre></div>
+<pre><code>## Error in checkAuthentication() : 
+##   Required option brewerydbKey has not been set! Set its value using Sys.setenv(brewerydbKey = "{brewerydbKeyValue}").</code></pre>
 <p><br></p>
 <p>I have a file which is placed in my .gitignore which sets my API credentials for a session but isn’t inadvertently posted to GitHub!</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/source">source</a></span>(<span class="st">'../../apiCredentials.R'</span>)</code></pre></div>
@@ -151,9 +134,9 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="co"># This function makes a BreweryDB API request.</span>
   makeRequest &lt;-<span class="st"> </span><span class="cf">function</span>(endpoint, verb, <span class="dt">params =</span> <span class="ot">NULL</span>){
   
-    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(httr)
-    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(tidyverse)
-    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(magrittr)
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(httr))
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(tidyverse))
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(magrittr))
     
     <span class="kw">checkAuthentication</span>()
     
@@ -161,7 +144,7 @@
     
     endpoint <span class="op">%&lt;&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">'/?key='</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.getenv">Sys.getenv</a></span>(<span class="st">'brewerydbKey'</span>))
   
-    <span class="cf">if</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(params) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) endpoint <span class="op">%&lt;&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">'&amp;'</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(params), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/character">as.character</a></span>(params), <span class="dt">sep =</span> <span class="st">'='</span>), <span class="dt">collapse =</span> <span class="st">'&amp;'</span>))
+    <span class="cf">if</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(params) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) endpoint <span class="op">%&lt;&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">'&amp;'</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/URLencode">URLencode</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(params), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/character">as.character</a></span>(params), <span class="dt">sep =</span> <span class="st">'='</span>), <span class="dt">collapse =</span> <span class="st">'&amp;'</span>)))
   
     request &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(verb, <span class="st">'("'</span>, baseUrl, endpoint, <span class="st">'", accept_json())'</span>)
   
@@ -175,457 +158,196 @@
   }
 
   <span class="co"># Testing it out.</span>
-  sampleRequest &lt;-<span class="st"> </span><span class="kw">makeRequest</span>(<span class="st">'/beers'</span>, <span class="st">'GET'</span>, <span class="dt">params =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">year =</span> <span class="st">'2012'</span>))</code></pre></div>
-<pre><code>## Loading required package: magrittr</code></pre>
-<pre><code>## 
-## Attaching package: 'magrittr'</code></pre>
-<pre><code>## The following object is masked from 'package:purrr':
-## 
-##     set_names</code></pre>
-<pre><code>## The following object is masked from 'package:tidyr':
-## 
-##     extract</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(sampleRequest)</code></pre></div>
-<pre><code>## $currentPage
-## [1] 1
-## 
-## $numberOfPages
-## [1] 1
-## 
-## $totalResults
-## [1] 3
+  sampleRequest &lt;-<span class="st"> </span><span class="kw">makeRequest</span>(<span class="st">'/beer/WHQisc'</span>, <span class="st">'GET'</span>)
+  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(sampleRequest)</code></pre></div>
+<pre><code>## $message
+## [1] "READ ONLY MODE: Request Successful"
 ## 
 ## $data
-## $data[[1]]
-## $data[[1]]$id
-## [1] "Du7C2e"
+## $data$id
+## [1] "WHQisc"
 ## 
-## $data[[1]]$name
-## [1] "Black Tulip"
+## $data$name
+## [1] "Dragon's Milk"
 ## 
-## $data[[1]]$nameDisplay
-## [1] "Black Tulip (2012)"
+## $data$nameDisplay
+## [1] "Dragon's Milk"
 ## 
-## $data[[1]]$description
-## [1] "Mysterious, alluring and seductive, while tantalizingly elusive.  Ester-laden character reveals and enigmatic dance between Belgian ale yeast and Michigan beet sugar, conjuring hints of bananas before a dry finish."
+## $data$description
+## [1] "A barrel-aged, strong-ale with a soft and rich caramel-malt character intermingled with deep vanilla tones dancing in an oak bath. Unmistakably distinctive and hauntingly remarkable, Dragon's Milk's warming complexity pairs well with smoked meats and cheeses, red meat, or a nice cigar."
 ## 
-## $data[[1]]$abv
-## [1] "8.8"
+## $data$abv
+## [1] "11"
 ## 
-## $data[[1]]$ibu
-## [1] "21"
+## $data$ibu
+## [1] "31"
 ## 
-## $data[[1]]$styleId
-## [1] 59
-## 
-## $data[[1]]$isOrganic
-## [1] "N"
-## 
-## $data[[1]]$isRetired
-## [1] "N"
-## 
-## $data[[1]]$year
-## [1] 2012
-## 
-## $data[[1]]$labels
-## $data[[1]]$labels$icon
-## [1] "https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-icon.png"
-## 
-## $data[[1]]$labels$medium
-## [1] "https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-medium.png"
-## 
-## $data[[1]]$labels$large
-## [1] "https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-large.png"
-## 
-## $data[[1]]$labels$contentAwareIcon
-## [1] "https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-contentAwareIcon.png"
-## 
-## $data[[1]]$labels$contentAwareMedium
-## [1] "https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-contentAwareMedium.png"
-## 
-## $data[[1]]$labels$contentAwareLarge
-## [1] "https://brewerydb-images.s3.amazonaws.com/beer/Du7C2e/upload_eo8uXE-contentAwareLarge.png"
-## 
-## 
-## $data[[1]]$status
-## [1] "verified"
-## 
-## $data[[1]]$statusDisplay
-## [1] "Verified"
-## 
-## $data[[1]]$foodPairings
-## [1] "Melon, Semi-hard cheese, berries &amp; ginger"
-## 
-## $data[[1]]$createDate
-## [1] "2012-01-03 02:42:51"
-## 
-## $data[[1]]$updateDate
-## [1] "2018-11-02 02:15:14"
-## 
-## $data[[1]]$style
-## $data[[1]]$style$id
-## [1] 59
-## 
-## $data[[1]]$style$categoryId
-## [1] 5
-## 
-## $data[[1]]$style$category
-## $data[[1]]$style$category$id
-## [1] 5
-## 
-## $data[[1]]$style$category$name
-## [1] "Belgian And French Origin Ales"
-## 
-## $data[[1]]$style$category$createDate
-## [1] "2012-03-21 20:06:46"
-## 
-## 
-## $data[[1]]$style$name
-## [1] "Belgian-Style Tripel"
-## 
-## $data[[1]]$style$shortName
-## [1] "Belgian Tripel"
-## 
-## $data[[1]]$style$description
-## [1] "Tripels are often characterized by a complex, sometimes mild spicy character. Clove-like phenolic flavor and aroma may be evident at extremely low levels. Yeast-generated  fruity esters, including banana, are also common, but not necessary. These pale/light-colored ales may finish sweet, though any sweet finish should be light. The beer is characteristically medium and clean in body with an equalizing hop/malt balance and a perception of medium to medium high hop bitterness. Traditional Belgian Tripels are often well attenuated. Brewing sugar may be used to lighten the perception of body. Its sweetness will come from very pale malts. There should not be character from any roasted or dark malts. Low hop flavor is acceptable. Alcohol strength and flavor should be perceived as evident. Head retention is dense and mousse-like. Chill haze is acceptable at low serving temperatures. Traditional Tripels are bottle conditioned, may exhibit slight yeast haze but the yeast should not be intentionally roused. Oxidative character if evident in aged Tripels should be mild and pleasant."
-## 
-## $data[[1]]$style$ibuMin
-## [1] "20"
-## 
-## $data[[1]]$style$ibuMax
-## [1] "45"
-## 
-## $data[[1]]$style$abvMin
-## [1] "7"
-## 
-## $data[[1]]$style$abvMax
-## [1] "10"
-## 
-## $data[[1]]$style$srmMin
-## [1] "4"
-## 
-## $data[[1]]$style$srmMax
-## [1] "9"
-## 
-## $data[[1]]$style$ogMin
-## [1] "1.07"
-## 
-## $data[[1]]$style$fgMin
-## [1] "1.01"
-## 
-## $data[[1]]$style$fgMax
-## [1] "1.018"
-## 
-## $data[[1]]$style$createDate
-## [1] "2012-03-21 20:06:46"
-## 
-## $data[[1]]$style$updateDate
-## [1] "2015-04-07 15:31:50"
-## 
-## 
-## 
-## $data[[2]]
-## $data[[2]]$id
-## [1] "ct0Hxz"
-## 
-## $data[[2]]$name
-## [1] "Charkoota Rye"
-## 
-## $data[[2]]$nameDisplay
-## [1] "Charkoota Rye (2012)"
-## 
-## $data[[2]]$abv
-## [1] "9.35"
-## 
-## $data[[2]]$availableId
-## [1] 2
-## 
-## $data[[2]]$styleId
-## [1] 90
-## 
-## $data[[2]]$isOrganic
-## [1] "N"
-## 
-## $data[[2]]$isRetired
-## [1] "N"
-## 
-## $data[[2]]$year
-## [1] 2012
-## 
-## $data[[2]]$labels
-## $data[[2]]$labels$icon
-## [1] "https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-icon.png"
-## 
-## $data[[2]]$labels$medium
-## [1] "https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-medium.png"
-## 
-## $data[[2]]$labels$large
-## [1] "https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-large.png"
-## 
-## $data[[2]]$labels$contentAwareIcon
-## [1] "https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-contentAwareIcon.png"
-## 
-## $data[[2]]$labels$contentAwareMedium
-## [1] "https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-contentAwareMedium.png"
-## 
-## $data[[2]]$labels$contentAwareLarge
-## [1] "https://brewerydb-images.s3.amazonaws.com/beer/ct0Hxz/upload_stdN2V-contentAwareLarge.png"
-## 
-## 
-## $data[[2]]$status
-## [1] "verified"
-## 
-## $data[[2]]$statusDisplay
-## [1] "Verified"
-## 
-## $data[[2]]$originalGravity
-## [1] "1.101"
-## 
-## $data[[2]]$createDate
-## [1] "2012-08-25 19:41:56"
-## 
-## $data[[2]]$updateDate
-## [1] "2018-11-02 02:15:14"
-## 
-## $data[[2]]$available
-## $data[[2]]$available$id
-## [1] 2
-## 
-## $data[[2]]$available$name
-## [1] "Limited"
-## 
-## $data[[2]]$available$description
-## [1] "Limited availability."
-## 
-## 
-## $data[[2]]$style
-## $data[[2]]$style$id
-## [1] 90
-## 
-## $data[[2]]$style$categoryId
-## [1] 7
-## 
-## $data[[2]]$style$category
-## $data[[2]]$style$category$id
-## [1] 7
-## 
-## $data[[2]]$style$category$name
-## [1] "European-germanic Lager"
-## 
-## $data[[2]]$style$category$createDate
-## [1] "2012-03-21 20:06:46"
-## 
-## 
-## $data[[2]]$style$name
-## [1] "German-Style Doppelbock"
-## 
-## $data[[2]]$style$shortName
-## [1] "Doppelbock"
-## 
-## $data[[2]]$style$description
-## [1] "Malty sweetness is dominant but should not be cloying. Malt character is more reminiscent of fresh and lightly toasted Munich- style malt, more so than caramel or toffee malt character. Some elements of caramel and toffee can be evident and contribute to complexity, but the predominant malt character is an expression of toasted barley malt. Doppelbocks are full bodied and deep amber to dark brown in color. Astringency from roast malts is absent. Alcoholic strength is high, and hop rates increase with gravity. Hop bitterness and flavor should be low and hop aroma absent. Fruity esters are commonly perceived but at low to moderate levels. Diacetyl should be absent"
-## 
-## $data[[2]]$style$ibuMin
-## [1] "17"
-## 
-## $data[[2]]$style$ibuMax
-## [1] "27"
-## 
-## $data[[2]]$style$abvMin
-## [1] "6.5"
-## 
-## $data[[2]]$style$abvMax
-## [1] "8"
-## 
-## $data[[2]]$style$srmMin
-## [1] "12"
-## 
-## $data[[2]]$style$srmMax
-## [1] "30"
-## 
-## $data[[2]]$style$ogMin
-## [1] "1.074"
-## 
-## $data[[2]]$style$fgMin
-## [1] "1.014"
-## 
-## $data[[2]]$style$fgMax
-## [1] "1.02"
-## 
-## $data[[2]]$style$createDate
-## [1] "2012-03-21 20:06:46"
-## 
-## $data[[2]]$style$updateDate
-## [1] "2015-04-07 15:39:08"
-## 
-## 
-## 
-## $data[[3]]
-## $data[[3]]$id
-## [1] "OFYff7"
-## 
-## $data[[3]]$name
-## [1] "Envious"
-## 
-## $data[[3]]$nameDisplay
-## [1] "Envious (2012)"
-## 
-## $data[[3]]$description
-## [1] "Michigan pears fuel a second fermentation, providing subtle nuance between grain &amp; fruit. A slumber on oak and local raspberries adds depth and tartness."
-## 
-## $data[[3]]$abv
-## [1] "7.5"
-## 
-## $data[[3]]$glasswareId
+## $data$glasswareId
 ## [1] 8
 ## 
-## $data[[3]]$availableId
-## [1] 2
+## $data$srmId
+## [1] 41
 ## 
-## $data[[3]]$styleId
-## [1] 119
+## $data$availableId
+## [1] 1
 ## 
-## $data[[3]]$isOrganic
+## $data$styleId
+## [1] 43
+## 
+## $data$isOrganic
 ## [1] "N"
 ## 
-## $data[[3]]$isRetired
+## $data$isRetired
 ## [1] "N"
 ## 
-## $data[[3]]$year
-## [1] 2012
+## $data$labels
+## $data$labels$icon
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-icon.png"
 ## 
-## $data[[3]]$labels
-## $data[[3]]$labels$icon
-## [1] "https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-icon.png"
+## $data$labels$medium
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-medium.png"
 ## 
-## $data[[3]]$labels$medium
-## [1] "https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-medium.png"
+## $data$labels$large
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-large.png"
 ## 
-## $data[[3]]$labels$large
-## [1] "https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-large.png"
+## $data$labels$contentAwareIcon
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-contentAwareIcon.png"
 ## 
-## $data[[3]]$labels$contentAwareIcon
-## [1] "https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-contentAwareIcon.png"
+## $data$labels$contentAwareMedium
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-contentAwareMedium.png"
 ## 
-## $data[[3]]$labels$contentAwareMedium
-## [1] "https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-contentAwareMedium.png"
-## 
-## $data[[3]]$labels$contentAwareLarge
-## [1] "https://brewerydb-images.s3.amazonaws.com/beer/OFYff7/upload_RDWVUm-contentAwareLarge.png"
+## $data$labels$contentAwareLarge
+## [1] "https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-contentAwareLarge.png"
 ## 
 ## 
-## $data[[3]]$status
+## $data$status
 ## [1] "verified"
 ## 
-## $data[[3]]$statusDisplay
+## $data$statusDisplay
 ## [1] "Verified"
 ## 
-## $data[[3]]$foodPairings
-## [1] "charcuterie, roasted poultry, grilled stone fruits."
+## $data$foodPairings
+## [1] "Red meat, smoked foods, balsamic, rich cheese &amp; dark chocolate."
 ## 
-## $data[[3]]$originalGravity
-## [1] "1.0703"
+## $data$servingTemperature
+## [1] "cool"
 ## 
-## $data[[3]]$createDate
-## [1] "2012-08-25 17:46:47"
+## $data$servingTemperatureDisplay
+## [1] "Cool - (8-12C/45-54F)"
 ## 
-## $data[[3]]$updateDate
+## $data$originalGravity
+## [1] "1.096"
+## 
+## $data$createDate
+## [1] "2012-01-03 02:43:06"
+## 
+## $data$updateDate
 ## [1] "2018-11-02 02:15:14"
 ## 
-## $data[[3]]$glass
-## $data[[3]]$glass$id
+## $data$glass
+## $data$glass$id
 ## [1] 8
 ## 
-## $data[[3]]$glass$name
+## $data$glass$name
 ## [1] "Tulip"
 ## 
-## $data[[3]]$glass$createDate
+## $data$glass$createDate
 ## [1] "2012-01-03 02:41:33"
 ## 
 ## 
-## $data[[3]]$available
-## $data[[3]]$available$id
-## [1] 2
+## $data$srm
+## $data$srm$id
+## [1] 41
 ## 
-## $data[[3]]$available$name
-## [1] "Limited"
+## $data$srm$name
+## [1] "Over 40"
 ## 
-## $data[[3]]$available$description
-## [1] "Limited availability."
-## 
-## 
-## $data[[3]]$style
-## $data[[3]]$style$id
-## [1] 119
-## 
-## $data[[3]]$style$categoryId
-## [1] 11
-## 
-## $data[[3]]$style$category
-## $data[[3]]$style$category$id
-## [1] 11
-## 
-## $data[[3]]$style$category$name
-## [1] "Hybrid/mixed Beer"
-## 
-## $data[[3]]$style$category$createDate
-## [1] "2012-03-21 20:06:46"
+## $data$srm$hex
+## [1] "000000"
 ## 
 ## 
-## $data[[3]]$style$name
-## [1] "Fruit Beer"
+## $data$available
+## $data$available$id
+## [1] 1
 ## 
-## $data[[3]]$style$shortName
-## [1] "Fruit Beer"
+## $data$available$name
+## [1] "Year Round"
 ## 
-## $data[[3]]$style$description
-## [1] "Fruit beers are any beers using fruit or fruit extracts as an adjunct in either, the mash, kettle, primary or secondary fermentation providing obvious (ranging from subtle to intense), yet harmonious, fruit qualities. Fruit qualities should not be overpowered by hop character. If a fruit (such as juniper berry) has an herbal or spice quality, it is more appropriate to consider it in the herb and spice beers category. Acidic bacterial (not wild yeast) fermentation characters may be evident (but not necessary) they would contribute to acidity and enhance fruity balance. Clear or hazy beer is acceptable in appearance. A statement by the brewer explaining what fruits are used is essential in order for fair assessment in competitions. If this beer is a classic style with fruit, the brewer should also specify the classic style."
+## $data$available$description
+## [1] "Available year round as a staple beer."
 ## 
-## $data[[3]]$style$ibuMin
-## [1] "5"
 ## 
-## $data[[3]]$style$ibuMax
-## [1] "70"
+## $data$style
+## $data$style$id
+## [1] 43
 ## 
-## $data[[3]]$style$abvMin
-## [1] "2.5"
+## $data$style$categoryId
+## [1] 3
 ## 
-## $data[[3]]$style$abvMax
-## [1] "12"
+## $data$style$category
+## $data$style$category$id
+## [1] 3
 ## 
-## $data[[3]]$style$srmMin
-## [1] "5"
+## $data$style$category$name
+## [1] "North American Origin Ales"
 ## 
-## $data[[3]]$style$srmMax
+## $data$style$category$createDate
+## [1] "2012-03-21 20:06:45"
+## 
+## 
+## $data$style$name
+## [1] "American-Style Imperial Stout"
+## 
+## $data$style$shortName
+## [1] "American Imperial Stout"
+## 
+## $data$style$description
+## [1] "Black in color, American-style imperial stouts typically have a high alcohol content. Generally characterized as very robust. The extremely rich malty flavor and aroma are balanced with assertive hopping and fruity-ester characteristics. Bitterness should be moderately high to very high and balanced with full sweet malt character. Roasted malt astringency and bitterness can be moderately perceived but should not overwhelm the overall character. Hop aroma is usually moderately-high to overwhelmingly hop-floral, -citrus or -herbal. Diacetyl (butterscotch) levels should be absent."
+## 
+## $data$style$ibuMin
 ## [1] "50"
 ## 
-## $data[[3]]$style$ogMin
+## $data$style$ibuMax
+## [1] "80"
+## 
+## $data$style$abvMin
+## [1] "7"
+## 
+## $data$style$abvMax
+## [1] "12"
+## 
+## $data$style$srmMin
+## [1] "40"
+## 
+## $data$style$srmMax
+## [1] "40"
+## 
+## $data$style$ogMin
+## [1] "1.08"
+## 
+## $data$style$fgMin
+## [1] "1.02"
+## 
+## $data$style$fgMax
 ## [1] "1.03"
 ## 
-## $data[[3]]$style$fgMin
-## [1] "1.006"
-## 
-## $data[[3]]$style$fgMax
-## [1] "1.03"
-## 
-## $data[[3]]$style$createDate
+## $data$style$createDate
 ## [1] "2012-03-21 20:06:46"
 ## 
-## $data[[3]]$style$updateDate
-## [1] "2015-04-07 15:44:21"
-## 
+## $data$style$updateDate
+## [1] "2015-04-07 15:28:49"
 ## 
 ## 
 ## 
 ## $status
 ## [1] "success"</code></pre>
 <p><br></p>
-<p>As you can see, the return type is JSON formatted. We can use the jsonlite package to convert this into something more manageable.</p>
+<p>As you can see, the return type is JSON formatted. We can use the <a href="https://cran.r-project.org/web/packages/jsonlite/vignettes/json-aaquickstart.html">jsonlite package</a> to convert this into something more manageable.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="co"># This function consistently flattens a json list into a dataframe.</span>
   flattenJsonList &lt;-<span class="st"> </span><span class="cf">function</span>(jsonList){
     
-    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(dplyr)
-    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(jsonlite)
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(dplyr))
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(jsonlite))
     
     <span class="co"># If jsonList is not a named list, make it one.</span>
     <span class="cf">if</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(jsonList[[<span class="dv">1</span>]])) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) jsonList &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(jsonList)
@@ -643,34 +365,55 @@
     <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(df)
   }
 
-  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw">flattenJsonList</span>(sampleRequest<span class="op">$</span>data))</code></pre></div>
-<pre><code>## # A tibble: 3 x 49
-##   id    name  nameDisplay description abv   ibu   styleId isOrganic
-##   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;    
-## 1 Du7C… Blac… Black Tuli… Mysterious… 8.8   21         59 N        
-## 2 ct0H… Char… Charkoota … &lt;NA&gt;        9.35  &lt;NA&gt;       90 N        
-## 3 OFYf… Envi… Envious (2… Michigan p… 7.5   &lt;NA&gt;      119 N        
-## # … with 41 more variables: isRetired &lt;chr&gt;, year &lt;int&gt;,
-## #   labels.icon &lt;chr&gt;, labels.medium &lt;chr&gt;, labels.large &lt;chr&gt;,
-## #   labels.contentAwareIcon &lt;chr&gt;, labels.contentAwareMedium &lt;chr&gt;,
-## #   labels.contentAwareLarge &lt;chr&gt;, status &lt;chr&gt;, statusDisplay &lt;chr&gt;,
-## #   foodPairings &lt;chr&gt;, createDate &lt;chr&gt;, updateDate &lt;chr&gt;,
-## #   style.id &lt;int&gt;, style.categoryId &lt;int&gt;, style.category.id &lt;int&gt;,
-## #   style.category.name &lt;chr&gt;, style.category.createDate &lt;chr&gt;,
-## #   style.name &lt;chr&gt;, style.shortName &lt;chr&gt;, style.description &lt;chr&gt;,
-## #   style.ibuMin &lt;chr&gt;, style.ibuMax &lt;chr&gt;, style.abvMin &lt;chr&gt;,
-## #   style.abvMax &lt;chr&gt;, style.srmMin &lt;chr&gt;, style.srmMax &lt;chr&gt;,
-## #   style.ogMin &lt;chr&gt;, style.fgMin &lt;chr&gt;, style.fgMax &lt;chr&gt;,
-## #   style.createDate &lt;chr&gt;, style.updateDate &lt;chr&gt;, availableId &lt;int&gt;,
-## #   originalGravity &lt;chr&gt;, available.id &lt;int&gt;, available.name &lt;chr&gt;,
-## #   available.description &lt;chr&gt;, glasswareId &lt;int&gt;, glass.id &lt;int&gt;,
-## #   glass.name &lt;chr&gt;, glass.createDate &lt;chr&gt;</code></pre>
+  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw">flattenJsonList</span>(sampleRequest<span class="op">$</span>data) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.data.frame">as.data.frame</a></span>())</code></pre></div>
+<pre><code>##       id          name   nameDisplay
+## 1 WHQisc Dragon's Milk Dragon's Milk
+##                                                                                                                                                                                                                                                                                      description
+## 1 A barrel-aged, strong-ale with a soft and rich caramel-malt character intermingled with deep vanilla tones dancing in an oak bath. Unmistakably distinctive and hauntingly remarkable, Dragon's Milk's warming complexity pairs well with smoked meats and cheeses, red meat, or a nice cigar.
+##   abv ibu glasswareId srmId availableId styleId isOrganic isRetired
+## 1  11  31           8    41           1      43         N         N
+##                                                                    labels.icon
+## 1 https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-icon.png
+##                                                                    labels.medium
+## 1 https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-medium.png
+##                                                                    labels.large
+## 1 https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-large.png
+##                                                                    labels.contentAwareIcon
+## 1 https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-contentAwareIcon.png
+##                                                                    labels.contentAwareMedium
+## 1 https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-contentAwareMedium.png
+##                                                                    labels.contentAwareLarge
+## 1 https://brewerydb-images.s3.amazonaws.com/beer/WHQisc/upload_2FqQti-contentAwareLarge.png
+##     status statusDisplay
+## 1 verified      Verified
+##                                                      foodPairings
+## 1 Red meat, smoked foods, balsamic, rich cheese &amp; dark chocolate.
+##   servingTemperature servingTemperatureDisplay originalGravity
+## 1               cool     Cool - (8-12C/45-54F)           1.096
+##            createDate          updateDate glass.id glass.name
+## 1 2012-01-03 02:43:06 2018-11-02 02:15:14        8      Tulip
+##      glass.createDate srm.id srm.name srm.hex available.id available.name
+## 1 2012-01-03 02:41:33     41  Over 40  000000            1     Year Round
+##                    available.description style.id style.categoryId
+## 1 Available year round as a staple beer.       43                3
+##   style.category.id        style.category.name style.category.createDate
+## 1                 3 North American Origin Ales       2012-03-21 20:06:45
+##                      style.name         style.shortName
+## 1 American-Style Imperial Stout American Imperial Stout
+##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          style.description
+## 1 Black in color, American-style imperial stouts typically have a high alcohol content. Generally characterized as very robust. The extremely rich malty flavor and aroma are balanced with assertive hopping and fruity-ester characteristics. Bitterness should be moderately high to very high and balanced with full sweet malt character. Roasted malt astringency and bitterness can be moderately perceived but should not overwhelm the overall character. Hop aroma is usually moderately-high to overwhelmingly hop-floral, -citrus or -herbal. Diacetyl (butterscotch) levels should be absent.
+##   style.ibuMin style.ibuMax style.abvMin style.abvMax style.srmMin
+## 1           50           80            7           12           40
+##   style.srmMax style.ogMin style.fgMin style.fgMax    style.createDate
+## 1           40        1.08        1.02        1.03 2012-03-21 20:06:46
+##      style.updateDate
+## 1 2015-04-07 15:28:49</code></pre>
 </div>
 <div id="api-documentation---r-functions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#api-documentation---r-functions" class="anchor"></a>API Documentation -&gt; R Functions</h3>
 <p><br></p>
-<p>For the example above, the documenation is all about Beer which I’ll call our object. Clicking around on the endpoint pages, we see that documentation pages can be used as object names. The current page is “beer-index”“, and is followed below by”beer-adjunct" and “beer-brewery”. Other examples include “brewery-index” and “brewery-beer”, so it makes sense to scrape a page to correspond to our object name.</p>
+<p>For the example above, the documenation is all about Beer which I’ll call our object. Clicking around on the endpoint pages, we see that documentation pages can be used as object names. The current page is “beer-index”, and is followed below by “beer-adjunct” and “beer-brewery”. Other examples include “brewery-index” and “brewery-beer”, so it makes sense to scrape a page to correspond to our object name.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(tidyverse))
 
   <span class="co"># Eventually we'd like to scrape the whole site so lets prepare.</span>
@@ -821,6 +564,7 @@
     
     <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(page)
     <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(methodsAndEndpoints)
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">'</span><span class="ch">\n\n</span><span class="st">'</span>)
   }</code></pre></div>
 <pre><code>## [1] "beer-index"
 ## # A tibble: 5 x 2
@@ -831,6 +575,8 @@
 ## 3 POST   /beers       
 ## 4 PUT    /beer/:beerId
 ## 5 DELETE /beer/:beerId
+## 
+## 
 ## [1] "beer-adjunct"
 ## # A tibble: 3 x 2
 ##   Method Endpoint                        
@@ -838,6 +584,8 @@
 ## 1 GET    /beer/:beerId/adjuncts          
 ## 2 POST   /beer/:beerId/adjuncts          
 ## 3 DELETE /beer/:beerId/adjunct/:adjunctId
+## 
+## 
 ## [1] "beer-brewery"
 ## # A tibble: 3 x 2
 ##   Method Endpoint                        
@@ -846,7 +594,7 @@
 ## 2 POST   /beer/:beerId/breweries         
 ## 3 DELETE /beer/:beerId/brewery/:breweryId</code></pre>
 <p><br></p>
-<p>Now we’re cooking. While we’re at it, could we scrape the page name of each documentation page we will want functions for? It turns out that each of those page labels are “li a”" elements on the documentation page. Finding those elements and grabbing their ‘href’ attribute will give us each page URL we’ll need.</p>
+<p>Now we’re cooking. While we’re at it, could we scrape the page name of each documentation page we will want functions for? It turns out that each of those page labels are “li a” elements on the documentation page. Finding those elements and grabbing their ‘href’ attribute will give us each page URL we’ll need.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="co"># This function returns all api endpoint pages.</span>
   getAllAPIpages &lt;-<span class="st"> </span><span class="cf">function</span>(){
     
