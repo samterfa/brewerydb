@@ -57,15 +57,12 @@ getAllAPIpages <- function(){
 }
 
 # This function generates R files with functions accessing brewerydb endpoints.
-generateFunctions <- function(pages = c('beer-index', 'brewery-index'), testing = T){
+generateFunctions <- function(pages = c('beer-index'), testing = T){
   
   require(rvest)
   require(magrittr)
   require(tidyverse)
-  
-  # Make sure if there's an error in your code you don't get stuck with output going to a generated file instead of the console.
-  on.exit({sink(); sink(); sink(); sink(); sink(); sink(); sink(); sink()})
-  
+ 
   for(page in pages){
   
     object <- page %>% str_replace('-', ' ') %>% str_to_title() %>% str_replace(' ', '') %>% str_replace('Index', '')
@@ -85,13 +82,13 @@ generateFunctions <- function(pages = c('beer-index', 'brewery-index'), testing 
     warnings <- html %>% html_nodes('strong') %>% rvest::html_text() %>% str_detect('deprecated') %>% any()
     if(warnings){
         
-      if(testing) print(paste('Skipping', page, ': Deprecated'))
+      print(paste('Skipping', page, ': Deprecated'))
       
       next()
       
     }else{
         
-      if(testing) print(paste('Scraping', page))
+      print(paste('Scraping', page))
     }
     
     #### Generate .R file containing page functions but only if not testing.
@@ -100,8 +97,7 @@ generateFunctions <- function(pages = c('beer-index', 'brewery-index'), testing 
       if(!dir.exists('R')) dir.create('R')
       
         filepath <- paste0('R/', object, ".R")
-        sink(file = filepath)
-        cat('\n')
+        write_lines('\n', filepath)
     }
   
     ### Generate Roxygen Documentation and functions.
@@ -118,7 +114,7 @@ generateFunctions <- function(pages = c('beer-index', 'brewery-index'), testing 
         longFunctionDescription <- ''
       }
       
-      # Grab function paramaters.
+      # Grab function parameters.
       toParse <- paste0("html %>% rvest::html_nodes(xpath = '//*[(@id = ", '"params_', i-1, '"', ")]') %>% html_children() %>% extract2(2)")
       params <- eval(parse(text = toParse))
       ifelse(params %>% html_name() == 'table', params %<>% html_table(), params <- NA)
@@ -224,11 +220,10 @@ generateFunctions <- function(pages = c('beer-index', 'brewery-index'), testing 
       functionText %<>% paste0('\tflattenJsonList(returnData$data)\n\n}\n\n')
       
       if(!testing){
-        cat(documentationText)
-        cat(functionText)
+        write_lines(documentationText, filepath, append = T)
+        write_lines(functionText, filepath, append = T)
       }
     }
-    if(!testing) sink()
   }
 }
 

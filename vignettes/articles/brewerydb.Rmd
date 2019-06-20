@@ -7,11 +7,11 @@ output: html_notebook
 
 <br>
 
-An API or Application Program Interface is a standard tool for creating software applications. There are many well-known APIs such as the Google APIs backing Docs, Drive, Calendar, Assistant and [lots more](https://developers.google.com/apis-explorer/). This notebook is dedicated to automatically generating a package containing human-readable functions which utilize the [BreweryDB API](https://www.brewerydb.com/developers). This will allow us to search BreweryDB database and find all sorts of data on beer and breweries!
+An API or Application Program Interface is a standard tool for creating software applications. There are many well-known APIs such as the Google APIs backing Docs, Drive, Calendar, Assistant and [lots more](https://developers.google.com/apis-explorer/). The purpose of this article is to explain how to automatically generate a package containing human-readable functions which utilize the [BreweryDB API](https://www.brewerydb.com/developers). This will allow us to search the BreweryDB database and find all sorts of data on beer and breweries!
 
 <br>
 
-Generally API documentation is generated in HTML. We will in a way reverse engineer this, scraping HTML documentation and pulling out the API methods and objects. A method is an action while an object is the thing that a method acts on. 
+Generally, the API documentation provided by websites is automatically generated in HTML to product documenation pages. We will in a way reverse engineer this process, scraping HTML documentation and pulling out the API methods and objects. A method is an action while an object is the thing that a method acts on. 
 
 <br>
 
@@ -283,10 +283,50 @@ So how do we translate the api method and endpoint into a function? Let's start 
 
 <br>
 
-R has a very handy but dangerous function called sink() which will funnel all output that would normally go to the console to a file instead. If we're clever with it we can generate a .R file with functions on the fly. *Warning:* If you forget to turn the sink off so to speak, you won't get any output from functions you run later. You will think you've broken RStudio and start Googling for fixes until you realize that all the console output is still going to the .R file!!! Hypothetically speaking...
+The [readr package](https://readr.tidyverse.org) has a very handy function called write_lines(x, path, append) which will write text to a given file. If we're clever with it we can generate a .R file with functions on the fly. write_lines will also generate any files that don't already exist.
 
 <br>
 
+Let's see an example.
+```{r}
 
+  functionText <- paste0('\n\treturn(text)\n\n}')
+
+  write_lines('helloWorld <- function(text = "Hello World!"){\n', 'helloWorld.R')
+  write_lines('\treturn(text)\n', 'helloWorld.R', append = T)
+  write_lines('}', 'helloWorld.R', append = T)
+  
+  source('helloWorld.R')
+  
+  print(helloWorld)
+  
+  print(helloWorld())
+  
+  file.remove('helloWorld.R')
+```
+
+<br>
+
+So how do we generate getEveryBeer(...)? The general structure is easy but the API method has many parameters we need to make it fully functional. We can scrape those using Rvest too. It turns out using Selector Gadget that each table of parameters has an element id of "param_0", "param_1", one for each API method or function we will generate. We have to get a little fancy to identify each table element in a loop using eval(parse(text = '...')).
+
+<br>
+
+```{r}
+
+  html <- read_html(paste0(functionsUrl, 'beer-index'))
+
+  # Each method becomes a function.
+  apiMethods <- html %>% html_nodes('h3 span') %>% rvest::html_text()
+
+  for(i in 1:length(apiMethods)){
+    # Grab function parameters.
+        toParse <- paste0("html %>% rvest::html_nodes(xpath = '//*[(@id = ", '"params_', i-1, '"', ")]') %>% html_children() %>% extract2(2)")
+        params <- eval(parse(text = toParse))
+        ifelse(params %>% html_name() == 'table', params %<>% html_table() %>% mutate_all(str_squish), params <- NA)
+        
+        ifelse(!is.na(params), print(params %>% mutate_all(function(x) str_sub(x, start = 1, end = 30)) %>% head()), print(params))
+        cat('\n\n')
+  }
+```
 
 

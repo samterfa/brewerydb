@@ -91,9 +91,9 @@
 <h3 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h3>
 <p><br></p>
-<p>An API or Application Program Interface is a standard tool for creating software applications. There are many well-known APIs such as the Google APIs backing Docs, Drive, Calendar, Assistant and <a href="https://developers.google.com/apis-explorer/">lots more</a>. This notebook is dedicated to automatically generating a package containing human-readable functions which utilize the <a href="https://www.brewerydb.com/developers">BreweryDB API</a>. This will allow us to search BreweryDB database and find all sorts of data on beer and breweries!</p>
+<p>An API or Application Program Interface is a standard tool for creating software applications. There are many well-known APIs such as the Google APIs backing Docs, Drive, Calendar, Assistant and <a href="https://developers.google.com/apis-explorer/">lots more</a>. The purpose of this article is to explain how to automatically generate a package containing human-readable functions which utilize the <a href="https://www.brewerydb.com/developers">BreweryDB API</a>. This will allow us to search the BreweryDB database and find all sorts of data on beer and breweries!</p>
 <p><br></p>
-<p>Generally API documentation is generated in HTML. We will in a way reverse engineer this, scraping HTML documentation and pulling out the API methods and objects. A method is an action while an object is the thing that a method acts on.</p>
+<p>Generally, the API documentation provided by websites is automatically generated in HTML to product documenation pages. We will in a way reverse engineer this process, scraping HTML documentation and pulling out the API methods and objects. A method is an action while an object is the thing that a method acts on.</p>
 <p><br></p>
 <div class="figure">
 <img src="images/exampleAPIdoc.png" alt=" Example of HTML Documentation for an API"><p class="caption"><br><i>Example of HTML Documentation for an API</i></p>
@@ -124,8 +124,6 @@
   }
 
   <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/try">try</a></span>({<span class="kw">checkAuthentication</span>()})</code></pre></div>
-<pre><code>## Error in checkAuthentication() : 
-##   Required option brewerydbKey has not been set! Set its value using Sys.setenv(brewerydbKey = "{brewerydbKeyValue}").</code></pre>
 <p><br></p>
 <p>I have a file which is placed in my .gitignore which sets my API credentials for a session but isn’t inadvertently posted to GitHub!</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/source">source</a></span>(<span class="st">'../../apiCredentials.R'</span>)</code></pre></div>
@@ -635,6 +633,81 @@
 ## [49] "yeast-index"</code></pre>
 <p><br></p>
 <p>So how do we translate the api method and endpoint into a function? Let’s start by generating the easiest function: getEveryBeer(…).</p>
+</div>
+<div id="generating--r-files" class="section level3">
+<h3 class="hasAnchor">
+<a href="#generating--r-files" class="anchor"></a>Generating .R Files</h3>
+<p><br></p>
+<p>The <a href="https://readr.tidyverse.org">readr package</a> has a very handy function called write_lines(x, path, append) which will write text to a given file. If we’re clever with it we can generate a .R file with functions on the fly. write_lines will also generate any files that don’t already exist.</p>
+<p><br></p>
+<p>Let’s see an example.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  functionText &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">'</span><span class="ch">\n\t</span><span class="st">return(text)</span><span class="ch">\n\n</span><span class="st">}'</span>)
+
+  <span class="kw">write_lines</span>(<span class="st">'helloWorld &lt;- function(text = "Hello World!"){</span><span class="ch">\n</span><span class="st">'</span>, <span class="st">'helloWorld.R'</span>)
+  <span class="kw">write_lines</span>(<span class="st">'</span><span class="ch">\t</span><span class="st">return(text)</span><span class="ch">\n</span><span class="st">'</span>, <span class="st">'helloWorld.R'</span>, <span class="dt">append =</span> T)
+  <span class="kw">write_lines</span>(<span class="st">'}'</span>, <span class="st">'helloWorld.R'</span>, <span class="dt">append =</span> T)
+  
+  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/source">source</a></span>(<span class="st">'helloWorld.R'</span>)
+  
+  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(helloWorld)</code></pre></div>
+<pre><code>## function (text = "Hello World!") 
+## {
+##     return(text)
+## }</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw">helloWorld</span>())</code></pre></div>
+<pre><code>## [1] "Hello World!"</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/files">file.remove</a></span>(<span class="st">'helloWorld.R'</span>)</code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p><br></p>
+<p>So how do we generate getEveryBeer(…)? The general structure is easy but the API method has many parameters we need to make it fully functional. We can scrape those using Rvest too. It turns out using Selector Gadget that each table of parameters has an element id of “param_0”, “param_1”, one for each API method or function we will generate. We have to get a little fancy to identify each table element in a loop using eval(parse(text = ‘…’)).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  html &lt;-<span class="st"> </span><span class="kw">read_html</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(functionsUrl, <span class="st">'beer-index'</span>))
+
+  <span class="co"># Each method becomes a function.</span>
+  apiMethods &lt;-<span class="st"> </span>html <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_nodes">html_nodes</a></span>(<span class="st">'h3 span'</span>) <span class="op">%&gt;%</span><span class="st"> </span>rvest<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_text">html_text</a></span>()
+
+  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(apiMethods)){
+    <span class="co"># Grab function parameters.</span>
+        toParse &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"html %&gt;% rvest::html_nodes(xpath = '//*[(@id = "</span>, <span class="st">'"params_'</span>, i<span class="op">-</span><span class="dv">1</span>, <span class="st">'"'</span>, <span class="st">")]') %&gt;% html_children() %&gt;% extract2(2)"</span>)
+        params &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/eval">eval</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/parse">parse</a></span>(<span class="dt">text =</span> toParse))
+        <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(params <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_text">html_name</a></span>() <span class="op">==</span><span class="st"> 'table'</span>, params <span class="op">%&lt;&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rvest/topics/html_table">html_table</a></span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_all</a></span>(str_squish), params &lt;-<span class="st"> </span><span class="ot">NA</span>)
+        
+        <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(params), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(params <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_all</a></span>(<span class="cf">function</span>(x) <span class="kw">str_sub</span>(x, <span class="dt">start =</span> <span class="dv">1</span>, <span class="dt">end =</span> <span class="dv">30</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>()), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(params))
+        <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">'</span><span class="ch">\n\n</span><span class="st">'</span>)
+  }</code></pre></div>
+<pre><code>##     Parameter                    Description Access Restriction
+## 1           p                    Page Number               None
+## 2         ids ID's of the beers to return, c               None
+## 3        name                Name of a beer.               None
+## 4         abv ABV for a beer. Premium users                None
+## 5         ibu IBUs for a beer. Premium users               None
+## 6 glasswareId               ID for glassware               None
+## 
+## 
+##            Parameter                    Description Access Restriction
+## 1      withBreweries Get beer results with brewery                None
+## 2 withSocialAccounts Get beer results with social a               None
+## 3    withIngredients Get beer results with ingredie               None
+## 
+## 
+##          Parameter                    Description Access Restriction
+## 1    name Required               Name of the beer               None
+## 2 styleId Required ID corresponding to the approp               None
+## 3      description    A little bit about the beer               None
+## 4              abv     ABV percentage of the beer               None
+## 5              ibu      Measured IBUs of the beer               None
+## 6      glasswareId ID corresponding to the approp               None
+## 
+## 
+##          Parameter                    Description Access Restriction
+## 1    name Required               Name of the beer               None
+## 2 styleId Required ID corresponding to the approp               None
+## 3      description    A little bit about the beer               None
+## 4              abv     ABV percentage of the beer               None
+## 5              ibu      Measured IBUs of the beer               None
+## 6      glasswareId ID corresponding to the approp               None
+## 
+## 
+## [1] NA</code></pre>
 </div>
   </div>
 
