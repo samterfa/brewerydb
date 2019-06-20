@@ -45,7 +45,7 @@ So how do we go about generating functions? [The Rvest Package](https://github.c
 
 <br>
 
-![<br><i>Selector Gadget in the Chrome Web Store</i>](markdown/exampleAPIdoc.png)
+![<br><i>Selector Gadget in the Chrome Web Store</i>](markdown/selectorGadget.png)
 
 
 
