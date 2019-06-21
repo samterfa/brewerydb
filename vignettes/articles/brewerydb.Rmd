@@ -145,7 +145,7 @@ For the example above, the documenation is all about Beer which I'll call our ob
 
   suppressPackageStartupMessages(require(tidyverse))
 
-  # Eventually we'd like to scrape the whole site so lets prepare.
+  # Eventually we'd like to scrape the whole site so let's prepare.
   pages = c('beer-index', 'beer-adjunct', 'beer-brewery')
 
   for(page in pages){ 

@@ -421,7 +421,7 @@ flattenJsonList &lt;-<span class="st"> </span><span class="cf">function</span>(j
 <p>For the example above, the documenation is all about Beer which I’ll call our object. Clicking around on the endpoint pages, we see that documentation pages can be used as object names. The current page is “beer-index”, and is followed below by “beer-adjunct” and “beer-brewery”. Other examples include “brewery-index” and “brewery-beer”, so it makes sense to scrape a page to correspond to our object name.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">suppressPackageStartupMessages</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(tidyverse))
 
-  <span class="co"># Eventually we'd like to scrape the whole site so lets prepare.</span>
+  <span class="co"># Eventually we'd like to scrape the whole site so let's prepare.</span>
   pages =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'beer-index'</span>, <span class="st">'beer-adjunct'</span>, <span class="st">'beer-brewery'</span>)
 
   <span class="cf">for</span>(page <span class="cf">in</span> pages){ 
