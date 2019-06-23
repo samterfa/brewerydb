@@ -20,9 +20,6 @@ getEveryBreweryRandom(established, isOrganic, withSocialAccounts,
 
 \item{withAlternateNames}{Get brewery with alternate name information included. Y N Default}
 }
-\value{
-none
-}
 \description{
 Gets a random active brewery.
 }
