@@ -1,2 +1,2 @@
 # brewerydb
-This repo creates human-readable functions to interact with the BreweryDB API.
+This R package provides access to the [BreweryDB API](https://brewerydb.com/developers/docs/endpoint).
