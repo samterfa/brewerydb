@@ -1,49 +1,4 @@
-
 functionsUrl <- 'https://www.brewerydb.com/developers/docs/endpoint/'
-baseUrl <- 'https://sandbox-api.brewerydb.com/v2'
-
-checkAuthentication <- function(){
-  
-  require(httr)
-  require(jsonlite)
-  require(tidyverse)
-  
-  ops <- Sys.getenv()
-  requiredOptions <- c("brewerydbKey")
-  
-  for(option in requiredOptions){
-    if(Sys.getenv(option) == ''){
-      stop(paste0('Required option ', option, ' has not been set! Set its value using Sys.setenv(', option, ' = "{', option, 'Value}").'))
-    }
-  }
-}
-
-# This function consistently flattens a json list into a dataframe.
-flattenJsonList <- function(jsonList){
-  
-  require(dplyr)
-  require(jsonlite)
-  
-  # If jsonList is not a named list, make it one.
-  if(length(names(jsonList[[1]])) == 0){ 
-    
-    jsonList <- list(jsonList)
-    
-  }
-  
-  for(item in jsonList){
-    
-    item <- data.frame(item, stringsAsFactors = F)
-   
-    if(!exists('df', inherits = FALSE)){
-      df <- flatten(item) %>% as.data.frame()
-    }else{
-      df <- bind_rows(df, flatten(item) %>% as.data.frame())
-    }
-  }
-  
-  return(df)
-}
 
 # This function returns all api endpoint pages.
 getAllAPIpages <- function(){
@@ -229,29 +184,6 @@ generateFunctions <- function(pages = c('beer-index'), testing = T){
         write_lines(functionText, filepath, append = T)
       }
     }
-  }
-}
-
-makeRequest <- function(endpoint, verb, params = NULL){
-  
-  require(httr)
-  require(tidyverse)
-  require(magrittr)
-  
-  checkAuthentication()
-  
-  endpoint %<>% paste0('/?key=', Sys.getenv('brewerydbKey'))
-
-  if(length(params) > 0) endpoint %<>% paste0('&', URLencode(paste(paste(names(params), as.character(params), sep = '='), collapse = '&')))
-
-  request <- paste0(verb, '("', baseUrl, endpoint, '", accept_json())')
-
-  eval(parse(text = paste0('response <- ', request)))
-  
-  if(response$status_code < 300){
-    return(content(response))
-  }else{
-    stop(content(response))
   }
 }
 
